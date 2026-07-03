@@ -3,9 +3,9 @@ import { useEffect, type RefObject } from 'react'
 function getFocusableElements(container: HTMLElement): HTMLElement[] {
   return Array.from(
     container.querySelectorAll<HTMLElement>(
-      'button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])',
+      'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"]):not([disabled])',
     ),
-  ).filter((el) => !el.disabled && el.offsetParent !== null)
+  ).filter((el) => el.offsetParent !== null)
 }
 
 export function useFocusTrap(

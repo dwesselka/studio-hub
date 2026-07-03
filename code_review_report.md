@@ -1,4 +1,4 @@
-# Relatório de Code Review — Infinity Partner
+**# Relatório de Code Review — Infinity Partner
 
 Este relatório apresenta uma análise crítica e profunda do codebase atual do **Infinity Partner**, realizada sob a perspectiva de um Principal Engineer e Software Architect. Os problemas foram categorizados por gravidade e acompanhados de impactos técnicos/financeiros, soluções recomendadas, exemplos práticos de implementação e trade-offs associados.
 
@@ -9,7 +9,7 @@ Este relatório apresenta uma análise crítica e profunda do codebase atual do 
 ### Gravidade
 Crítica
 
-### Problema
+### *Problema*
 O arquivo [chatbot.js](file:///d:/_Projetos/R_Style/infinity-style/src/lib/chatbot.js#L30-L77) faz chamadas diretas ao endpoint de chat completions da OpenAI utilizando a variável `import.meta.env.VITE_OPENAI_API_KEY`. 
 
 ```javascript

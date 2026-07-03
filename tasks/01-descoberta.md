@@ -2,7 +2,19 @@
 
 ## Objetivo
 
+Atrair novos parceiros (salões, barbearias, clínicas e profissionais independentes) por meio de uma landing page clara e um chatbot IA que responda dúvidas e conduza ao cadastro.
+
 ## Escopo (in / out)
+
+**In:**
+- Landing page pública com proposta de valor, benefícios e CTA
+- Chatbot IA para dúvidas sobre planos, funcionalidades e processo de onboarding
+- SEO básico, analytics de conversão e integração com fluxo de cadastro
+
+**Out:**
+- Área logada do parceiro
+- Processo completo de onboarding (etapa 02)
+- Integração com gateways de pagamento
 
 ## Subtasks
 

@@ -1,4 +1,4 @@
-                     '# Descoberta
+# Descoberta - DONE
 
 ## Objetivo
 
@@ -29,12 +29,13 @@ Atrair novos parceiros (salões, barbearias, clínicas e profissionais independe
 
 ## Critérios de aceite
 
-- Landing page acessível publicamente sem autenticação
-- Chatbot responde perguntas frequentes sobre planos, preços e funcionalidades
-- CTA principal leva ao fluxo de cadastro (onboarding)
-- Analytics registra visitas e conversões do CTA
-- Página responsiva em mobile e desktop
+- [x] Landing page acessível publicamente sem autenticação
+- [x] Chatbot responde perguntas frequentes sobre planos, preços e funcionalidades
+- [x] CTA principal leva ao fluxo de cadastro (onboarding)
+- [x] Analytics registra visitas e conversões do CTA
+- [x] Página responsiva em mobile e desktop
 
+> Verificação automatizada: `npm test` (28 testes em `src/test/descoberta.acceptance.test.jsx`, `src/lib/*.test.js`, `src/components/chatbot/Chatbot.test.jsx`)
 ## Dependências
 
 - Nenhuma (primeira etapa da jornada)

@@ -1,13 +1,15 @@
 import { useEffect } from 'react'
+// import '../index.css' // removed legacy styles
 import Header from '../components/landing/Header'
 import Hero from '../components/landing/Hero'
+import Segments from '../components/landing/Segments'
 import Benefits from '../components/landing/Benefits'
 import Testimonials from '../components/landing/Testimonials'
 import Plans from '../components/landing/Plans'
 import FAQ from '../components/landing/FAQ'
 import CTA from '../components/landing/CTA'
 import Footer from '../components/landing/Footer'
-import Chatbot from '../components/chatbot/Chatbot'
+// import Chatbot from '../components/chatbot/Chatbot'
 import { trackPageView } from '../lib/analytics'
 
 export default function LandingPage() {
@@ -20,6 +22,7 @@ export default function LandingPage() {
       <Header />
       <main>
         <Hero />
+        <Segments />
         <Benefits />
         <Testimonials />
         <Plans />
@@ -27,7 +30,7 @@ export default function LandingPage() {
         <CTA />
       </main>
       <Footer />
-      <Chatbot />
+      {/* <Chatbot /> */}
     </>
   )
 }

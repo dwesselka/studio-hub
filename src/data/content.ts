@@ -1,6 +1,90 @@
-export const SITE = {
+export interface SiteConfig {
+  name: string
+  tagline: string
+  description: string
+  url: string
+  ctaLabel: string
+  cadastroPath: string
+}
+
+export interface HeroConfig {
+  title: string
+  subtitle: string
+  highlights: string[]
+}
+
+export interface Segment {
+  id: string
+  label: string
+  description: string
+  services: string[]
+  accent: string
+}
+
+export interface Appointment {
+  time: string
+  client: string
+  service: string
+  pro: string
+  status: 'confirmed' | 'pending'
+}
+
+export interface AgendaStats {
+  occupancy: string
+  today: number
+  revenue: string
+}
+
+export interface HeroAgenda {
+  date: string
+  appointments: Appointment[]
+  stats: AgendaStats
+}
+
+export interface Benefit {
+  icon: string
+  title: string
+  description: string
+}
+
+export interface Testimonial {
+  name: string
+  role: string
+  quote: string
+  segment: 'Salão' | 'Barbearia'
+}
+
+export interface Plan {
+  id: string
+  name: string
+  price: string
+  period: string
+  description: string
+  features: string[]
+  highlighted: boolean
+}
+
+export interface FAQItem {
+  question: string
+  answer: string
+}
+
+export interface ChatbotTopic {
+  keywords: string[]
+  answer: string
+  lead?: boolean
+}
+
+export interface ChatbotKnowledge {
+  greeting: string
+  topics: ChatbotTopic[]
+  fallback: string
+  leadPrompt: string
+}
+
+export const SITE: SiteConfig = {
   name: 'Infinity Partner',
-  tagline: 'Gestão inteligente para salões, barbearias e clínicas de beleza',
+  tagline: 'Gestão inteligente para salões e barbearias',
   description:
     'Plataforma completa para parceiros de beleza: agendamento com IA, atendimento, pagamentos e fidelização em um só lugar.',
   url: 'https://infinity-partner.com.br',
@@ -8,52 +92,89 @@ export const SITE = {
   cadastroPath: '/cadastro',
 }
 
-export const hero = {
-  title: 'Transforme seu salão em um negócio inteligente',
+export const hero: HeroConfig = {
+  title: 'Transforme seu salão ou barbearia em um negócio inteligente',
   subtitle:
-    'Agendamento com IA, controle de atendimentos, pagamentos e campanhas de fidelização — tudo em uma plataforma feita para o segmento de beleza.',
+    'Agenda online, confirmação no WhatsApp, pagamentos na hora e fidelização — feito para quem vive o dia a dia da beleza.',
   highlights: ['Setup em 5 minutos', 'Sem taxa de adesão', 'Suporte em português'],
 }
 
-export const benefits = [
+export const segments: Segment[] = [
   {
-    icon: '📅',
-    title: 'Agendamento inteligente',
-    description:
-      'A IA sugere horários, envia confirmações automáticas e reduz faltas com lembretes personalizados.',
+    id: 'salao',
+    label: 'Salão de beleza',
+    description: 'Escova, coloração, manicure e equipe com comissão organizada.',
+    services: ['Corte feminino', 'Escova', 'Coloração', 'Manicure'],
+    accent: 'rose',
   },
   {
-    icon: '💇',
-    title: 'Atendimento completo',
-    description:
-      'Registre serviços, insumos e histórico do cliente em poucos cliques, direto do celular.',
-  },
-  {
-    icon: '💳',
-    title: 'Pagamentos integrados',
-    description: 'Aceite Pix e cartão, concilie recebimentos e acompanhe o fluxo de caixa em tempo real.',
-  },
-  {
-    icon: '📊',
-    title: 'Relatórios e insights',
-    description:
-      'Dashboard com métricas de faturamento, ocupação e recomendações para crescer seu negócio.',
-  },
-  {
-    icon: '🎁',
-    title: 'Fidelização automática',
-    description:
-      'Campanhas de retorno, promoções personalizadas e programa de pontos para manter clientes voltando.',
-  },
-  {
-    icon: '🤖',
-    title: 'Assistente IA 24h',
-    description:
-      'Chatbot que responde dúvidas dos seus clientes e ajuda sua equipe no dia a dia.',
+    id: 'barbearia',
+    label: 'Barbearia',
+    description: 'Fila, barba, assinatura e controle de cadeiras em tempo real.',
+    services: ['Corte masculino', 'Barba', 'Sobrancelha', 'Plano mensal'],
+    accent: 'barber',
   },
 ]
 
-export const testimonials = [
+export const heroAgenda: HeroAgenda = {
+  date: 'Hoje, 3 de julho',
+  appointments: [
+    {
+      time: '09:00',
+      client: 'Ana Costa',
+      service: 'Escova + Hidratação',
+      pro: 'Camila',
+      status: 'confirmed',
+    },
+    {
+      time: '10:30',
+      client: 'João Mendes',
+      service: 'Corte + Barba',
+      pro: 'Rafael',
+      status: 'confirmed',
+    },
+    { time: '14:00', client: 'Juliana R.', service: 'Manicure gel', pro: 'Pri', status: 'pending' },
+  ],
+  stats: { occupancy: '87%', today: 12, revenue: 'R$ 1.840' },
+}
+
+export const benefits: Benefit[] = [
+  {
+    icon: 'calendar',
+    title: 'Agenda que enche sozinha',
+    description:
+      'Link de agendamento, confirmação automática no WhatsApp e lembretes que reduzem faltas.',
+  },
+  {
+    icon: 'scissors',
+    title: 'Atendimento na cadeira',
+    description:
+      'Registre serviços, produtos usados e histórico do cliente sem sair do atendimento.',
+  },
+  {
+    icon: 'payment',
+    title: 'Pix e cartão na hora',
+    description: 'Receba na hora do serviço, concilie com a agenda e veja o caixa do dia.',
+  },
+  {
+    icon: 'chart',
+    title: 'Painel do dono',
+    description: 'Faturamento, ocupação das cadeiras e ranking de serviços — tudo em um só lugar.',
+  },
+  {
+    icon: 'gift',
+    title: 'Cliente voltando sempre',
+    description:
+      'Aniversário, retorno automático e pontos de fidelidade para encher a agenda de novo.',
+  },
+  {
+    icon: 'chat',
+    title: 'Assistente para sua equipe',
+    description: 'Tire dúvidas de planos, horários e serviços sem parar o salão.',
+  },
+]
+
+export const testimonials: Testimonial[] = [
   {
     name: 'Camila Rocha',
     role: 'Proprietária — Studio Camila Hair',
@@ -69,15 +190,14 @@ export const testimonials = [
     segment: 'Barbearia',
   },
   {
-    name: 'Dra. Juliana Costa',
-    role: 'Dermatologista estética — Clínica JC',
-    quote:
-      'O controle de insumos e o histórico de procedimentos facilitaram muito a gestão da clínica.',
-    segment: 'Clínica',
+    name: 'Priscila Andrade',
+    role: 'Proprietária — Espaço Priscila Beauty',
+    quote: 'A fidelização automática trouxe clientes antigos de volta. Minha agenda não para mais.',
+    segment: 'Salão',
   },
 ]
 
-export const plans = [
+export const plans: Plan[] = [
   {
     id: 'starter',
     name: 'Starter',
@@ -108,11 +228,11 @@ export const plans = [
     highlighted: true,
   },
   {
-    id: 'clinica',
-    name: 'Clínica',
+    id: 'premium',
+    name: 'Premium',
     price: 'R$ 197',
     period: '/mês',
-    description: 'Para clínicas e redes com múltiplas unidades.',
+    description: 'Para redes e equipes grandes com múltiplas unidades.',
     features: [
       'Tudo do Pro',
       'Profissionais ilimitados',
@@ -125,7 +245,7 @@ export const plans = [
   },
 ]
 
-export const faq = [
+export const faq: FAQItem[] = [
   {
     question: 'Quanto tempo leva para configurar?',
     answer:
@@ -158,17 +278,34 @@ export const faq = [
   },
 ]
 
-export const chatbotKnowledge = {
+export const chatbotKnowledge: ChatbotKnowledge = {
   greeting:
     'Olá! Sou a assistente do Infinity Partner. Posso ajudar com dúvidas sobre planos, funcionalidades e como começar. Como posso ajudar?',
   topics: [
     {
-      keywords: ['plano', 'planos', 'preço', 'preços', 'valor', 'quanto custa', 'custo', 'mensalidade'],
+      keywords: [
+        'plano',
+        'planos',
+        'preço',
+        'preços',
+        'valor',
+        'quanto custa',
+        'custo',
+        'mensalidade',
+      ],
       answer:
         'Temos 3 planos:\n\n• **Starter** — Grátis (até 50 agendamentos/mês, 1 profissional)\n• **Pro** — R$ 97/mês (agendamentos ilimitados, pagamentos, até 5 profissionais)\n• **Clínica** — R$ 197/mês (profissionais ilimitados, multi-unidade, suporte prioritário)\n\nTodos sem taxa de adesão. Quer começar o cadastro?',
     },
     {
-      keywords: ['funcionalidade', 'funcionalidades', 'recurso', 'recursos', 'o que faz', 'o que oferece'],
+      keywords: [
+        'funcionalidade',
+        'funcionalidades',
+        'recurso',
+        'recursos',
+        'o que faz',
+        'o que oferece',
+        'como funciona',
+      ],
       answer:
         'O Infinity Partner oferece:\n\n• Agendamento com IA e lembretes automáticos\n• Registro de atendimentos e insumos\n• Pagamentos Pix e cartão\n• Relatórios e dashboard\n• Campanhas de fidelização\n• Chatbot para seus clientes\n\nPosso detalhar alguma dessas funcionalidades?',
     },
@@ -178,7 +315,15 @@ export const chatbotKnowledge = {
         'O agendamento inteligente sugere os melhores horários, envia confirmações e lembretes por WhatsApp, e reduz faltas. Seus clientes agendam por um link personalizado, sem app.',
     },
     {
-      keywords: ['cadastro', 'cadastrar', 'começar', 'iniciar', 'registrar', 'criar conta', 'signup'],
+      keywords: [
+        'cadastro',
+        'cadastrar',
+        'começar',
+        'iniciar',
+        'registrar',
+        'criar conta',
+        'signup',
+      ],
       answer:
         'O cadastro leva cerca de 5 minutos! Você informa e-mail, dados do negócio e segmento (salão, barbearia, clínica ou autônomo). O setup automático configura horários e serviços iniciais.\n\nPosso te levar direto para o cadastro?',
       lead: true,
@@ -210,6 +355,6 @@ export const chatbotKnowledge = {
     },
   ],
   fallback:
-    'Não tenho certeza sobre isso, mas posso ajudar com planos, preços, funcionalidades e cadastro. Quer que eu te leve para criar sua conta gratuita?',
+    'Não tenho certeza sobre isso, mas posso ajudar com planos, preços, funcionalidades e cadastro. Quer que eu te levar para criar sua conta gratuita?',
   leadPrompt: 'Ótimo! Clique no botão abaixo para iniciar seu cadastro gratuito:',
 }

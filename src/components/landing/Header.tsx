@@ -1,9 +1,10 @@
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { SITE } from '../../data/content'
 import { trackCtaClick } from '../../lib/analytics'
 
-export default function Header() {
-  function handleCta() {
+const Header: React.FC = () => {
+  const handleCta = () => {
     trackCtaClick('header')
   }
 
@@ -15,7 +16,12 @@ export default function Header() {
             <svg viewBox="0 0 32 32" fill="none">
               <circle cx="8" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
               <circle cx="8" cy="24" r="4" stroke="currentColor" strokeWidth="2" />
-              <path d="M26 6 12 18M26 26 12 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path
+                d="M26 6 12 18M26 26 12 14"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
             </svg>
           </span>
           <span className="header__logo-text">
@@ -36,3 +42,5 @@ export default function Header() {
     </header>
   )
 }
+
+export default Header

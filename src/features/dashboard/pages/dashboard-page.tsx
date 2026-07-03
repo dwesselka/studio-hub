@@ -1,11 +1,14 @@
 import { memo, Suspense } from 'react'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import { Calendar, ArrowRight } from 'lucide-react'
 import { DashboardHero } from '@/features/dashboard/components/dashboard-hero'
 import { MetricCard, MetricCardSkeleton } from '@/features/dashboard/components/metric-card'
 import { useDashboardData } from '@/features/dashboard/hooks/use-dashboard-data'
 import { ErrorState, EmptyState, OfflineState } from '@/components/ui/state-panel'
 import { useOnlineStatus } from '@/hooks/use-online-status'
 import { staggerContainer } from '@/lib/motion'
+import { Badge } from '@/components/ui/badge'
 
 function DashboardContent() {
   const online = useOnlineStatus()
@@ -77,26 +80,58 @@ function DashboardContent() {
             aria-label="Atividades recentes"
           >
             <article className="rounded-xl border bg-card p-5 shadow-card lg:col-span-2">
-              <h3 className="text-sm font-semibold">Próximos agendamentos</h3>
-              <p className="mt-1 text-xs text-muted-foreground">Hoje, 3 de julho</p>
-              <ul className="mt-4 space-y-3" role="list">
-                {[
-                  { time: '09:00', client: 'Ana Costa', service: 'Corte + Escova' },
-                  { time: '10:30', client: 'Juliana Mendes', service: 'Coloração' },
-                  { time: '14:00', client: 'Carla Souza', service: 'Manicure' },
-                ].map((item) => (
-                  <li
-                    key={item.time}
-                    className="flex items-center gap-4 rounded-lg border border-border/50 bg-muted/30 px-4 py-3 transition-colors hover:bg-muted/50"
-                  >
-                    <time className="text-sm font-mono font-medium text-primary">{item.time}</time>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium">{item.client}</p>
-                      <p className="truncate text-xs text-muted-foreground">{item.service}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="text-sm font-semibold">Próximos agendamentos</h3>
+                  <p className="text-xs text-muted-foreground mt-0.5">Hoje</p>
+                </div>
+                <Link
+                  to="/app/agendamentos"
+                  className="flex items-center gap-1 text-xs font-medium text-primary hover:text-primary-dark transition-colors"
+                >
+                  Ver todos
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
+              </div>
+              {data.todayAppointments.length > 0 ? (
+                <ul className="space-y-2" role="list">
+                  {data.todayAppointments.slice(0, 5).map((item) => (
+                    <li
+                      key={item.time + item.client}
+                      className="flex items-center gap-3 rounded-lg border border-border/50 bg-muted/30 px-4 py-3 transition-colors hover:bg-muted/50"
+                    >
+                      <time className="text-sm font-mono font-medium text-primary tabular-nums">
+                        {item.time}
+                      </time>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium">{item.client}</p>
+                        <p className="truncate text-xs text-muted-foreground">{item.service}</p>
+                      </div>
+                      <Badge
+                        variant={
+                          item.status === 'confirmed'
+                            ? 'success'
+                            : item.status === 'pending'
+                              ? 'warning'
+                              : 'secondary'
+                        }
+                        className="text-[10px] px-1.5 py-0"
+                      >
+                        {item.status === 'confirmed'
+                          ? 'Confirmado'
+                          : item.status === 'pending'
+                            ? 'Pendente'
+                            : item.status}
+                      </Badge>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-8 text-center">
+                  <Calendar className="h-8 w-8 text-muted-foreground mb-2" />
+                  <p className="text-sm text-muted-foreground">Nenhum agendamento para hoje</p>
+                </div>
+              )}
             </article>
 
             <article className="rounded-xl border bg-card p-5 shadow-card">

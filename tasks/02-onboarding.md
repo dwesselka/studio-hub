@@ -17,15 +17,15 @@ Permitir que novos parceiros se cadastrem rapidamente e tenham o negócio config
 
 ## Subtasks
 
-- [ ] Implementar cadastro com e-mail e senha (e opcionalmente login social)
-- [ ] Coletar dados do negócio: nome, segmento, endereço, telefone, logo
-- [ ] Criar wizard guiado em etapas (dados → horários → serviços → equipe)
-- [ ] Configurar horários padrão de funcionamento por dia da semana
-- [ ] Pré-popular catálogo de serviços conforme segmento escolhido
-- [ ] Permitir cadastro inicial de profissionais/equipe
-- [ ] Exibir checklist de conclusão do perfil com progresso visual
+- [x] Implementar cadastro com e-mail e senha (e opcionalmente login social)
+- [x] Coletar dados do negócio: nome, segmento, endereço, telefone, logo
+- [x] Criar wizard guiado em etapas (dados → horários → serviços → equipe)
+- [x] Configurar horários padrão de funcionamento por dia da semana
+- [x] Pré-popular catálogo de serviços conforme segmento escolhido
+- [x] Permitir cadastro inicial de profissionais/equipe
+- [x] Exibir checklist de conclusão do perfil com progresso visual
 - [ ] Enviar e-mail de boas-vindas com próximos passos
-- [ ] Redirecionar ao dashboard após conclusão do setup mínimo
+- [x] Redirecionar ao dashboard após conclusão do setup mínimo
 
 ## Critérios de aceite
 

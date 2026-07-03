@@ -1,0 +1,126 @@
+import type { Appointment } from './types'
+import { getAllAppointments, createAppointment } from '@/lib/agenda-db'
+
+export function getMockAppointments(): Appointment[] {
+  const today = new Date().toISOString().split('T')[0]
+  return [
+    {
+      id: 'mock-1',
+      clientName: 'Ana Costa',
+      clientPhone: '(11) 98888-0001',
+      serviceId: 'srv-1',
+      serviceName: 'Corte + Escova',
+      serviceDuration: 90,
+      servicePrice: 120,
+      professionalId: 'pro-1',
+      professionalName: 'Camila',
+      date: today,
+      startTime: '09:00',
+      endTime: '10:30',
+      status: 'confirmed',
+      createdAt: new Date().toISOString(),
+      reminderSent: true,
+      confirmationSent: true,
+    },
+    {
+      id: 'mock-2',
+      clientName: 'Juliana Mendes',
+      clientPhone: '(11) 97777-0002',
+      serviceId: 'srv-2',
+      serviceName: 'Coloração',
+      serviceDuration: 120,
+      servicePrice: 150,
+      professionalId: 'pro-1',
+      professionalName: 'Camila',
+      date: today,
+      startTime: '11:00',
+      endTime: '13:00',
+      status: 'confirmed',
+      createdAt: new Date().toISOString(),
+      reminderSent: false,
+      confirmationSent: true,
+    },
+    {
+      id: 'mock-3',
+      clientName: 'Carla Souza',
+      clientPhone: '(11) 96666-0003',
+      serviceId: 'srv-3',
+      serviceName: 'Manicure',
+      serviceDuration: 40,
+      servicePrice: 45,
+      professionalId: 'pro-2',
+      professionalName: 'Pri',
+      date: today,
+      startTime: '14:00',
+      endTime: '14:40',
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      reminderSent: false,
+      confirmationSent: false,
+    },
+    {
+      id: 'mock-4',
+      clientName: 'Rafael Oliveira',
+      clientPhone: '(11) 95555-0004',
+      serviceId: 'srv-4',
+      serviceName: 'Corte Masculino',
+      serviceDuration: 40,
+      servicePrice: 50,
+      professionalId: 'pro-3',
+      professionalName: 'Rafael',
+      date: today,
+      startTime: '10:00',
+      endTime: '10:40',
+      status: 'confirmed',
+      createdAt: new Date().toISOString(),
+      reminderSent: true,
+      confirmationSent: true,
+    },
+    {
+      id: 'mock-5',
+      clientName: 'Lucas Martins',
+      clientPhone: '(11) 94444-0005',
+      serviceId: 'srv-5',
+      serviceName: 'Corte + Barba',
+      serviceDuration: 60,
+      servicePrice: 75,
+      professionalId: 'pro-3',
+      professionalName: 'Rafael',
+      date: today,
+      startTime: '15:00',
+      endTime: '16:00',
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      reminderSent: false,
+      confirmationSent: false,
+    },
+    {
+      id: 'mock-6',
+      clientName: 'Fernanda Lima',
+      clientPhone: '(11) 93333-0006',
+      serviceId: 'srv-6',
+      serviceName: 'Hidratação',
+      serviceDuration: 50,
+      servicePrice: 70,
+      professionalId: 'pro-1',
+      professionalName: 'Camila',
+      date: today,
+      startTime: '16:00',
+      endTime: '16:50',
+      status: 'confirmed',
+      createdAt: new Date().toISOString(),
+      reminderSent: false,
+      confirmationSent: true,
+    },
+  ]
+}
+
+export function seedMockAppointments(): void {
+  const existing = getAllAppointments()
+  if (existing.length > 0) return
+
+  const mocks = getMockAppointments()
+  for (const mock of mocks) {
+    createAppointment(mock)
+  }
+}

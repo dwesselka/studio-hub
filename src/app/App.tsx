@@ -2,11 +2,16 @@ import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AppProviders } from '@/providers'
 import { AppLayout } from '@/layouts/app-layout'
+import { AuthGuard } from '@/components/auth/auth-guard'
 
 const LandingPage = lazy(() => import('@/pages/LandingPage.jsx'))
-const CadastroPage = lazy(() => import('@/pages/CadastroPage.jsx'))
+const OnboardingPage = lazy(() => import('@/pages/OnboardingPage'))
+const LoginPage = lazy(() => import('@/pages/LoginPage'))
 const DashboardPage = lazy(() =>
   import('@/features/dashboard/pages/dashboard-page').then((m) => ({ default: m.DashboardPage })),
+)
+const AgendaPage = lazy(() =>
+  import('@/features/agenda/pages/agenda-page').then((m) => ({ default: m.AgendaPage })),
 )
 
 function PageLoader() {
@@ -33,9 +38,18 @@ export default function App() {
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/cadastro" element={<CadastroPage />} />
-            <Route path="/app" element={<AppLayout />}>
+            <Route path="/cadastro" element={<OnboardingPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/app"
+              element={
+                <AuthGuard>
+                  <AppLayout />
+                </AuthGuard>
+              }
+            >
               <Route index element={<DashboardPage />} />
+              <Route path="agendamentos" element={<AgendaPage />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

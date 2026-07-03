@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
-import { dashboardMetrics, platformStatus } from '../data'
+import { dashboardMetrics, platformStatus, todayAppointments, type TodayAppointment } from '../data'
 import type { MetricCardData, PlatformStatus } from '@/types'
 
 interface DashboardData {
   metrics: MetricCardData[]
   status: PlatformStatus
   greeting: string
+  todayAppointments: TodayAppointment[]
 }
 
 function getGreeting(): string {
@@ -16,11 +17,12 @@ function getGreeting(): string {
 }
 
 async function fetchDashboardData(): Promise<DashboardData> {
-  await new Promise((resolve) => setTimeout(resolve, 800))
+  await new Promise((resolve) => setTimeout(resolve, 600))
   return {
     metrics: dashboardMetrics,
     status: platformStatus,
     greeting: getGreeting(),
+    todayAppointments: todayAppointments(),
   }
 }
 

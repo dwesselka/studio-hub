@@ -40,7 +40,8 @@ export default function Chatbot() {
   const fabRef = useRef<HTMLButtonElement | null>(null)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  // Gerenciamento de acessibilidade e foco do teclado
+  const panelRef = useRef<HTMLDivElement | null>(null)
+
   useEffect(() => {
     if (!open) {
       fabRef.current?.focus()
@@ -49,16 +50,40 @@ export default function Chatbot() {
 
     inputRef.current?.focus()
 
-    const handleKeyDown = (e: KeyboardEvent) => {
+    function getFocusableElements(): HTMLElement[] {
+      if (!panelRef.current) return []
+      return Array.from(
+        panelRef.current.querySelectorAll<HTMLElement>(
+          'button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((el) => !el.disabled && el.offsetParent !== null)
+    }
+
+    function handleKeyDown(e: KeyboardEvent) {
       if (e.key === 'Escape') {
         setOpen(false)
+        return
+      }
+
+      if (e.key !== 'Tab') return
+
+      const focusable = getFocusableElements()
+      if (focusable.length === 0) return
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
+    return () => window.removeEventListener('keydown', handleKeyDown)
   }, [open, setOpen])
 
   return (
@@ -84,6 +109,7 @@ export default function Chatbot() {
 
       {open && (
         <div
+          ref={panelRef}
           className="chatbot-panel"
           role="dialog"
           aria-label="Assistente virtual do Infinity Partner"

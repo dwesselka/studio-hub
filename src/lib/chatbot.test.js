@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { getChatbotResponse } from './chatbot'
 
 describe('Critério: Chatbot responde FAQ sobre planos, preços e funcionalidades', () => {

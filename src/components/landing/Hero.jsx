@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { hero, heroAgenda, SITE } from '../../data/content'
+import { heroAgenda, SITE } from '../../data/content'
 import { trackCtaClick } from '../../lib/analytics'
 
 export default function Hero() {

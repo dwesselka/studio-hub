@@ -1,11 +1,9 @@
 {
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix --max-warnings 0",
-      "prettier --write"
-    ],
-    "src/**/*.{css,json}": [
-      "prettier --write"
-    ]
-  }
+  "src/**/*.{ts,tsx}": [
+    "eslint --fix --max-warnings 0",
+    "prettier --write"
+  ],
+  "src/**/*.{css,json}": [
+    "prettier --write"
+  ]
 }

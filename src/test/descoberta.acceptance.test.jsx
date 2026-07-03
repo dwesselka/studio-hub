@@ -23,29 +23,31 @@ describe('Critério: Landing page pública sem autenticação', () => {
     window.history.pushState({}, '', '/')
     render(<App />)
 
-    expect(await screen.findByRole('heading', { name: /Transforme seu salão/i })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /Sua agenda cheia/i })).toBeInTheDocument()
   })
 
   it('renderiza cadastro em /cadastro sem autenticação', async () => {
     window.history.pushState({}, '', '/cadastro')
     render(<App />)
 
-    expect(await screen.findByRole('heading', { name: /Crie sua conta/i })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /Criar minha conta/i })).toBeInTheDocument()
   })
 
   it('LandingPage exibe chatbot e seções principais', () => {
     renderWithRouter(<LandingPage />)
     expect(screen.getByRole('main')).toBeInTheDocument()
-    expect(screen.getByLabelText(/Abrir chat/i)).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: /Transforme seu salão/i })).toBeInTheDocument()
+    expect(screen.getByLabelText(/Abrir assistente virtual/i)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /Sua agenda cheia/i })).toBeInTheDocument()
   })
 })
 
 describe('Critério: CTA principal leva ao fluxo de cadastro', () => {
   it('Hero CTA aponta para /cadastro', () => {
     renderWithRouter(<Hero />)
-    const cta = screen.getByRole('link', { name: SITE.ctaLabel })
-    expect(cta).toHaveAttribute('href', SITE.cadastroPath)
+    const ctaSalao = screen.getByRole('link', { name: /Começar para Salão/i })
+    expect(ctaSalao).toHaveAttribute('href', `${SITE.cadastroPath}?segmento=salao`)
+    const ctaBarbearia = screen.getByRole('link', { name: /Começar para Barbearia/i })
+    expect(ctaBarbearia).toHaveAttribute('href', `${SITE.cadastroPath}?segmento=barbearia`)
   })
 
   it('Header CTA aponta para /cadastro', () => {
@@ -67,8 +69,8 @@ describe('Critério: CTA principal leva ao fluxo de cadastro', () => {
   })
 
   it('CadastroPage exibe plano da query string', () => {
-    renderWithRouter(<CadastroPage />, { route: '/cadastro?plano=clinica' })
-    expect(screen.getByText(/Plano selecionado:/i)).toHaveTextContent('Clínica')
+    renderWithRouter(<CadastroPage />, { route: '/cadastro?plano=premium' })
+    expect(screen.getByText(/Plano selecionado:/i)).toHaveTextContent('Premium')
     expect(screen.getByText(/R\$ 197/)).toBeInTheDocument()
   })
 
@@ -94,21 +96,21 @@ describe('Critério: Página responsiva em mobile e desktop', () => {
     expect(html).toMatch(/width=device-width/)
   })
 
-  it('index.css contém breakpoints mobile e desktop', () => {
-    const css = readFileSync(resolve(process.cwd(), 'src/index.css'), 'utf-8')
+  it('globals.css contém breakpoints mobile e desktop', () => {
+    const css = readFileSync(resolve(process.cwd(), 'src/styles/globals.css'), 'utf-8')
     expect(css).toMatch(/@media \(min-width: 640px\)/)
     expect(css).toMatch(/@media \(min-width: 768px\)/)
     expect(css).toMatch(/@media \(min-width: 1024px\)/)
   })
 
   it('header oculta navegação em mobile e exibe em desktop', () => {
-    const css = readFileSync(resolve(process.cwd(), 'src/index.css'), 'utf-8')
+    const css = readFileSync(resolve(process.cwd(), 'src/styles/globals.css'), 'utf-8')
     expect(css).toMatch(/\.header__nav[\s\S]*display:\s*none/)
     expect(css).toMatch(/@media \(min-width: 768px\)[\s\S]*\.header__nav[\s\S]*display:\s*flex/)
   })
 
   it('hero usa layout em coluna no mobile e grid no desktop', () => {
-    const css = readFileSync(resolve(process.cwd(), 'src/index.css'), 'utf-8')
-    expect(css).toMatch(/\.hero__inner[\s\S]*grid-template-columns: 1fr 1fr/)
+    const css = readFileSync(resolve(process.cwd(), 'src/styles/globals.css'), 'utf-8')
+    expect(css).toMatch(/\.hero-split[\s\S]*grid-template-columns/)
   })
 })

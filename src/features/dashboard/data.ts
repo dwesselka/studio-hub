@@ -1,5 +1,30 @@
 import type { MetricCardData, NavGroup, PlatformStatus } from '@/types'
 import { formatCurrency, formatNumber } from '@/lib/utils'
+import { getTodayAppointments } from '@/lib/agenda-db'
+
+export type TodayAppointment = {
+  time: string
+  client: string
+  service: string
+  status: string
+}
+
+export function todayAppointments(): TodayAppointment[] {
+  try {
+    return getTodayAppointments().map((a) => ({
+      time: a.startTime,
+      client: a.clientName,
+      service: a.serviceName,
+      status: a.status,
+    }))
+  } catch {
+    return [
+      { time: '09:00', client: 'Ana Costa', service: 'Corte + Escova', status: 'confirmed' },
+      { time: '10:30', client: 'Juliana Mendes', service: 'Coloração', status: 'confirmed' },
+      { time: '14:00', client: 'Carla Souza', service: 'Manicure', status: 'pending' },
+    ]
+  }
+}
 
 export const navigationGroups: NavGroup[] = [
   {

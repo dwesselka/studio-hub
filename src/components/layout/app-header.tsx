@@ -1,5 +1,5 @@
 import { memo, useCallback, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   Bell,
   Menu,
@@ -28,6 +28,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { AppBreadcrumb } from '@/components/layout/app-breadcrumb'
 import { useTheme } from '@/providers/theme-provider'
+import { useAuth } from '@/features/auth/use-auth'
 import { cn } from '@/lib/utils'
 import type { BreadcrumbItem } from '@/types'
 
@@ -47,7 +48,23 @@ export const AppHeader = memo(function AppHeader({
   className,
 }: AppHeaderProps) {
   const { theme, setTheme } = useTheme()
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
   const [searchFocused, setSearchFocused] = useState(false)
+
+  const initials = user?.name
+    ? user.name
+        .split(' ')
+        .map((n) => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2)
+    : 'MS'
+
+  const handleLogout = useCallback(() => {
+    logout()
+    navigate('/')
+  }, [logout, navigate])
 
   const handleSearchKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Escape') {
@@ -178,18 +195,20 @@ export const AppHeader = memo(function AppHeader({
             >
               <Avatar className="h-8 w-8">
                 <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
-                  MS
+                  {initials}
                 </AvatarFallback>
               </Avatar>
-              <span className="hidden text-sm font-medium lg:inline">Maria Silva</span>
+              <span className="hidden text-sm font-medium lg:inline">
+                {user?.name ?? 'Usuário'}
+              </span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>
               <div className="flex flex-col gap-0.5">
-                <span>Maria Silva</span>
+                <span>{user?.name ?? 'Usuário'}</span>
                 <span className="text-xs font-normal text-muted-foreground">
-                  maria@salaoexemplo.com.br
+                  {user?.email ?? ''}
                 </span>
               </div>
             </DropdownMenuLabel>
@@ -203,7 +222,10 @@ export const AppHeader = memo(function AppHeader({
               Configurações
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive focus:text-destructive">
+            <DropdownMenuItem
+              className="text-destructive focus:text-destructive"
+              onClick={handleLogout}
+            >
               <LogOut className="mr-2 h-4 w-4" />
               Sair
             </DropdownMenuItem>

@@ -10,6 +10,7 @@ import type { BreadcrumbItem } from '@/types'
 const routeBreadcrumbs: Record<string, BreadcrumbItem[]> = {
   '/app': [{ label: 'Dashboard' }],
   '/app/analytics': [{ label: 'Dashboard', href: '/app' }, { label: 'Analytics' }],
+  '/app/agendamentos': [{ label: 'Dashboard', href: '/app' }, { label: 'Agendamentos' }],
 }
 
 function getBreadcrumbs(pathname: string): BreadcrumbItem[] {

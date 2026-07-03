@@ -26,7 +26,7 @@ describe('Critério: Chatbot conduz jornada e integra com cadastro', () => {
       </MemoryRouter>,
     )
 
-    await user.click(screen.getByLabelText(/Abrir chat/i))
+    await user.click(screen.getByLabelText(/Abrir assistente virtual/i))
 
     const events = getAnalyticsEvents()
     expect(events.some((e) => e.event === 'chatbot_open')).toBe(true)
@@ -40,8 +40,8 @@ describe('Critério: Chatbot conduz jornada e integra com cadastro', () => {
       </MemoryRouter>,
     )
 
-    await user.click(screen.getByLabelText(/Abrir chat/i))
-    await user.click(screen.getByRole('button', { name: 'Quais planos?' }))
+    await user.click(screen.getByLabelText(/Abrir assistente virtual/i))
+    await user.click(screen.getByRole('button', { name: /Perguntar: Quais planos/i }))
 
     await waitFor(() => {
       expect(screen.getByText(/Starter/i)).toBeInTheDocument()
@@ -57,8 +57,8 @@ describe('Critério: Chatbot conduz jornada e integra com cadastro', () => {
       </MemoryRouter>,
     )
 
-    await user.click(screen.getByLabelText(/Abrir chat/i))
-    await user.click(screen.getByRole('button', { name: 'Quero me cadastrar' }))
+    await user.click(screen.getByLabelText(/Abrir assistente virtual/i))
+    await user.click(screen.getByRole('button', { name: /Perguntar: Quero me cadastrar/i }))
 
     await waitFor(() => {
       expect(screen.getByRole('link', { name: /Iniciar cadastro/i })).toBeInTheDocument()
@@ -75,8 +75,8 @@ describe('Critério: Chatbot conduz jornada e integra com cadastro', () => {
       </MemoryRouter>,
     )
 
-    await user.click(screen.getByLabelText(/Abrir chat/i))
-    await user.click(screen.getByRole('button', { name: 'Quero me cadastrar' }))
+    await user.click(screen.getByLabelText(/Abrir assistente virtual/i))
+    await user.click(screen.getByRole('button', { name: /Perguntar: Quero me cadastrar/i }))
 
     await waitFor(() => {
       expect(screen.getByRole('link', { name: /Iniciar cadastro/i })).toBeInTheDocument()

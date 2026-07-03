@@ -1,26 +1,12 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { MessageCircle, Send } from 'lucide-react'
 import { chatbotKnowledge, SITE } from '@/data/content'
 import { useChatbot } from './use-chatbot'
+import { formatMessage } from './format-message'
+import { useFocusTrap } from '@/hooks/use-focus-trap'
 
 const QUICK_REPLIES = ['Quais planos?', 'Como funciona?', 'Quero me cadastrar'] as const
-
-function formatMessage(text: string): React.ReactNode {
-  return text.split('\n').map((line, i) => (
-    <span key={i}>
-      {line
-        .split(/(\*\*[^*]+\*\*)/)
-        .map((part, j) =>
-          part.startsWith('**') && part.endsWith('**') ? (
-            <strong key={j}>{part.slice(2, -2)}</strong>
-          ) : (
-            part
-          ),
-        )}
-      {i < text.split('\n').length - 1 && <br />}
-    </span>
-  ))
-}
 
 export default function Chatbot() {
   const {
@@ -39,52 +25,21 @@ export default function Chatbot() {
 
   const fabRef = useRef<HTMLButtonElement | null>(null)
   const inputRef = useRef<HTMLInputElement | null>(null)
-
   const panelRef = useRef<HTMLDivElement | null>(null)
 
-  useEffect(() => {
-    if (!open) {
-      fabRef.current?.focus()
-      return
-    }
+  const handleClose = useCallback(() => {
+    setOpen(false)
+  }, [setOpen])
 
-    inputRef.current?.focus()
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault()
+      sendMessage(input)
+    },
+    [sendMessage, input],
+  )
 
-    function getFocusableElements(): HTMLElement[] {
-      if (!panelRef.current) return []
-      return Array.from(
-        panelRef.current.querySelectorAll<HTMLElement>(
-          'button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])',
-        ),
-      ).filter((el) => !el.disabled && el.offsetParent !== null)
-    }
-
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') {
-        setOpen(false)
-        return
-      }
-
-      if (e.key !== 'Tab') return
-
-      const focusable = getFocusableElements()
-      if (focusable.length === 0) return
-
-      const first = focusable[0]
-      const last = focusable[focusable.length - 1]
-
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault()
-        last.focus()
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault()
-        first.focus()
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [open, setOpen])
+  useFocusTrap(panelRef, open, handleClose)
 
   return (
     <>
@@ -98,12 +53,7 @@ export default function Chatbot() {
           aria-haspopup="dialog"
           aria-expanded={false}
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"
-              fill="currentColor"
-            />
-          </svg>
+          <MessageCircle size={24} />
         </button>
       )}
 
@@ -123,7 +73,7 @@ export default function Chatbot() {
             <button
               type="button"
               className="chatbot-panel__close"
-              onClick={() => setOpen(false)}
+              onClick={handleClose}
               aria-label="Fechar assistente virtual"
             >
               &times;
@@ -175,13 +125,7 @@ export default function Chatbot() {
             ))}
           </div>
 
-          <form
-            className="chatbot-panel__input"
-            onSubmit={(e) => {
-              e.preventDefault()
-              sendMessage(input)
-            }}
-          >
+          <form className="chatbot-panel__input" onSubmit={handleSubmit}>
             <input
               ref={inputRef}
               type="text"
@@ -193,15 +137,7 @@ export default function Chatbot() {
               required
             />
             <button type="submit" disabled={loading || !input.trim()} aria-label="Enviar mensagem">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-              </svg>
+              <Send size={20} />
             </button>
           </form>
         </div>

@@ -1,4 +1,4 @@
-# Descoberta
+                     '# Descoberta
 
 ## Objetivo
 
@@ -18,14 +18,14 @@ Atrair novos parceiros (salões, barbearias, clínicas e profissionais independe
 
 ## Subtasks
 
-- [ ] Definir estrutura da landing page (hero, benefícios, depoimentos, planos, FAQ, CTA)
-- [ ] Implementar landing page responsiva com proposta de valor para o segmento de beleza
-- [ ] Configurar SEO básico (meta tags, títulos, descrições, Open Graph)
-- [ ] Integrar analytics de conversão (page views, cliques no CTA, origem do tráfego)
-- [ ] Implementar chatbot IA com base de conhecimento sobre planos e funcionalidades
-- [ ] Conectar chatbot ao fluxo de cadastro (link direto ou pré-preenchimento)
-- [ ] Criar FAQ estático complementar ao chatbot
-- [ ] Testar jornada completa: visita → chatbot → clique no CTA → início do cadastro
+- [x] Definir estrutura da landing page (hero, benefícios, depoimentos, planos, FAQ, CTA)
+- [x] Implementar landing page responsiva com proposta de valor para o segmento de beleza
+- [x] Configurar SEO básico (meta tags, títulos, descrições, Open Graph)
+- [x] Integrar analytics de conversão (page views, cliques no CTA, origem do tráfego)
+- [x] Implementar chatbot IA com base de conhecimento sobre planos e funcionalidades
+- [x] Conectar chatbot ao fluxo de cadastro (link direto ou pré-preenchimento)
+- [x] Criar FAQ estático complementar ao chatbot
+- [x] Testar jornada completa: visita → chatbot → clique no CTA → início do cadastro
 
 ## Critérios de aceite
 

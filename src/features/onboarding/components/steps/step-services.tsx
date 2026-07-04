@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getPrePopulatedServices } from '@/lib/onboarding-db'
+import { getPrePopulatedServices } from '@/features/onboarding/db'
 import type { ServiceItem } from '@/features/onboarding/types'
 import { Pencil, Trash2, Plus } from 'lucide-react'
 

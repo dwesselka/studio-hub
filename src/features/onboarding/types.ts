@@ -59,6 +59,8 @@ export interface AuthUser {
   name: string
   hashedPassword: string
   onboardingData: OnboardingData
+  credits: number
+  plan: 'starter' | 'pro' | 'premium'
 }
 
 export const DAY_LABELS: Record<number, string> = {

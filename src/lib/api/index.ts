@@ -18,6 +18,12 @@ export { registerOnboardingHandlers } from './handlers/onboarding'
 export { registerAgendaHandlers } from './handlers/agenda'
 export { registerDashboardHandlers } from './handlers/dashboard'
 
+import { registerAuthHandlers } from './handlers/auth'
+import { registerOnboardingHandlers } from './handlers/onboarding'
+import { registerAgendaHandlers } from './handlers/agenda'
+import { registerDashboardHandlers } from './handlers/dashboard'
+import { mockServer } from './server'
+
 export function initMockApi(): void {
   registerAuthHandlers()
   registerOnboardingHandlers()

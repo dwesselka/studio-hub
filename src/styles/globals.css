@@ -370,11 +370,56 @@
   color: var(--color-primary);
 }
 
-/* ── HERO SPLIT (Salão / Barbearia) ─────────────────────────────── */
-.hero-split {
-  display: grid;
-  grid-template-columns: 1fr;
+/* ── HERO SECTION (Salão / Barbearia) ─────────────────────────────── */
+.hero-section {
+  position: relative;
   min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Toggle de segmento */
+.hero-toggle {
+  display: flex;
+  gap: 0.25rem;
+  position: absolute;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 2rem;
+  padding: 0.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hero-toggle__btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: 2rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.hero-toggle__btn:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-toggle__btn--active {
+  background: rgba(255, 255, 255, 0.9);
+  color: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.hero-toggle__btn--active:hover {
+  color: #1a1a1a;
 }
 
 /* Cada painel ocupa metade em desktop */
@@ -740,13 +785,8 @@
   color: var(--color-barber-accent) !important;
 }
 
-/* Responsivo: empilha em mobile, lado a lado em desktop */
+/* Responsivo: ajusta padding do painel */
 @media (min-width: 900px) {
-  .hero-split {
-    grid-template-columns: 1fr 1fr;
-    min-height: 100svh;
-  }
-
   .hero-panel {
     min-height: 100svh;
     padding: 6rem 3rem 4rem;

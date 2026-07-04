@@ -1,7 +1,6 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
-import { SITE } from '../../data/content'
-import { trackCtaClick } from '../../lib/analytics'
+import { SITE } from '@/data/content'
+import { trackCtaClick } from '@/lib/analytics'
 
 const Header: React.FC = () => {
   const handleCta = () => {

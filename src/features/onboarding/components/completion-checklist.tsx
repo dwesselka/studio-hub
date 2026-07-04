@@ -1,6 +1,6 @@
 import { CheckCircle2, Circle } from 'lucide-react'
 import type { OnboardingProgress } from '@/features/onboarding/types'
-import { calculateProgress } from '@/lib/onboarding-db'
+import { calculateProgress } from '@/features/onboarding/db'
 
 interface CompletionChecklistProps {
   progress: OnboardingProgress

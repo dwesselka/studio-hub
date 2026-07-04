@@ -21,9 +21,9 @@ Oferecer agendamento inteligente com sugestões de horários pela IA e confirma�
 - [x] Configurar disponibilidade por profissional, sala e horário de funcionamento
 - [x] Criar fluxo de novo agendamento (cliente, serviço, profissional, horário)
 - [x] Implementar sugestão de horários pela IA com base em histórico e preferências
-- [ ] Permitir reagendamento e cancelamento com regras configuráveis
-- [ ] Enviar confirmação automática após agendamento (WhatsApp/SMS/e-mail)
-- [ ] Configurar lembretes automáticos (ex.: 24h e 2h antes)
+- [x] Permitir reagendamento e cancelamento com regras configuráveis
+- [x] Enviar confirmação automática após agendamento (WhatsApp/SMS/e-mail)
+- [x] Configurar lembretes automáticos (ex.: 24h e 2h antes)
 - [x] Registrar status do agendamento (pendente, confirmado, cancelado, no-show)
 - [x] Exibir lista de agendamentos do dia no dashboard
 

@@ -17,15 +17,15 @@ Oferecer dashboard com métricas operacionais e financeiras, além de recomenda�
 
 ## Subtasks
 
-- [ ] Criar dashboard principal com KPIs do período selecionado
-- [ ] Exibir taxa de ocupação (horários preenchidos vs. disponíveis)
-- [ ] Exibir receita total, ticket médio e receita por profissional/serviço
-- [ ] Exibir taxa de retenção e clientes recorrentes vs. novos
-- [ ] Exibir taxa de no-show e cancelamentos
-- [ ] Implementar recomendações da IA (ex.: horários ociosos, serviços mais rentáveis)
-- [ ] Adicionar filtros por período (dia, semana, mês, customizado)
-- [ ] Permitir exportação de dados (CSV ou PDF)
-- [ ] Criar gráficos de tendência para receita e ocupação
+- [x] Criar dashboard principal com KPIs do período selecionado
+- [x] Exibir taxa de ocupação (horários preenchidos vs. disponíveis)
+- [x] Exibir receita total, ticket médio e receita por profissional/serviço
+- [x] Exibir taxa de retenção e clientes recorrentes vs. novos
+- [x] Exibir taxa de no-show e cancelamentos
+- [x] Implementar recomendações da IA (ex.: horários ociosos, serviços mais rentáveis)
+- [x] Adicionar filtros por período (dia, semana, mês, customizado)
+- [x] Permitir exportação de dados (CSV ou PDF)
+- [x] Criar gráficos de tendência para receita e ocupação
 
 ## Critérios de aceite
 

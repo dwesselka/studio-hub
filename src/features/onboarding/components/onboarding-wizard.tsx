@@ -16,7 +16,7 @@ import {
   saveTeam,
   completeOnboarding,
   getPrePopulatedServices,
-} from '@/lib/onboarding-db'
+} from '@/features/onboarding/db'
 import { StepIndicator } from './step-indicator'
 import { StepAccountBusiness } from './steps/step-account-business'
 import { StepHours } from './steps/step-hours'
@@ -24,6 +24,7 @@ import { StepServices } from './steps/step-services'
 import { StepTeam } from './steps/step-team'
 import { CompletionChecklist } from './completion-checklist'
 import { trackCtaClick } from '@/lib/analytics'
+import { sendWhatsApp, buildWelcomeMessage } from '@/lib/whatsapp'
 import { CheckCircle2, ArrowRight } from 'lucide-react'
 
 const STEP_LABELS = ['Dados', 'Horários', 'Serviços', 'Equipe']
@@ -119,6 +120,10 @@ export function OnboardingWizard({
       saveTeam(userId, newTeam)
       completeOnboarding(userId)
       refreshUser()
+      sendWhatsApp({
+        to: business?.telefone || '(11) 99999-9999',
+        body: buildWelcomeMessage(business?.nome || 'Seu negócio', `${window.location.origin}/app`),
+      })
     }
     setIsComplete(true)
     trackCtaClick('onboarding-complete')
@@ -129,6 +134,10 @@ export function OnboardingWizard({
       saveTeam(userId, [])
       completeOnboarding(userId)
       refreshUser()
+      sendWhatsApp({
+        to: business?.telefone || '(11) 99999-9999',
+        body: buildWelcomeMessage(business?.nome || 'Seu negócio', `${window.location.origin}/app`),
+      })
     }
     setIsComplete(true)
     trackCtaClick('onboarding-complete')

@@ -17,15 +17,15 @@ Processar pagamentos via Pix e cartão, registrar receitas por atendimento e ofe
 
 ## Subtasks
 
-- [ ] Integrar gateway de pagamento para Pix (QR code e copia-e-cola)
-- [ ] Integrar gateway de pagamento para cartão (crédito/débito)
-- [ ] Vincular pagamento ao atendimento concluído
-- [ ] Registrar forma de pagamento, valor, taxas e status (pago, pendente, estornado)
-- [ ] Implementar conciliação automática de transações Pix
-- [ ] Exibir resumo financeiro do dia (receita, pendências, ticket médio)
-- [ ] Calcular receita por serviço e por profissional
-- [ ] Permitir registro manual de pagamento em dinheiro
-- [ ] Gerar comprovante ou recibo por transação
+- [x] Integrar gateway de pagamento para Pix (QR code e copia-e-cola)
+- [x] Integrar gateway de pagamento para cartão (crédito/débito)
+- [x] Vincular pagamento ao atendimento concluído
+- [x] Registrar forma de pagamento, valor, taxas e status (pago, pendente, estornado)
+- [x] Implementar conciliação automática de transações Pix
+- [x] Exibir resumo financeiro do dia (receita, pendências, ticket médio)
+- [x] Calcular receita por serviço e por profissional
+- [x] Permitir registro manual de pagamento em dinheiro
+- [x] Gerar comprovante ou recibo por transação
 
 ## Critérios de aceite
 

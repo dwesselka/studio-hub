@@ -17,14 +17,14 @@ Reter clientes por meio de programa de pontos, promoções personalizadas e camp
 
 ## Subtasks
 
-- [ ] Definir regras do programa de pontos (acúmulo por valor, visita ou serviço)
-- [ ] Implementar resgate de pontos por desconto ou serviço gratuito
-- [ ] Exibir saldo de pontos no perfil do cliente
-- [ ] Criar promoções personalizadas por segmento (alto valor, inativo, aniversariante)
-- [ ] Configurar campanhas recorrentes (mensal, sazonal, datas comemorativas)
-- [ ] Acompanhar conversão de promoções (enviadas, abertas, resgatadas)
-- [ ] Notificar clientes sobre pontos acumulados e promoções disponíveis
-- [ ] Permitir ao parceiro criar e editar regras de fidelização
+- [x] Definir regras do programa de pontos (acúmulo por valor, visita ou serviço)
+- [x] Implementar resgate de pontos por desconto ou serviço gratuito
+- [x] Exibir saldo de pontos no perfil do cliente
+- [x] Criar promoções personalizadas por segmento (alto valor, inativo, aniversariante)
+- [x] Configurar campanhas recorrentes (mensal, sazonal, datas comemorativas)
+- [x] Acompanhar conversão de promoções (enviadas, abertas, resgatadas)
+- [x] Notificar clientes sobre pontos acumulados e promoções disponíveis
+- [x] Permitir ao parceiro criar e editar regras de fidelização
 
 ## Critérios de aceite
 

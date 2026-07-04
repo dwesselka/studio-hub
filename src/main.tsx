@@ -8,9 +8,7 @@ import { applyEnvironment, type ApiEnvironmentConfig } from '@api/environment'
 
 const env: ApiEnvironmentConfig = applyEnvironment()
 
-const MockDevTools = lazy(() =>
-  import('@api/devtools').then((m) => ({ default: m.MockDevTools })),
-)
+const MockDevTools = lazy(() => import('@api/devtools').then((m) => ({ default: m.MockDevTools })))
 
 if (env.mockEnabled) {
   initMockApi()

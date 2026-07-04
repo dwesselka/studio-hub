@@ -18,7 +18,10 @@ export default function FAQ() {
         </div>
         <div className="faq__list">
           {faq.map((item: FAQItem, index: number) => (
-            <div key={item.question} className={`faq__item${openIndex === index ? ' faq__item--open' : ''}`}>
+            <div
+              key={item.question}
+              className={`faq__item${openIndex === index ? ' faq__item--open' : ''}`}
+            >
               <button
                 type="button"
                 className="faq__question"

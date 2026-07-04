@@ -1,6 +1,11 @@
 import { safeLocalStorage } from '@/lib/storage'
 import { sendWhatsApp } from '@/lib/services/whatsapp'
-import type { LoyaltyProgram, ClientPoints, PointsTransaction, LoyaltyPromotion } from '@/features/fidelizacao/types'
+import type {
+  LoyaltyProgram,
+  ClientPoints,
+  PointsTransaction,
+  LoyaltyPromotion,
+} from '@/features/fidelizacao/types'
 import { DEFAULT_LOYALTY_PROGRAM } from '@/features/fidelizacao/types'
 
 const PROGRAM_KEY = 'infinity_loyalty_program'
@@ -52,9 +57,7 @@ export function getLoyaltyProgram(): LoyaltyProgram {
   return loadProgram()
 }
 
-export function updateLoyaltyProgram(
-  updates: Partial<LoyaltyProgram>,
-): LoyaltyProgram {
+export function updateLoyaltyProgram(updates: Partial<LoyaltyProgram>): LoyaltyProgram {
   const program = { ...loadProgram(), ...updates }
   saveProgram(program)
   return program
@@ -77,18 +80,12 @@ export function getAllClientsPoints(): ClientPoints[] {
   return Object.values(loadPointsMap()).sort((a, b) => b.balance - a.balance)
 }
 
-export function getPointsTransactions(
-  clientPhone?: string,
-): PointsTransaction[] {
+export function getPointsTransactions(clientPhone?: string): PointsTransaction[] {
   const all = loadTransactions().sort((a, b) => b.createdAt.localeCompare(a.createdAt))
   return clientPhone ? all.filter((t) => t.clientPhone === clientPhone) : all
 }
 
-export function earnPoints(
-  clientPhone: string,
-  clientName: string,
-  totalValue: number,
-): void {
+export function earnPoints(clientPhone: string, clientName: string, totalValue: number): void {
   const program = loadProgram()
   if (!program.enabled) return
 
@@ -265,10 +262,7 @@ export function sendPromotionNotification(
   })
 }
 
-function incrementPromotionStat(
-  id: string,
-  stat: 'sent' | 'redeemed',
-): void {
+function incrementPromotionStat(id: string, stat: 'sent' | 'redeemed'): void {
   const list = loadPromotions()
   const idx = list.findIndex((p) => p.id === id)
   if (idx === -1) return
@@ -279,10 +273,7 @@ function incrementPromotionStat(
   savePromotions(list)
 }
 
-export function redeemPromotion(
-  promotionId: string,
-  clientPhone: string,
-): boolean {
+export function redeemPromotion(promotionId: string, clientPhone: string): boolean {
   const list = loadPromotions()
   const idx = list.findIndex((p) => p.id === promotionId)
   if (idx === -1) return false
@@ -293,12 +284,7 @@ export function redeemPromotion(
     const client = getClientPoints(clientPhone)
     if (client.balance < promo.requiredPoints) return false
 
-    redeemPoints(
-      clientPhone,
-      client.clientName,
-      promo.requiredPoints,
-      `Resgate: ${promo.name}`,
-    )
+    redeemPoints(clientPhone, client.clientName, promo.requiredPoints, `Resgate: ${promo.name}`)
   }
 
   list[idx] = {

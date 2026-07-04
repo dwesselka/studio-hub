@@ -8,7 +8,9 @@ export default function Benefits() {
       <div className="container">
         <div className="section__header">
           <h2>Tudo que a cadeira, a recepção e o caixa precisam</h2>
-          <p>Do primeiro agendamento ao pagamento — sem planilha, sem caderninho, sem dor de cabeça.</p>
+          <p>
+            Do primeiro agendamento ao pagamento — sem planilha, sem caderninho, sem dor de cabeça.
+          </p>
         </div>
         <div className="benefits__grid">
           {benefits.map((item: Benefit) => (

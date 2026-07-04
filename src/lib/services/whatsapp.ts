@@ -6,9 +6,7 @@ export interface WhatsAppMessage {
 export function sendWhatsApp(message: WhatsAppMessage): Promise<{ success: boolean }> {
   return new Promise((resolve) => {
     setTimeout(() => {
-      console.info(
-        `[WhatsApp] Mensagem enviada para ${message.to}:\n${message.body}`,
-      )
+      console.info(`[WhatsApp] Mensagem enviada para ${message.to}:\n${message.body}`)
       resolve({ success: true })
     }, 800)
   })

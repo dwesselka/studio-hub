@@ -92,7 +92,10 @@ export function AtendimentoCard({
           <div className="flex items-start gap-1.5 text-xs text-muted-foreground">
             <AlertTriangle className="h-3 w-3 mt-0.5 shrink-0 text-warning" />
             <span>
-              Insumos: {atendimento.supplies.map((s) => `${s.consumableName} (${s.quantity}${s.unit})`).join(', ')}
+              Insumos:{' '}
+              {atendimento.supplies
+                .map((s) => `${s.consumableName} (${s.quantity}${s.unit})`)
+                .join(', ')}
             </span>
           </div>
         )}
@@ -139,9 +142,13 @@ export function AtendimentoCard({
               Histórico de {atendimento.clientName}
             </p>
             {history.slice(0, 5).map((h) => (
-              <div key={h.id} className="flex items-center justify-between text-xs text-muted-foreground">
+              <div
+                key={h.id}
+                className="flex items-center justify-between text-xs text-muted-foreground"
+              >
                 <span>
-                  {new Date(h.date + 'T12:00:00').toLocaleDateString('pt-BR')} — {h.services.map((s) => s.serviceName).join(', ')}
+                  {new Date(h.date + 'T12:00:00').toLocaleDateString('pt-BR')} —{' '}
+                  {h.services.map((s) => s.serviceName).join(', ')}
                 </span>
                 <span className="font-medium">R$ {(h.totalValue / 100).toFixed(2)}</span>
               </div>

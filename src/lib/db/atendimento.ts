@@ -28,16 +28,65 @@ export function seedConsumables(): void {
   if (existing.length > 0) return
 
   const defaults: Consumable[] = [
-    { id: 'c1', name: 'Shampoo', unit: 'ml', currentStock: 5000, minStock: 1000, category: 'Cabelo' },
-    { id: 'c2', name: 'Condicionador', unit: 'ml', currentStock: 4000, minStock: 1000, category: 'Cabelo' },
-    { id: 'c3', name: 'Máscara Capilar', unit: 'ml', currentStock: 2000, minStock: 500, category: 'Cabelo' },
-    { id: 'c4', name: 'Tinta Cabelo', unit: 'un', currentStock: 30, minStock: 10, category: 'Cabelo' },
-    { id: 'c5', name: 'Luva Descartável', unit: 'un', currentStock: 200, minStock: 50, category: 'Higiene' },
-    { id: 'c6', name: 'Papel Alumínio', unit: 'un', currentStock: 500, minStock: 100, category: 'Cabelo' },
+    {
+      id: 'c1',
+      name: 'Shampoo',
+      unit: 'ml',
+      currentStock: 5000,
+      minStock: 1000,
+      category: 'Cabelo',
+    },
+    {
+      id: 'c2',
+      name: 'Condicionador',
+      unit: 'ml',
+      currentStock: 4000,
+      minStock: 1000,
+      category: 'Cabelo',
+    },
+    {
+      id: 'c3',
+      name: 'Máscara Capilar',
+      unit: 'ml',
+      currentStock: 2000,
+      minStock: 500,
+      category: 'Cabelo',
+    },
+    {
+      id: 'c4',
+      name: 'Tinta Cabelo',
+      unit: 'un',
+      currentStock: 30,
+      minStock: 10,
+      category: 'Cabelo',
+    },
+    {
+      id: 'c5',
+      name: 'Luva Descartável',
+      unit: 'un',
+      currentStock: 200,
+      minStock: 50,
+      category: 'Higiene',
+    },
+    {
+      id: 'c6',
+      name: 'Papel Alumínio',
+      unit: 'un',
+      currentStock: 500,
+      minStock: 100,
+      category: 'Cabelo',
+    },
     { id: 'c7', name: 'Esmalte', unit: 'un', currentStock: 40, minStock: 10, category: 'Unhas' },
     { id: 'c8', name: 'Acetona', unit: 'ml', currentStock: 1000, minStock: 200, category: 'Unhas' },
     { id: 'c9', name: 'Algodão', unit: 'un', currentStock: 300, minStock: 50, category: 'Higiene' },
-    { id: 'c10', name: 'Óleo Essencial', unit: 'ml', currentStock: 500, minStock: 100, category: 'Cabelo' },
+    {
+      id: 'c10',
+      name: 'Óleo Essencial',
+      unit: 'ml',
+      currentStock: 500,
+      minStock: 100,
+      category: 'Cabelo',
+    },
   ]
 
   saveConsumables(defaults)
@@ -97,9 +146,7 @@ function generateId(): string {
   return crypto.randomUUID()
 }
 
-export function createAtendimento(
-  data: Omit<Atendimento, 'id' | 'createdAt'>,
-): Atendimento {
+export function createAtendimento(data: Omit<Atendimento, 'id' | 'createdAt'>): Atendimento {
   const list = loadAtendimentos()
   const atendimento: Atendimento = {
     ...data,
@@ -111,10 +158,7 @@ export function createAtendimento(
   return atendimento
 }
 
-export function updateAtendimento(
-  id: string,
-  updates: Partial<Atendimento>,
-): Atendimento | null {
+export function updateAtendimento(id: string, updates: Partial<Atendimento>): Atendimento | null {
   const list = loadAtendimentos()
   const idx = list.findIndex((a) => a.id === id)
   if (idx === -1) return null
@@ -124,10 +168,7 @@ export function updateAtendimento(
   return list[idx]
 }
 
-export function completeAtendimento(
-  id: string,
-  supplies: ConsumedSupply[],
-): Atendimento | null {
+export function completeAtendimento(id: string, supplies: ConsumedSupply[]): Atendimento | null {
   const atendimento = updateAtendimento(id, { status: 'completed', supplies })
   if (atendimento) {
     earnPoints(atendimento.clientPhone, atendimento.clientName, atendimento.totalValue)

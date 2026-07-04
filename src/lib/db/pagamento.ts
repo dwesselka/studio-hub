@@ -48,10 +48,14 @@ export function getPendingPayments(): Payment[] {
 
 function getFeePercent(method: PaymentMethod): number {
   switch (method) {
-    case 'pix': return PIX_FEE_PERCENT
-    case 'credit': return CARD_FEE_PERCENT
-    case 'debit': return 2.49
-    case 'cash': return 0
+    case 'pix':
+      return PIX_FEE_PERCENT
+    case 'credit':
+      return CARD_FEE_PERCENT
+    case 'debit':
+      return 2.49
+    case 'cash':
+      return 0
   }
 }
 
@@ -82,7 +86,7 @@ export function simulatePixPayment(totalValue: number): PixPaymentResponse {
   }
 }
 
-export function simulateCardPayment(_totalValue: number): CardPaymentResponse {
+export function simulateCardPayment(totalValue: number): CardPaymentResponse {
   const chars = '0123456789ABCDEF'
   let code = ''
   for (let i = 0; i < 8; i++) code += chars[Math.floor(Math.random() * chars.length)]
@@ -91,7 +95,7 @@ export function simulateCardPayment(_totalValue: number): CardPaymentResponse {
     success: true,
     transactionId: generateId(),
     authorizationCode: code,
-    fee: CARD_FEE_PERCENT,
+    fee: totalValue * (CARD_FEE_PERCENT / 100),
   }
 }
 
@@ -214,16 +218,22 @@ export function getDailySummary(date: string): {
 }
 
 export function getRevenueByProfessional(date?: string): { name: string; total: number }[] {
-  const all = date ? load().filter((p) => p.date === date && p.status === 'paid') : load().filter((p) => p.status === 'paid')
+  const all = date
+    ? load().filter((p) => p.date === date && p.status === 'paid')
+    : load().filter((p) => p.status === 'paid')
   const map = new Map<string, number>()
   for (const p of all) {
     map.set(p.professionalName, (map.get(p.professionalName) ?? 0) + p.paidValue)
   }
-  return [...map.entries()].map(([name, total]) => ({ name, total })).sort((a, b) => b.total - a.total)
+  return [...map.entries()]
+    .map(([name, total]) => ({ name, total }))
+    .sort((a, b) => b.total - a.total)
 }
 
 export function getRevenueByService(date?: string): { name: string; total: number }[] {
-  const all = date ? load().filter((p) => p.date === date && p.status === 'paid') : load().filter((p) => p.status === 'paid')
+  const all = date
+    ? load().filter((p) => p.date === date && p.status === 'paid')
+    : load().filter((p) => p.status === 'paid')
   const map = new Map<string, number>()
   for (const p of all) {
     for (const s of p.serviceNames) {
@@ -231,12 +241,18 @@ export function getRevenueByService(date?: string): { name: string; total: numbe
       map.set(s, (map.get(s) ?? 0) + perService)
     }
   }
-  return [...map.entries()].map(([name, total]) => ({ name, total })).sort((a, b) => b.total - a.total)
+  return [...map.entries()]
+    .map(([name, total]) => ({ name, total }))
+    .sort((a, b) => b.total - a.total)
 }
 
 export function getPaymentReceiptHtml(payment: Payment): string {
   const date = new Date(payment.paidAt ?? payment.createdAt).toLocaleDateString('pt-BR', {
-    day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
   })
 
   return `<!DOCTYPE html>

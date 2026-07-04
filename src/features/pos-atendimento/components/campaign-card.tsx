@@ -3,7 +3,10 @@ import { motion } from 'framer-motion'
 import { Power, Edit3, Send, MessageSquare, TrendingUp, Users } from 'lucide-react'
 import type { Campaign } from '@/features/pos-atendimento/types'
 import { CAMPAIGN_TYPE_LABELS, SEGMENT_LABELS } from '@/features/pos-atendimento/types'
-import { useToggleCampaign, useUpdateCampaign } from '@/features/pos-atendimento/hooks/use-pos-atendimento-data'
+import {
+  useToggleCampaign,
+  useUpdateCampaign,
+} from '@/features/pos-atendimento/hooks/use-pos-atendimento-data'
 
 interface CampaignCardProps {
   campaign: Campaign
@@ -21,9 +24,7 @@ export function CampaignCard({ campaign, index }: CampaignCardProps) {
   const isActive = campaign.status === 'active'
 
   const responseRate =
-    campaign.stats.sent > 0
-      ? Math.round((campaign.stats.responded / campaign.stats.sent) * 100)
-      : 0
+    campaign.stats.sent > 0 ? Math.round((campaign.stats.responded / campaign.stats.sent) * 100) : 0
 
   const conversionRate =
     campaign.stats.responded > 0
@@ -61,9 +62,7 @@ export function CampaignCard({ campaign, index }: CampaignCardProps) {
               <span className="text-sm font-bold text-foreground">{campaign.name}</span>
               <span
                 className={`inline-flex h-5 items-center rounded-full px-2 text-[10px] font-semibold uppercase tracking-wider ${
-                  isActive
-                    ? 'bg-success/10 text-success'
-                    : 'bg-muted text-muted-foreground'
+                  isActive ? 'bg-success/10 text-success' : 'bg-muted text-muted-foreground'
                 }`}
               >
                 {isActive ? 'Ativa' : 'Pausada'}

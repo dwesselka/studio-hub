@@ -23,7 +23,12 @@ export function findUserById(id: string): AuthUser | undefined {
   return getUsers().find((u) => u.id === id)
 }
 
-export function createUser(email: string, password: string, name: string, plan: AuthUser['plan'] = 'starter'): AuthUser {
+export function createUser(
+  email: string,
+  password: string,
+  name: string,
+  plan: AuthUser['plan'] = 'starter',
+): AuthUser {
   const users = getUsers()
 
   if (users.find((u) => u.email === email)) {
@@ -79,10 +84,7 @@ export function getCurrentUser(): AuthUser | null {
   return findUserById(userId) ?? null
 }
 
-export function updateUser(
-  userId: string,
-  updater: (user: AuthUser) => AuthUser,
-): AuthUser | null {
+export function updateUser(userId: string, updater: (user: AuthUser) => AuthUser): AuthUser | null {
   const users = getUsers()
   const index = users.findIndex((u) => u.id === userId)
   if (index === -1) return null
@@ -92,7 +94,11 @@ export function updateUser(
   return users[index]
 }
 
-export function deductCredit(userId: string): { success: boolean; remaining: number; error?: string } {
+export function deductCredit(userId: string): {
+  success: boolean
+  remaining: number
+  error?: string
+} {
   const user = findUserById(userId)
   if (!user) return { success: false, remaining: 0, error: 'Usuário não encontrado' }
   if (user.credits <= 0) return { success: false, remaining: 0, error: 'Sem créditos disponíveis' }

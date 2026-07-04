@@ -2,7 +2,12 @@ import { useState, useMemo } from 'react'
 import { X, Plus, Trash2, AlertCircle, CheckCircle, DollarSign } from 'lucide-react'
 import type { Appointment } from '@/features/agenda/types'
 import type { ServicePerformed, ConsumedSupply, Atendimento } from '@/features/atendimento/types'
-import { useConsumables, useCreateAtendimento, useCompleteAtendimento, useCancelAtendimento } from '@/features/atendimento/hooks/use-atendimento-data'
+import {
+  useConsumables,
+  useCreateAtendimento,
+  useCompleteAtendimento,
+  useCancelAtendimento,
+} from '@/features/atendimento/hooks/use-atendimento-data'
 import { scheduleFeedbackRequest } from '@/lib/pos-atendimento-db'
 import { PaymentDialog } from '@/features/pagamento/components/payment-dialog'
 
@@ -154,7 +159,9 @@ export function AtendimentoFlow({
           <div className="rounded-lg bg-muted/50 p-4 space-y-2 text-left">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Valor total</span>
-              <span className="font-semibold text-foreground">R$ {(totalValue / 100).toFixed(2)}</span>
+              <span className="font-semibold text-foreground">
+                R$ {(totalValue / 100).toFixed(2)}
+              </span>
             </div>
             {supplies.length > 0 && (
               <div className="flex justify-between text-sm">
@@ -174,7 +181,10 @@ export function AtendimentoFlow({
             <DollarSign className="h-4 w-4" />
             Cobrar Agora
           </button>
-          <button onClick={onClose} className="btn btn--secondary btn--lg btn--block w-full justify-center">
+          <button
+            onClick={onClose}
+            className="btn btn--secondary btn--lg btn--block w-full justify-center"
+          >
             Fechar
           </button>
         </div>
@@ -320,7 +330,8 @@ export function AtendimentoFlow({
                     <div className="flex-1 min-w-0">
                       <span className="text-xs font-medium text-foreground block">{c.name}</span>
                       <span className="text-[10px] text-muted-foreground">
-                        Estoque: {c.currentStock}{c.unit}
+                        Estoque: {c.currentStock}
+                        {c.unit}
                         {c.currentStock <= c.minStock && (
                           <span className="text-destructive ml-1">(baixo)</span>
                         )}
@@ -419,7 +430,8 @@ export function AtendimentoFlow({
                     <div key={s.consumableId} className="flex justify-between text-xs">
                       <span className="text-muted-foreground">{s.consumableName}</span>
                       <span className="text-foreground">
-                        {s.quantity}{s.unit}
+                        {s.quantity}
+                        {s.unit}
                       </span>
                     </div>
                   ))}

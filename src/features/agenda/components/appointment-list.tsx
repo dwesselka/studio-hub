@@ -41,7 +41,11 @@ export function AppointmentList({
   selectedDate,
   onBookingComplete,
 }: AppointmentListProps) {
-  const [bookSlot, setBookSlot] = useState<{ time: string; professionalId: string; professionalName: string } | null>(null)
+  const [bookSlot, setBookSlot] = useState<{
+    time: string
+    professionalId: string
+    professionalName: string
+  } | null>(null)
 
   if (isLoading) {
     return (
@@ -75,12 +79,8 @@ export function AppointmentList({
                     <Clock className="h-4 w-4 text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <span className="text-sm font-medium text-foreground block">
-                      {slot.time}
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      {slot.professionalName}
-                    </span>
+                    <span className="text-sm font-medium text-foreground block">{slot.time}</span>
+                    <span className="text-xs text-muted-foreground">{slot.professionalName}</span>
                   </div>
                   <span className="text-xs font-medium text-primary">Reservar</span>
                 </button>

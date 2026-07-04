@@ -76,7 +76,14 @@ export function PaymentDialog({
   function handlePrintReceipt() {
     if (!paymentResult?.receiptNumber && !paymentResult?.paymentId) return
     const payments = JSON.parse(localStorage.getItem('infinity_pagamentos') || '[]')
-    const payment = payments.find((p: any) => p.id === paymentResult?.paymentId || p.receiptNumber === paymentResult?.receiptNumber)
+    interface PaymentRecord {
+      id: string
+      receiptNumber: string
+      [key: string]: unknown
+    }
+    const payment = (payments as PaymentRecord[]).find(
+      (p) => p.id === paymentResult?.paymentId || p.receiptNumber === paymentResult?.receiptNumber,
+    )
     if (!payment) return
     const html = getPaymentReceiptHtml(payment)
     const w = window.open('', '_blank')
@@ -135,7 +142,11 @@ export function PaymentDialog({
                         onClick={() => handleCopy(paymentResult.pixCopyPaste!)}
                         className="flex h-8 w-8 items-center justify-center rounded-lg border border-border hover:bg-muted transition-colors"
                       >
-                        {copied ? <CheckCircle className="h-4 w-4 text-success" /> : <Copy className="h-4 w-4" />}
+                        {copied ? (
+                          <CheckCircle className="h-4 w-4 text-success" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
                       </button>
                     </div>
                   </div>
@@ -146,7 +157,9 @@ export function PaymentDialog({
             <div className="rounded-lg bg-muted/50 p-3 space-y-1.5 text-sm">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Valor</span>
-                <span className="font-semibold text-foreground">R$ {(totalValue / 100).toFixed(2)}</span>
+                <span className="font-semibold text-foreground">
+                  R$ {(totalValue / 100).toFixed(2)}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Forma</span>
@@ -214,7 +227,8 @@ export function PaymentDialog({
 
             {method === 'pix' && (
               <div className="rounded-lg bg-primary/5 border border-primary/20 p-3 text-xs text-muted-foreground">
-                O QR Code será gerado na confirmação. O pagamento ficará como pendente até a confirmação.
+                O QR Code será gerado na confirmação. O pagamento ficará como pendente até a
+                confirmação.
               </div>
             )}
 

@@ -68,7 +68,12 @@ export const navigationGroups: NavGroup[] = [
     label: 'Negócio',
     items: [
       { id: 'payments', label: 'Pagamentos', href: '/app/pagamentos', icon: 'CreditCard' },
-      { id: 'pos-atendimento', label: 'Pós-Atendimento', href: '/app/pos-atendimento', icon: 'Heart' },
+      {
+        id: 'pos-atendimento',
+        label: 'Pós-Atendimento',
+        href: '/app/pos-atendimento',
+        icon: 'Heart',
+      },
       { id: 'loyalty', label: 'Fidelização', href: '/app/fidelizacao', icon: 'Gift' },
       { id: 'reports', label: 'Relatórios', href: '/app/relatorios', icon: 'FileText' },
     ],

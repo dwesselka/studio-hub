@@ -38,9 +38,10 @@ export function useFeedback() {
 export function useNPS() {
   return useQuery({
     queryKey: ['nps'],
-    queryFn: () => new Promise<ReturnType<typeof getNPS>>((resolve) => {
-      setTimeout(() => resolve(getNPS()), 100)
-    }),
+    queryFn: () =>
+      new Promise<ReturnType<typeof getNPS>>((resolve) => {
+        setTimeout(() => resolve(getNPS()), 100)
+      }),
   })
 }
 

@@ -129,11 +129,13 @@ export function BookSlotDialog({
                 {slotTime} — {selectedService?.name}
               </p>
               <p className="text-xs text-muted-foreground mb-6">
-                com {slotProfessionalName} |
-                Créditos restantes: <strong>{credits - 1}</strong>
+                com {slotProfessionalName} | Créditos restantes: <strong>{credits - 1}</strong>
               </p>
               <button
-                onClick={() => { reset(); onClose() }}
+                onClick={() => {
+                  reset()
+                  onClose()
+                }}
                 className="btn btn--primary btn--lg"
               >
                 Fechar
@@ -167,9 +169,7 @@ export function BookSlotDialog({
                   <CreditCard className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm text-muted-foreground">
                     Seus créditos: <strong className="text-foreground">{credits}</strong>
-                    {credits <= 0 && (
-                      <span className="text-destructive ml-1">(insuficiente)</span>
-                    )}
+                    {credits <= 0 && <span className="text-destructive ml-1">(insuficiente)</span>}
                   </span>
                 </div>
 
@@ -226,8 +226,8 @@ export function BookSlotDialog({
 
                 {selectedService && (
                   <p className="text-xs text-muted-foreground">
-                    Término previsto: {endTime} · Duração: {selectedService.duration}min ·
-                    Valor: R$ {selectedService.price.toFixed(2)}
+                    Término previsto: {endTime} · Duração: {selectedService.duration}min · Valor: R${' '}
+                    {selectedService.price.toFixed(2)}
                   </p>
                 )}
 

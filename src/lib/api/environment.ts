@@ -61,9 +61,15 @@ function createLogger(level: ApiEnvironmentConfig['logLevel']) {
   const current = levels[level]
 
   return {
-    debug: (...args: unknown[]) => { if (current <= 0) console.debug('[API]', ...args) },
-    info: (...args: unknown[]) => { if (current <= 1) console.info('[API]', ...args) },
-    warn: (...args: unknown[]) => { if (current <= 2) console.warn('[API]', ...args) },
+    debug: (...args: unknown[]) => {
+      if (current <= 0) console.debug('[API]', ...args)
+    },
+    info: (...args: unknown[]) => {
+      if (current <= 1) console.info('[API]', ...args)
+    },
+    warn: (...args: unknown[]) => {
+      if (current <= 2) console.warn('[API]', ...args)
+    },
   }
 }
 
@@ -80,7 +86,9 @@ export function applyEnvironment(env?: ApiEnvironment): ApiEnvironmentConfig {
       jitterMs: config.jitterMs,
       errorRate: config.errorRate,
     })
-    logger.debug(`Mock configurado: latência=${config.baseLatencyMs}ms, jitter=${config.jitterMs}ms, erro=${config.errorRate * 100}%`)
+    logger.debug(
+      `Mock configurado: latência=${config.baseLatencyMs}ms, jitter=${config.jitterMs}ms, erro=${config.errorRate * 100}%`,
+    )
   }
 
   return config

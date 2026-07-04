@@ -1,17 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import {
-  Gift,
-  Star,
-  TrendingUp,
-  Users,
-  Plus,
-  Power,
-  Edit3,
-  Trophy,
-  Zap,
-  Crown,
-} from 'lucide-react'
+import { Gift, Star, TrendingUp, Users, Plus, Power, Edit3, Trophy, Zap, Crown } from 'lucide-react'
 import { useOnlineStatus } from '@/hooks/use-online-status'
 import { useMotionConfig, fadeInUp } from '@/lib/motion'
 import { ErrorState, OfflineState } from '@/components/ui/state-panel'
@@ -54,7 +43,12 @@ export function FidelizacaoPage() {
   })
 
   const isError = false
-  const refetch = () => { refetchProgram(); refetchPoints(); refetchTx(); refetchPromos() }
+  const refetch = () => {
+    refetchProgram()
+    refetchPoints()
+    refetchTx()
+    refetchPromos()
+  }
 
   const totalPointsIssued = clientsPoints.reduce((s, c) => s + c.lifetime, 0)
   const totalPointsActive = clientsPoints.reduce((s, c) => s + c.balance, 0)
@@ -78,7 +72,14 @@ export function FidelizacaoPage() {
       status: 'active',
     })
     setShowNewPromo(false)
-    setNewPromo({ name: '', segment: 'all', discountPercent: 10, requiredPoints: 0, expiresAt: '', serviceName: '' })
+    setNewPromo({
+      name: '',
+      segment: 'all',
+      discountPercent: 10,
+      requiredPoints: 0,
+      expiresAt: '',
+      serviceName: '',
+    })
   }
 
   async function handleNotify(promo: LoyaltyPromotion) {
@@ -158,7 +159,9 @@ export function FidelizacaoPage() {
                 <h4 className="text-sm font-semibold text-foreground">Nova Promoção</h4>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="col-span-2">
-                    <label className="text-[11px] font-semibold text-muted-foreground block mb-1">Nome</label>
+                    <label className="text-[11px] font-semibold text-muted-foreground block mb-1">
+                      Nome
+                    </label>
                     <input
                       type="text"
                       value={newPromo.name}
@@ -168,40 +171,56 @@ export function FidelizacaoPage() {
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-semibold text-muted-foreground block mb-1">Segmento</label>
+                    <label className="text-[11px] font-semibold text-muted-foreground block mb-1">
+                      Segmento
+                    </label>
                     <select
                       value={newPromo.segment}
-                      onChange={(e) => setNewPromo((p) => ({ ...p, segment: e.target.value as ClientSegment }))}
+                      onChange={(e) =>
+                        setNewPromo((p) => ({ ...p, segment: e.target.value as ClientSegment }))
+                      }
                       className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
                     >
                       {Object.entries(SEGMENT_LABELS).map(([k, v]) => (
-                        <option key={k} value={k}>{v}</option>
+                        <option key={k} value={k}>
+                          {v}
+                        </option>
                       ))}
                     </select>
                   </div>
                   <div>
-                    <label className="text-[11px] font-semibold text-muted-foreground block mb-1">Desconto %</label>
+                    <label className="text-[11px] font-semibold text-muted-foreground block mb-1">
+                      Desconto %
+                    </label>
                     <input
                       type="number"
                       value={newPromo.discountPercent}
-                      onChange={(e) => setNewPromo((p) => ({ ...p, discountPercent: Number(e.target.value) }))}
+                      onChange={(e) =>
+                        setNewPromo((p) => ({ ...p, discountPercent: Number(e.target.value) }))
+                      }
                       min={0}
                       max={100}
                       className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-semibold text-muted-foreground block mb-1">Pontos necessários</label>
+                    <label className="text-[11px] font-semibold text-muted-foreground block mb-1">
+                      Pontos necessários
+                    </label>
                     <input
                       type="number"
                       value={newPromo.requiredPoints}
-                      onChange={(e) => setNewPromo((p) => ({ ...p, requiredPoints: Number(e.target.value) }))}
+                      onChange={(e) =>
+                        setNewPromo((p) => ({ ...p, requiredPoints: Number(e.target.value) }))
+                      }
                       min={0}
                       className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-semibold text-muted-foreground block mb-1">Validade</label>
+                    <label className="text-[11px] font-semibold text-muted-foreground block mb-1">
+                      Validade
+                    </label>
                     <input
                       type="date"
                       value={newPromo.expiresAt}
@@ -210,7 +229,9 @@ export function FidelizacaoPage() {
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-semibold text-muted-foreground block mb-1">Serviço (opcional)</label>
+                    <label className="text-[11px] font-semibold text-muted-foreground block mb-1">
+                      Serviço (opcional)
+                    </label>
                     <input
                       type="text"
                       value={newPromo.serviceName}
@@ -275,11 +296,10 @@ export function FidelizacaoPage() {
                           tx.type === 'earn' ? 'text-success' : 'text-destructive'
                         }`}
                       >
-                        {tx.type === 'earn' ? '+' : ''}{tx.amount}
+                        {tx.type === 'earn' ? '+' : ''}
+                        {tx.amount}
                       </span>
-                      <p className="text-[10px] text-muted-foreground">
-                        Saldo: {tx.balanceAfter}
-                      </p>
+                      <p className="text-[10px] text-muted-foreground">Saldo: {tx.balanceAfter}</p>
                     </div>
                   </div>
                 ))}
@@ -305,7 +325,9 @@ export function FidelizacaoPage() {
                     type="number"
                     value={editProgram?.pointsPerCurrency ?? 10}
                     onChange={(e) =>
-                      setEditProgram((p) => p ? { ...p, pointsPerCurrency: Number(e.target.value) } : p)
+                      setEditProgram((p) =>
+                        p ? { ...p, pointsPerCurrency: Number(e.target.value) } : p,
+                      )
                     }
                     min={1}
                     className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
@@ -319,7 +341,9 @@ export function FidelizacaoPage() {
                     type="number"
                     value={editProgram?.pointsPerVisit ?? 50}
                     onChange={(e) =>
-                      setEditProgram((p) => p ? { ...p, pointsPerVisit: Number(e.target.value) } : p)
+                      setEditProgram((p) =>
+                        p ? { ...p, pointsPerVisit: Number(e.target.value) } : p,
+                      )
                     }
                     min={0}
                     className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
@@ -333,7 +357,9 @@ export function FidelizacaoPage() {
                     type="number"
                     value={editProgram?.pointsExpiryDays ?? 180}
                     onChange={(e) =>
-                      setEditProgram((p) => p ? { ...p, pointsExpiryDays: Number(e.target.value) } : p)
+                      setEditProgram((p) =>
+                        p ? { ...p, pointsExpiryDays: Number(e.target.value) } : p,
+                      )
                     }
                     min={1}
                     className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
@@ -360,19 +386,27 @@ export function FidelizacaoPage() {
                 <div className="rounded-lg bg-muted/50 p-3 space-y-2">
                   <div className="flex justify-between text-xs">
                     <span className="text-muted-foreground">Pontos por R$ 1</span>
-                    <span className="font-semibold text-foreground">{program?.pointsPerCurrency ?? 10}</span>
+                    <span className="font-semibold text-foreground">
+                      {program?.pointsPerCurrency ?? 10}
+                    </span>
                   </div>
                   <div className="flex justify-between text-xs">
                     <span className="text-muted-foreground">Pontos por visita</span>
-                    <span className="font-semibold text-foreground">{program?.pointsPerVisit ?? 50}</span>
+                    <span className="font-semibold text-foreground">
+                      {program?.pointsPerVisit ?? 50}
+                    </span>
                   </div>
                   <div className="flex justify-between text-xs">
                     <span className="text-muted-foreground">Expiração</span>
-                    <span className="font-semibold text-foreground">{program?.pointsExpiryDays ?? 180} dias</span>
+                    <span className="font-semibold text-foreground">
+                      {program?.pointsExpiryDays ?? 180} dias
+                    </span>
                   </div>
                   <div className="flex justify-between text-xs">
                     <span className="text-muted-foreground">Programa ativo</span>
-                    <span className={`font-semibold ${program?.enabled ? 'text-success' : 'text-destructive'}`}>
+                    <span
+                      className={`font-semibold ${program?.enabled ? 'text-success' : 'text-destructive'}`}
+                    >
                       {program?.enabled ? 'Sim' : 'Não'}
                     </span>
                   </div>
@@ -468,9 +502,11 @@ function PromotionCard({
   const isExpired = new Date(promotion.expiresAt) < new Date()
 
   return (
-    <div className={`rounded-lg border p-3 ${
-      isActive ? 'border-border' : 'border-border/50 opacity-70'
-    }`}>
+    <div
+      className={`rounded-lg border p-3 ${
+        isActive ? 'border-border' : 'border-border/50 opacity-70'
+      }`}
+    >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">

@@ -89,13 +89,7 @@ export function useCancelAtendimento() {
 export function useUpdateAtendimento() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async ({
-      id,
-      updates,
-    }: {
-      id: string
-      updates: Partial<Atendimento>
-    }) => {
+    mutationFn: async ({ id, updates }: { id: string; updates: Partial<Atendimento> }) => {
       await new Promise((r) => setTimeout(r, 200))
       return updateAtendimento(id, updates)
     },

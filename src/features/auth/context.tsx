@@ -18,6 +18,7 @@ export interface AuthContextValue {
   refreshUser: () => void
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext<AuthContextValue | null>(null)
 
 function getInitialUser(): AuthUser | null {

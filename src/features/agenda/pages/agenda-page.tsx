@@ -90,13 +90,11 @@ export function AgendaPage() {
   const cancelMutation = useCancelAppointment()
   const noShowMutation = useMarkNoShow()
 
-  const services = user?.onboardingData?.services ?? []
-  const team = user?.onboardingData?.team ?? []
-
-  const availableSlots = useMemo(
-    () => generateAvailableSlots(currentDate, appointments, services, team),
-    [currentDate, appointments, services, team],
-  )
+  const availableSlots = useMemo(() => {
+    const s = user?.onboardingData?.services ?? []
+    const t = user?.onboardingData?.team ?? []
+    return generateAvailableSlots(currentDate, appointments, s, t)
+  }, [currentDate, appointments, user?.onboardingData?.services, user?.onboardingData?.team])
 
   const handlePrev = useCallback(() => {
     setCurrentDate((d) => addDays(d, -1))

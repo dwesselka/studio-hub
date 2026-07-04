@@ -9,7 +9,8 @@ vi.mock('@/lib/chatbot', async () => {
   const actual = await vi.importActual<typeof import('@/lib/chatbot')>('@/lib/chatbot')
   return {
     ...actual,
-    getChatbotResponseAsync: (message: string) => Promise.resolve(actual.getChatbotResponse(message)),
+    getChatbotResponseAsync: (message: string) =>
+      Promise.resolve(actual.getChatbotResponse(message)),
   }
 })
 
@@ -64,7 +65,10 @@ describe('Critério: Chatbot conduz jornada e integra com cadastro', () => {
       expect(screen.getByRole('link', { name: /Iniciar cadastro/i })).toBeInTheDocument()
     })
 
-    expect(screen.getByRole('link', { name: /Iniciar cadastro/i })).toHaveAttribute('href', '/cadastro')
+    expect(screen.getByRole('link', { name: /Iniciar cadastro/i })).toHaveAttribute(
+      'href',
+      '/cadastro',
+    )
   })
 
   it('registra chatbot_lead ao clicar no CTA do chatbot', async () => {

@@ -32,27 +32,30 @@ export function usePendingPayments() {
 export function useDailySummary(date: string) {
   return useQuery({
     queryKey: ['pagamentos-resumo', date],
-    queryFn: () => new Promise<ReturnType<typeof getDailySummary>>((r) => {
-      setTimeout(() => r(getDailySummary(date)), 100)
-    }),
+    queryFn: () =>
+      new Promise<ReturnType<typeof getDailySummary>>((r) => {
+        setTimeout(() => r(getDailySummary(date)), 100)
+      }),
   })
 }
 
 export function useRevenueByProfessional(date?: string) {
   return useQuery({
     queryKey: ['pagamentos-profissional', date],
-    queryFn: () => new Promise<{ name: string; total: number }[]>((r) =>
-      setTimeout(() => r(getRevenueByProfessional(date)), 100),
-    ),
+    queryFn: () =>
+      new Promise<{ name: string; total: number }[]>((r) =>
+        setTimeout(() => r(getRevenueByProfessional(date)), 100),
+      ),
   })
 }
 
 export function useRevenueByService(date?: string) {
   return useQuery({
     queryKey: ['pagamentos-servico', date],
-    queryFn: () => new Promise<{ name: string; total: number }[]>((r) =>
-      setTimeout(() => r(getRevenueByService(date)), 100),
-    ),
+    queryFn: () =>
+      new Promise<{ name: string; total: number }[]>((r) =>
+        setTimeout(() => r(getRevenueByService(date)), 100),
+      ),
   })
 }
 

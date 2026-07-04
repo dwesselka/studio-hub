@@ -69,11 +69,7 @@ export function RelatoriosPage() {
             Métricas e desempenho do seu negócio
           </p>
         </div>
-        <button
-          onClick={handleExport}
-          disabled={!kpis}
-          className="btn btn--primary btn--lg gap-2"
-        >
+        <button onClick={handleExport} disabled={!kpis} className="btn btn--primary btn--lg gap-2">
           <Download className="h-4 w-4" />
           Exportar CSV
         </button>
@@ -139,12 +135,7 @@ export function RelatoriosPage() {
               value={`${kpis.occupancyRate}%`}
               color="warning"
             />
-            <KpiCard
-              icon={Users}
-              label="Retenção"
-              value={`${kpis.retentionRate}%`}
-              color="info"
-            />
+            <KpiCard icon={Users} label="Retenção" value={`${kpis.retentionRate}%`} color="info" />
             <KpiCard
               icon={CalendarX}
               label="No-show"

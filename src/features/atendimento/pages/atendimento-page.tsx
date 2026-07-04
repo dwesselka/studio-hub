@@ -21,9 +21,8 @@ export function AtendimentoPage() {
   const [searchTerm, setSearchTerm] = useState('')
 
   const appointments = useMemo(() => {
-    const all = currentDate === getDateString()
-      ? getTodayAppointments()
-      : getAppointmentsByDate(currentDate)
+    const all =
+      currentDate === getDateString() ? getTodayAppointments() : getAppointmentsByDate(currentDate)
     return all
       .filter((a) => a.status === 'confirmed' || a.status === 'pending')
       .sort((a, b) => a.startTime.localeCompare(b.startTime))
@@ -47,14 +46,12 @@ export function AtendimentoPage() {
     if (!searchTerm) return pendingAppointments
     const q = searchTerm.toLowerCase()
     return pendingAppointments.filter(
-      (a) =>
-        a.clientName.toLowerCase().includes(q) ||
-        a.serviceName.toLowerCase().includes(q),
+      (a) => a.clientName.toLowerCase().includes(q) || a.serviceName.toLowerCase().includes(q),
     )
   }, [pendingAppointments, searchTerm])
 
   const existingAtendimentoForSelected = selectedAppointment
-    ? existingAtendimentos.get(selectedAppointment.id) ?? null
+    ? (existingAtendimentos.get(selectedAppointment.id) ?? null)
     : null
 
   const handleStart = (apt: Appointment) => {
@@ -165,7 +162,8 @@ export function AtendimentoPage() {
                         Nenhum agendamento pendente
                       </p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Todos os agendamentos já foram atendidos ou não há agendamentos para esta data.
+                        Todos os agendamentos já foram atendidos ou não há agendamentos para esta
+                        data.
                       </p>
                     </div>
                   ) : (
@@ -218,9 +216,7 @@ export function AtendimentoPage() {
         <div className="lg:col-span-1">
           <div className="space-y-4">
             <div className="rounded-xl border border-border bg-card p-4 shadow-card">
-              <h3 className="text-sm font-semibold text-foreground mb-3">
-                Atendimentos do dia
-              </h3>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Atendimentos do dia</h3>
               {atendimentos.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-6 text-center">
                   <Scissors className="h-8 w-8 text-muted-foreground mb-2" />

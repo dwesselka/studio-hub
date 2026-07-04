@@ -13,7 +13,9 @@ export default function Footer() {
           <a href="#planos">Planos</a>
           <a href="#faq">FAQ</a>
         </div>
-        <p className="footer__copy">&copy; {new Date().getFullYear()} {SITE.name}. Todos os direitos reservados.</p>
+        <p className="footer__copy">
+          &copy; {new Date().getFullYear()} {SITE.name}. Todos os direitos reservados.
+        </p>
       </div>
     </footer>
   )

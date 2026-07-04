@@ -42,8 +42,7 @@ const SEGMENTS: SegmentConfig[] = [
     label: 'Salão de Beleza',
     eyebrow: 'Para salões de beleza',
     title: 'Sua agenda cheia, sua equipe rendendo',
-    subtitle:
-      'Agendamento online, lembretes no WhatsApp e comissão da equipe — tudo automatizado.',
+    subtitle: 'Agendamento online, lembretes no WhatsApp e comissão da equipe — tudo automatizado.',
     pills: ['Escova & coloração', 'Comissão da equipe', 'Manicure integrada'],
     btnClass: 'hero-panel__btn--salao',
     btnLabel: 'Começar para Salão',
@@ -157,11 +156,7 @@ export default function Hero() {
           </ul>
 
           <div className="hero-panel__actions">
-            <Link
-              to={ctaPath}
-              className={`btn ${current.btnClass} btn--lg`}
-              onClick={handleCta}
-            >
+            <Link to={ctaPath} className={`btn ${current.btnClass} btn--lg`} onClick={handleCta}>
               {current.btnLabel}
             </Link>
           </div>
@@ -174,9 +169,13 @@ export default function Hero() {
         <div className={`hero-mock ${current.mockClass}`} aria-hidden="true">
           <div className={`hero-mock__header ${current.mockHeaderClass}`}>
             <div className="hero-mock__dot-row">
-              <span /><span /><span />
+              <span />
+              <span />
+              <span />
             </div>
-            <span className={`hero-mock__title ${current.mockTitleClass}`}>{current.mockTitle}</span>
+            <span className={`hero-mock__title ${current.mockTitleClass}`}>
+              {current.mockTitle}
+            </span>
           </div>
           <div className={`hero-mock__date ${current.mockDateClass}`}>{heroAgenda.date}</div>
           <ul className="hero-mock__list">

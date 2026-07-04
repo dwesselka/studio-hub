@@ -1,7 +1,12 @@
 import { safeLocalStorage } from '@/lib/storage'
 import { sendWhatsApp } from '@/lib/services/whatsapp'
 import { getAllAtendimentos } from '@/lib/db/atendimento'
-import type { Feedback, Campaign, ClientSegment, CampaignStats } from '@/features/pos-atendimento/types'
+import type {
+  Feedback,
+  Campaign,
+  ClientSegment,
+  CampaignStats,
+} from '@/features/pos-atendimento/types'
 
 const FEEDBACK_KEY = 'infinity_feedback'
 const CAMPAIGN_KEY = 'infinity_campaigns'
@@ -103,10 +108,7 @@ export function toggleCampaign(id: string): Campaign | null {
   return list[idx]
 }
 
-export function incrementCampaignStat(
-  id: string,
-  stat: keyof CampaignStats,
-): Campaign | null {
+export function incrementCampaignStat(id: string, stat: keyof CampaignStats): Campaign | null {
   const list = loadCampaigns()
   const idx = list.findIndex((c) => c.id === id)
   if (idx === -1) return null
@@ -127,9 +129,7 @@ export function getFeedbackByAtendimento(atendimentoId: string): Feedback | unde
   return loadFeedback().find((f) => f.atendimentoId === atendimentoId)
 }
 
-export function createFeedback(
-  data: Omit<Feedback, 'id' | 'createdAt'>,
-): Feedback {
+export function createFeedback(data: Omit<Feedback, 'id' | 'createdAt'>): Feedback {
   const list = loadFeedback()
   const feedback: Feedback = {
     ...data,
@@ -141,7 +141,13 @@ export function createFeedback(
   return feedback
 }
 
-export function getNPS(): { score: number; total: number; promoters: number; detractors: number; passive: number } {
+export function getNPS(): {
+  score: number
+  total: number
+  promoters: number
+  detractors: number
+  passive: number
+} {
   const all = loadFeedback()
   if (all.length === 0) return { score: 0, total: 0, promoters: 0, detractors: 0, passive: 0 }
 

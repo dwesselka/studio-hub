@@ -186,7 +186,9 @@ export function scheduleReminders(): void {
 
   for (const a of pending) {
     const [h, m] = a.startTime.split(':').map(Number)
-    const aptMs = new Date(`${a.date}T${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`).getTime()
+    const aptMs = new Date(
+      `${a.date}T${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`,
+    ).getTime()
     if (isNaN(aptMs)) continue
 
     const triggers = [aptMs - 24 * 60 * 60 * 1000, aptMs - 2 * 60 * 60 * 1000]
@@ -216,7 +218,9 @@ function fireReminders(): void {
 
   for (const a of pending) {
     const [h, m] = a.startTime.split(':').map(Number)
-    const aptMs = new Date(`${a.date}T${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`).getTime()
+    const aptMs = new Date(
+      `${a.date}T${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`,
+    ).getTime()
     if (isNaN(aptMs)) continue
 
     if (now >= aptMs - 24 * 60 * 60 * 1000 && now < aptMs - 24 * 60 * 60 * 1000 + 5000) {

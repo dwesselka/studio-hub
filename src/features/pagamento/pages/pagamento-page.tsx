@@ -44,17 +44,19 @@ export function PagamentoPage() {
   const filteredPayments = (payments as unknown as Payment[]).filter((p) => {
     if (search) {
       const q = search.toLowerCase()
-      if (
-        !p.clientName.toLowerCase().includes(q) &&
-        !p.receiptNumber?.toLowerCase().includes(q)
-      )
+      if (!p.clientName.toLowerCase().includes(q) && !p.receiptNumber?.toLowerCase().includes(q))
         return false
     }
     return true
   })
 
   const isError = false
-  const refetch = () => { refetchPayments(); refetchSummary(); refetchPro(); refetchSvc() }
+  const refetch = () => {
+    refetchPayments()
+    refetchSummary()
+    refetchPro()
+    refetchSvc()
+  }
 
   async function handleConfirm(id: string) {
     await confirmMut.mutateAsync(id)
@@ -96,11 +98,13 @@ export function PagamentoPage() {
 
       <div className="flex items-center gap-3">
         <button
-          onClick={() => setCurrentDate((d) => {
-            const dt = new Date(d + 'T12:00:00')
-            dt.setDate(dt.getDate() - 1)
-            return dt.toISOString().split('T')[0]
-          })}
+          onClick={() =>
+            setCurrentDate((d) => {
+              const dt = new Date(d + 'T12:00:00')
+              dt.setDate(dt.getDate() - 1)
+              return dt.toISOString().split('T')[0]
+            })
+          }
           className="flex h-9 w-9 items-center justify-center rounded-lg border border-border hover:bg-muted transition-colors"
         >
           ←
@@ -109,11 +113,13 @@ export function PagamentoPage() {
           {formatDate(currentDate)}
         </span>
         <button
-          onClick={() => setCurrentDate((d) => {
-            const dt = new Date(d + 'T12:00:00')
-            dt.setDate(dt.getDate() + 1)
-            return dt.toISOString().split('T')[0]
-          })}
+          onClick={() =>
+            setCurrentDate((d) => {
+              const dt = new Date(d + 'T12:00:00')
+              dt.setDate(dt.getDate() + 1)
+              return dt.toISOString().split('T')[0]
+            })
+          }
           className="flex h-9 w-9 items-center justify-center rounded-lg border border-border hover:bg-muted transition-colors"
         >
           →
@@ -206,7 +212,7 @@ export function PagamentoPage() {
               <DollarSign className="h-4 w-4 text-muted-foreground" />
               Receita por Profissional
             </h3>
-              {(revenueByPro as { name: string; total: number }[]).length === 0 ? (
+            {(revenueByPro as { name: string; total: number }[]).length === 0 ? (
               <div className="py-6 text-center text-xs text-muted-foreground">Sem dados</div>
             ) : (
               <div className="space-y-2">
@@ -388,7 +394,9 @@ function PaymentRow({
             </div>
             <div>
               <span className="text-muted-foreground">Valor líquido: </span>
-              <span className="text-foreground font-semibold">R$ {(payment.netValue / 100).toFixed(2)}</span>
+              <span className="text-foreground font-semibold">
+                R$ {(payment.netValue / 100).toFixed(2)}
+              </span>
             </div>
             <div>
               <span className="text-muted-foreground">Data: </span>

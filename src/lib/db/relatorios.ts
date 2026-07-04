@@ -3,7 +3,11 @@ import { getAllAtendimentos } from '@/lib/db/atendimento'
 import type { Atendimento } from '@/features/atendimento/types'
 import type { ReportKPIs, AIRecommendation, PeriodKey } from '@/features/relatorios/types'
 
-function getDateRange(key: PeriodKey, customStart?: string, customEnd?: string): { start: string; end: string } {
+function getDateRange(
+  key: PeriodKey,
+  customStart?: string,
+  customEnd?: string,
+): { start: string; end: string } {
   const today = new Date()
   const toStr = (d: Date) => d.toISOString().split('T')[0]
 
@@ -56,9 +60,8 @@ export function computeKPIs(
 
   const totalAppointments = periodAppointments.length
   const totalRevenue = completedAtendimentos.reduce((sum, a) => sum + a.totalValue, 0)
-  const averageTicket = completedAtendimentos.length > 0
-    ? Math.round(totalRevenue / completedAtendimentos.length)
-    : 0
+  const averageTicket =
+    completedAtendimentos.length > 0 ? Math.round(totalRevenue / completedAtendimentos.length) : 0
 
   const cancelled = periodAppointments.filter((a) => a.status === 'cancelled').length
   const noShow = periodAppointments.filter((a) => a.status === 'no-show').length
@@ -66,20 +69,17 @@ export function computeKPIs(
     (a) => a.status === 'confirmed' || a.status === 'pending',
   ).length
 
-  const cancellationRate = totalAppointments > 0 ? Math.round((cancelled / totalAppointments) * 100) : 0
+  const cancellationRate =
+    totalAppointments > 0 ? Math.round((cancelled / totalAppointments) * 100) : 0
   const noShowRate = totalAppointments > 0 ? Math.round((noShow / totalAppointments) * 100) : 0
 
   const occupancyDays = getDaysInRange(start, end)
   const totalSlotsAvailable = occupancyDays.length * 8 * 3
 
   const occupancyRate =
-    totalSlotsAvailable > 0
-      ? Math.min(100, Math.round((confirmed / totalSlotsAvailable) * 100))
-      : 0
+    totalSlotsAvailable > 0 ? Math.min(100, Math.round((confirmed / totalSlotsAvailable) * 100)) : 0
 
-  const allClientPhones = [
-    ...new Set(periodAppointments.map((a) => a.clientPhone)),
-  ]
+  const allClientPhones = [...new Set(periodAppointments.map((a) => a.clientPhone))]
 
   const clientVisitCount = new Map<string, number>()
   for (const phone of allClientPhones) {
@@ -90,22 +90,19 @@ export function computeKPIs(
   }
 
   const recurringClients = [...clientVisitCount.values()].filter((v) => v >= 2).length
-  const newClients = allClientPhones.filter(
-    (phone) => {
-      const visits = allAtendimentos.filter(
-        (a) => a.clientPhone === phone && a.status === 'completed' && a.date >= start && a.date <= end,
-      ).length
-      const priorVisits = allAtendimentos.filter(
-        (a) => a.clientPhone === phone && a.status === 'completed' && a.date < start,
-      ).length
-      return visits > 0 && priorVisits === 0
-    },
-  ).length
+  const newClients = allClientPhones.filter((phone) => {
+    const visits = allAtendimentos.filter(
+      (a) =>
+        a.clientPhone === phone && a.status === 'completed' && a.date >= start && a.date <= end,
+    ).length
+    const priorVisits = allAtendimentos.filter(
+      (a) => a.clientPhone === phone && a.status === 'completed' && a.date < start,
+    ).length
+    return visits > 0 && priorVisits === 0
+  }).length
 
   const retentionRate =
-    allClientPhones.length > 0
-      ? Math.round((recurringClients / allClientPhones.length) * 100)
-      : 0
+    allClientPhones.length > 0 ? Math.round((recurringClients / allClientPhones.length) * 100) : 0
 
   const revenueByProfessional = aggregateRevenueBy(completedAtendimentos, 'professional')
   const revenueByService = aggregateRevenueBy(completedAtendimentos, 'service')

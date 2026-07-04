@@ -1,10 +1,23 @@
 import { useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { BarChart3, MessageSquare, ThumbsUp, Users, Star, Heart, TrendingUp, AlertCircle } from 'lucide-react'
+import {
+  BarChart3,
+  MessageSquare,
+  ThumbsUp,
+  Users,
+  Star,
+  Heart,
+  TrendingUp,
+  AlertCircle,
+} from 'lucide-react'
 import { useOnlineStatus } from '@/hooks/use-online-status'
 import { useMotionConfig, fadeInUp } from '@/lib/motion'
 import { ErrorState, OfflineState } from '@/components/ui/state-panel'
-import { useCampaigns, useFeedback, useNPS } from '@/features/pos-atendimento/hooks/use-pos-atendimento-data'
+import {
+  useCampaigns,
+  useFeedback,
+  useNPS,
+} from '@/features/pos-atendimento/hooks/use-pos-atendimento-data'
 import { CampaignCard } from '@/features/pos-atendimento/components/campaign-card'
 import { FeedbackForm } from '@/features/pos-atendimento/components/feedback-form'
 import { getAllAtendimentos } from '@/lib/atendimento-db'
@@ -13,8 +26,16 @@ export function PosAtendimentoPage() {
   const online = useOnlineStatus()
   const { transition } = useMotionConfig()
 
-  const { data: campaigns = [], isError: campaignsError, refetch: refetchCampaigns } = useCampaigns()
-  const { data: feedbackList = [], isError: feedbackError, refetch: refetchFeedback } = useFeedback()
+  const {
+    data: campaigns = [],
+    isError: campaignsError,
+    refetch: refetchCampaigns,
+  } = useCampaigns()
+  const {
+    data: feedbackList = [],
+    isError: feedbackError,
+    refetch: refetchFeedback,
+  } = useFeedback()
   const { data: nps, isError: npsError } = useNPS()
 
   const recentAtendimentos = useMemo(() => {
@@ -25,7 +46,10 @@ export function PosAtendimentoPage() {
   }, [])
 
   const isError = campaignsError || feedbackError || npsError
-  const refetch = () => { refetchCampaigns(); refetchFeedback() }
+  const refetch = () => {
+    refetchCampaigns()
+    refetchFeedback()
+  }
 
   if (!online) return <OfflineState />
   if (isError) return <ErrorState onRetry={refetch} />
@@ -180,10 +204,7 @@ export function PosAtendimentoPage() {
             ) : (
               <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
                 {feedbackList.slice(0, 10).map((f) => (
-                  <div
-                    key={f.id}
-                    className="rounded-lg border border-border p-2.5 space-y-1"
-                  >
+                  <div key={f.id} className="rounded-lg border border-border p-2.5 space-y-1">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-medium text-foreground">{f.clientName}</span>
                       <span

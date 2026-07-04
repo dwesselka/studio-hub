@@ -1,7 +1,10 @@
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, AlertCircle } from 'lucide-react'
-import { useRescheduleAppointment, useCancelAppointment } from '@/features/agenda/hooks/use-agenda-data'
+import {
+  useRescheduleAppointment,
+  useCancelAppointment,
+} from '@/features/agenda/hooks/use-agenda-data'
 import { hasConflict } from '@/lib/agenda-db'
 import { addDays, getDateString, formatDateFull } from '@/features/agenda/types'
 import type { Appointment } from '@/features/agenda/types'
@@ -45,7 +48,7 @@ export function RescheduleDialog({
   const hours = businessHours.find((h) => h.dayOfWeek === dayOfWeek)
   const isDayOpen = hours?.isOpen ?? false
 
-  function generateTimeSlots(): string[] {
+  const timeSlots = useMemo(() => {
     if (!hours || !hours.isOpen) return []
     const [openH, openM] = hours.openTime.split(':').map(Number)
     const [closeH, closeM] = hours.closeTime.split(':').map(Number)
@@ -61,9 +64,7 @@ export function RescheduleDialog({
       slots.push(time)
     }
     return slots
-  }
-
-  const timeSlots = useMemo(generateTimeSlots, [hours, appointment?.serviceDuration])
+  }, [hours, appointment?.serviceDuration])
 
   const handleDateChange = (offset: number) => {
     setSelectedDate((d) => addDays(d, offset))
@@ -91,7 +92,9 @@ export function RescheduleDialog({
     const endM = totalMinutes % 60
     const endTime = `${String(endH).padStart(2, '0')}:${String(endM).padStart(2, '0')}`
 
-    if (hasConflict(appointment.professionalId, selectedDate, selectedTime, endTime, appointment.id)) {
+    if (
+      hasConflict(appointment.professionalId, selectedDate, selectedTime, endTime, appointment.id)
+    ) {
       setError('Conflito de horário com outro agendamento')
       return
     }

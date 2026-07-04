@@ -1,5 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import type { LoyaltyProgram, LoyaltyPromotion, ClientPoints, PointsTransaction } from '@/features/fidelizacao/types'
+import type {
+  LoyaltyProgram,
+  LoyaltyPromotion,
+  ClientPoints,
+  PointsTransaction,
+} from '@/features/fidelizacao/types'
 import {
   getLoyaltyProgram,
   updateLoyaltyProgram,
@@ -81,9 +86,7 @@ export function usePromotions() {
 export function useCreatePromotion() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (
-      data: Omit<LoyaltyPromotion, 'id' | 'createdAt' | 'stats'>,
-    ) => {
+    mutationFn: async (data: Omit<LoyaltyPromotion, 'id' | 'createdAt' | 'stats'>) => {
       await new Promise((r) => setTimeout(r, 200))
       return createPromotion(data)
     },

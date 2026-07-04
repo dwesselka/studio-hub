@@ -11,6 +11,8 @@ import {
   FileText,
   UserCog,
   Settings,
+  ClipboardCheck,
+  Heart,
   type LucideIcon,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -33,6 +35,8 @@ const iconMap: Record<string, LucideIcon> = {
   FileText,
   UserCog,
   Settings,
+  ClipboardCheck,
+  Heart,
 }
 
 interface AppSidebarProps {

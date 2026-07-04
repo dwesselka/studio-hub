@@ -17,14 +17,14 @@ Registrar serviços prestados e insumos consumidos durante cada atendimento, vin
 
 ## Subtasks
 
-- [ ] Criar tela de atendimento vinculada ao agendamento do dia
-- [ ] Registrar serviços realizados, profissional responsável e duração
-- [ ] Associar insumos consumidos ao atendimento com quantidade
-- [ ] Implementar baixa automática de estoque ao finalizar atendimento
-- [ ] Permitir adicionar observações e anotações por atendimento
-- [ ] Exibir histórico completo de atendimentos no perfil do cliente
-- [ ] Marcar atendimento como concluído, em andamento ou cancelado
-- [ ] Gerar resumo do atendimento para encaminhar ao pagamento
+- [x] Criar tela de atendimento vinculada ao agendamento do dia
+- [x] Registrar serviços realizados, profissional responsável e duração
+- [x] Associar insumos consumidos ao atendimento com quantidade
+- [x] Implementar baixa automática de estoque ao finalizar atendimento
+- [x] Permitir adicionar observações e anotações por atendimento
+- [x] Exibir histórico completo de atendimentos no perfil do cliente
+- [x] Marcar atendimento como concluído, em andamento ou cancelado
+- [x] Gerar resumo do atendimento para encaminhar ao pagamento
 
 ## Critérios de aceite
 

@@ -1,5 +1,85 @@
 **# Relatório de Code Review — Infinity Partner
 
+---
+
+## Melhorias Aplicadas (Enterprise Excellence Review)
+
+### 1. Eliminar duplicidade Header.jsx/Header.tsx
+`Header.jsx` removido. `Header.tsx` mantido com tipagem completa e imports padronizados para `@/`.
+
+### 2. Migrar landing page de JSX para TSX
+**10 componentes** convertidos: `BenefitIcon`, `Benefits`, `CTA`, `FAQ`, `Footer`, `Hero`, `Plans`, `Segments`, `Testimonials`, `LandingPage`. Todos com props tipadas e imports via `@/`.
+
+### 3. Refatorar data/content.ts em módulos por domínio
+Arquivo monolítico de 360 linhas dividido em **8 módulos** em `src/data/landing/`:
+- `site.ts` — config do site
+- `hero.ts` — hero config + agenda mock
+- `segments.ts` — segmentos
+- `benefits.ts` — benefícios
+- `testimonials.ts` — depoimentos
+- `plans.ts` — planos
+- `faq.ts` — FAQ
+- `chatbot.ts` — conhecimento do chatbot
+
+`content.ts` mantido como barrel export para retrocompatibilidade.
+
+### 4. Organizar src/lib/ em subdiretórios semânticos
+```
+lib/
+  utils/cn.ts          # className merge
+  utils/format.ts      # formatação numérica
+  db/agenda.ts         # data-access de agenda
+  db/atendimento.ts    # data-access de atendimento
+  db/fidelizacao.ts    # data-access de fidelização
+  db/pagamento.ts      # data-access de pagamento
+  db/pos-atendimento.ts
+  db/relatorios.ts     # data-access de relatórios
+  services/chatbot.ts  # lógica de chatbot
+  services/analytics.ts # tracking de analytics
+  services/whatsapp.ts # integração WhatsApp
+  animation/motion.ts  # configs de animação
+```
+
+Re-exports nos arquivos originais garantem que imports existentes continuem funcionando.
+
+### 5. Extrair PageLoader para componente reutilizável
+Criado `src/components/ui/page-loader.tsx` — usado em `App.tsx` e disponível para qualquer lazy route.
+
+### 6. Criar LoadingSpinner reutilizável
+Criado `src/components/ui/loading.tsx` com props `label?` e `size?` ('sm' | 'md' | 'lg'). Substitui loading inline em `auth-guard.tsx`.
+
+### 7. Consolidar módulo de autenticação
+- `auth-context-def.ts` fundido em `context.tsx`
+- `auth-guard.tsx` movido de `components/auth/` para `features/auth/guard.tsx`
+- `onboarding-db.ts` movido de `lib/` para `features/onboarding/db.ts`
+- Funções de auth extraídas para `features/auth/db.ts`
+- `components/auth/` removido
+
+### 8. Adicionar barrel exports
+- `src/hooks/index.ts` — re-exporta todos os hooks
+- `src/features/agenda/index.ts` — barrel da feature
+- `src/features/agenda/hooks/index.ts` — barrel dos hooks
+
+### 9. Migrar testes de .js/.jsx para .ts/.tsx
+**4 arquivos** migrados: `analytics.test.ts`, `chatbot.test.ts`, `Chatbot.test.tsx`, `descoberta.acceptance.test.tsx`.
+
+### 10. Padronizar import paths
+Imports relativos (`../../data/content`, `../../lib/analytics`) substituídos por `@/` alias nos componentes de landing.
+
+### 11. Remover diretórios vazios
+`features/auth/components/`, `features/onboarding/hooks/` removidos.
+
+### 12. Adicionar tsconfig paths para @test/
+`"@test/*": ["./src/test/*"]` adicionado ao `tsconfig.json`.
+
+### Melhorias opcionais
+- `/// <reference types="vitest/globals" />` e `/// <reference types="node" />` em `vite-env.d.ts`
+- `.nvmrc` criado (Node 20)
+- `@types/node` instalado como devDependency
+- `code_review_report.md` e `enterprise-excellence-review.md` no `.gitignore`
+
+---
+
 Este relatório apresenta uma análise crítica e profunda do codebase atual do **Infinity Partner**, realizada sob a perspectiva de um Principal Engineer e Software Architect. Os problemas foram categorizados por gravidade e acompanhados de impactos técnicos/financeiros, soluções recomendadas, exemplos práticos de implementação e trade-offs associados.
 
 ---

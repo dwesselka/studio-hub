@@ -11,6 +11,11 @@ const routeBreadcrumbs: Record<string, BreadcrumbItem[]> = {
   '/app': [{ label: 'Dashboard' }],
   '/app/analytics': [{ label: 'Dashboard', href: '/app' }, { label: 'Analytics' }],
   '/app/agendamentos': [{ label: 'Dashboard', href: '/app' }, { label: 'Agendamentos' }],
+  '/app/atendimento': [{ label: 'Dashboard', href: '/app' }, { label: 'Atendimento' }],
+  '/app/pos-atendimento': [{ label: 'Dashboard', href: '/app' }, { label: 'Pós-Atendimento' }],
+  '/app/relatorios': [{ label: 'Dashboard', href: '/app' }, { label: 'Relatórios' }],
+  '/app/fidelizacao': [{ label: 'Dashboard', href: '/app' }, { label: 'Fidelização' }],
+  '/app/pagamentos': [{ label: 'Dashboard', href: '/app' }, { label: 'Pagamentos' }],
 }
 
 function getBreadcrumbs(pathname: string): BreadcrumbItem[] {

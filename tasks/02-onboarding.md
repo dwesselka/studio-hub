@@ -24,7 +24,7 @@ Permitir que novos parceiros se cadastrem rapidamente e tenham o negócio config
 - [x] Pré-popular catálogo de serviços conforme segmento escolhido
 - [x] Permitir cadastro inicial de profissionais/equipe
 - [x] Exibir checklist de conclusão do perfil com progresso visual
-- [ ] Enviar e-mail de boas-vindas com próximos passos
+- [x] Enviar WhatsApp de boas-vindas com próximos passos
 - [x] Redirecionar ao dashboard após conclusão do setup mínimo
 
 ## Critérios de aceite

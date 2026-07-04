@@ -17,14 +17,14 @@ Coletar feedback após cada visita e disparar campanhas automáticas para aument
 
 ## Subtasks
 
-- [ ] Enviar solicitação de feedback (NPS ou avaliação) após atendimento concluído
-- [ ] Criar formulário simples de avaliação (nota + comentário opcional)
-- [ ] Configurar campanha automática de retorno (ex.: 30 dias sem visita)
-- [ ] Configurar campanha de upsell (sugerir serviço complementar)
-- [ ] Configurar campanha de aniversário do cliente
-- [ ] Implementar segmentação básica (ativo, inativo, alto valor, em risco)
-- [ ] Permitir agendar ou pausar campanhas automáticas
-- [ ] Registrar taxa de resposta e conversão das campanhas
+- [x] Enviar solicitação de feedback (NPS ou avaliação) após atendimento concluído
+- [x] Criar formulário simples de avaliação (nota + comentário opcional)
+- [x] Configurar campanha automática de retorno (ex.: 30 dias sem visita)
+- [x] Configurar campanha de upsell (sugerir serviço complementar)
+- [x] Configurar campanha de aniversário do cliente
+- [x] Implementar segmentação básica (ativo, inativo, alto valor, em risco)
+- [x] Permitir agendar ou pausar campanhas automáticas
+- [x] Registrar taxa de resposta e conversão das campanhas
 
 ## Critérios de aceite
 

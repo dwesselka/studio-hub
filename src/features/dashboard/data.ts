@@ -58,6 +58,7 @@ export const navigationGroups: NavGroup[] = [
         icon: 'Calendar',
         badge: '12',
       },
+      { id: 'attendance', label: 'Atendimento', href: '/app/atendimento', icon: 'ClipboardCheck' },
       { id: 'clients', label: 'Clientes', href: '/app/clientes', icon: 'Users' },
       { id: 'services', label: 'Serviços', href: '/app/servicos', icon: 'Scissors' },
     ],
@@ -67,6 +68,7 @@ export const navigationGroups: NavGroup[] = [
     label: 'Negócio',
     items: [
       { id: 'payments', label: 'Pagamentos', href: '/app/pagamentos', icon: 'CreditCard' },
+      { id: 'pos-atendimento', label: 'Pós-Atendimento', href: '/app/pos-atendimento', icon: 'Heart' },
       { id: 'loyalty', label: 'Fidelização', href: '/app/fidelizacao', icon: 'Gift' },
       { id: 'reports', label: 'Relatórios', href: '/app/relatorios', icon: 'FileText' },
     ],

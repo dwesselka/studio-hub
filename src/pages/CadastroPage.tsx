@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import SuccessModal from '@/components/SuccessModal'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { plans, SITE } from '@/data/content'
 import { trackCtaClick, trackPageView } from '@/lib/analytics'
-import { CheckCircle2, ArrowRight } from 'lucide-react'
+import { CheckCircle2, ArrowRight, Loader2 } from 'lucide-react'
 
 const SEGMENTS = [
   { id: 'salao', label: 'Salão de beleza' },
@@ -24,6 +24,7 @@ const cadastroSchema = z.object({
     .string()
     .email('Formato de e-mail inválido')
     .max(100, 'O e-mail deve ter no máximo 100 caracteres')
+    .toLowerCase()
     .trim(),
   telefone: z
     .string()
@@ -38,11 +39,20 @@ const cadastroSchema = z.object({
 })
 
 type CadastroFormData = z.infer<typeof cadastroSchema>
+type FieldName = keyof CadastroFormData
+
+const FIELD_ERROR_IDS: Record<FieldName, string> = {
+  nome: 'nome-error',
+  email: 'email-error',
+  telefone: 'telefone-error',
+  negocio: 'negocio-error',
+  segmento: 'segmento-error',
+}
 
 export default function CadastroPage() {
   const [searchParams] = useSearchParams()
   const planId = searchParams.get('plano') || 'starter'
-  const selectedPlan = plans.find((p) => p.id === planId) || plans[0]
+  const selectedPlan = plans.find((p) => p.id === planId) ?? plans[0]
 
   const [isSuccess, setIsSuccess] = useState(false)
   const [negocioName, setNegocioName] = useState('')
@@ -66,14 +76,15 @@ export default function CadastroPage() {
     trackPageView('/cadastro')
   }, [])
 
-  const onSubmit = async (data: CadastroFormData) => {
-    setNegocioName(data.negocio)
-    trackCtaClick('cadastro-submit', planId)
-
-    // Simulando requisição assíncrona rápida de rede
-    await new Promise((resolve) => setTimeout(resolve, 800))
-    setIsSuccess(true)
-  }
+  const onSubmit = useCallback(
+    async (data: CadastroFormData) => {
+      setNegocioName(data.negocio)
+      trackCtaClick('cadastro-submit', planId)
+      await new Promise((resolve) => setTimeout(resolve, 800))
+      setIsSuccess(true)
+    },
+    [planId],
+  )
 
   return (
     <div className="cadastro-page min-h-svh flex flex-col">
@@ -117,6 +128,8 @@ export default function CadastroPage() {
             <form
               className="cadastro-form mt-6 bg-card border rounded-xl p-6 shadow-card"
               onSubmit={handleSubmit(onSubmit)}
+              noValidate
+              aria-busy={isSubmitting}
             >
               <div className="form-group">
                 <label htmlFor="nome" className="text-sm font-semibold mb-1 block">
@@ -129,11 +142,11 @@ export default function CadastroPage() {
                   className={errors.nome ? 'border-destructive focus:ring-destructive' : ''}
                   {...register('nome')}
                   aria-invalid={!!errors.nome}
-                  aria-describedby={errors.nome ? 'nome-error' : undefined}
+                  aria-describedby={errors.nome ? FIELD_ERROR_IDS.nome : undefined}
                 />
                 {errors.nome && (
                   <span
-                    id="nome-error"
+                    id={FIELD_ERROR_IDS.nome}
                     className="text-xs text-destructive mt-1 block"
                     role="alert"
                   >
@@ -153,11 +166,11 @@ export default function CadastroPage() {
                   className={errors.email ? 'border-destructive focus:ring-destructive' : ''}
                   {...register('email')}
                   aria-invalid={!!errors.email}
-                  aria-describedby={errors.email ? 'email-error' : undefined}
+                  aria-describedby={errors.email ? FIELD_ERROR_IDS.email : undefined}
                 />
                 {errors.email && (
                   <span
-                    id="email-error"
+                    id={FIELD_ERROR_IDS.email}
                     className="text-xs text-destructive mt-1 block"
                     role="alert"
                   >
@@ -177,11 +190,11 @@ export default function CadastroPage() {
                   className={errors.telefone ? 'border-destructive focus:ring-destructive' : ''}
                   {...register('telefone')}
                   aria-invalid={!!errors.telefone}
-                  aria-describedby={errors.telefone ? 'telefone-error' : undefined}
+                  aria-describedby={errors.telefone ? FIELD_ERROR_IDS.telefone : undefined}
                 />
                 {errors.telefone && (
                   <span
-                    id="telefone-error"
+                    id={FIELD_ERROR_IDS.telefone}
                     className="text-xs text-destructive mt-1 block"
                     role="alert"
                   >
@@ -201,11 +214,11 @@ export default function CadastroPage() {
                   className={errors.negocio ? 'border-destructive focus:ring-destructive' : ''}
                   {...register('negocio')}
                   aria-invalid={!!errors.negocio}
-                  aria-describedby={errors.negocio ? 'negocio-error' : undefined}
+                  aria-describedby={errors.negocio ? FIELD_ERROR_IDS.negocio : undefined}
                 />
                 {errors.negocio && (
                   <span
-                    id="negocio-error"
+                    id={FIELD_ERROR_IDS.negocio}
                     className="text-xs text-destructive mt-1 block"
                     role="alert"
                   >
@@ -223,7 +236,7 @@ export default function CadastroPage() {
                   className={errors.segmento ? 'border-destructive focus:ring-destructive' : ''}
                   {...register('segmento')}
                   aria-invalid={!!errors.segmento}
-                  aria-describedby={errors.segmento ? 'segmento-error' : undefined}
+                  aria-describedby={errors.segmento ? FIELD_ERROR_IDS.segmento : undefined}
                 >
                   <option value="">Selecione...</option>
                   {SEGMENTS.map((s) => (
@@ -234,7 +247,7 @@ export default function CadastroPage() {
                 </select>
                 {errors.segmento && (
                   <span
-                    id="segmento-error"
+                    id={FIELD_ERROR_IDS.segmento}
                     className="text-xs text-destructive mt-1 block"
                     role="alert"
                   >
@@ -246,9 +259,16 @@ export default function CadastroPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn btn--primary btn--lg btn--block w-full justify-center mt-4"
+                className="btn btn--primary btn--lg btn--block w-full justify-center mt-4 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:transform-none"
               >
-                {isSubmitting ? 'Criando conta...' : 'Criar conta e continuar'}
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                    Criando conta...
+                  </>
+                ) : (
+                  'Criar conta e continuar'
+                )}
               </button>
 
               <div className="cadastro-form__note text-xs text-muted-foreground mt-4 text-center">

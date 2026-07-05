@@ -6,9 +6,96 @@ import { generateId } from '@/features/onboarding/types'
 const AUTH_KEY = 'infinity_auth'
 const SESSION_KEY = 'infinity_session'
 
+function seedUsers(): AuthUser[] {
+  const password = '123456'
+  const users: AuthUser[] = [
+    {
+      id: generateId(),
+      email: 'homem@teste.com',
+      name: 'Carlos Silva',
+      hashedPassword: btoa(password),
+      onboardingData: {
+        ...createEmptyOnboardingData(),
+        account: { email: 'homem@teste.com', password, nome: 'Carlos Silva' },
+        business: {
+          nome: 'Barbearia do Carlos',
+          segmento: 'barbearia',
+          endereco: 'Rua A, 123',
+          telefone: '(11) 99999-0001',
+        },
+        progress: {
+          accountCreated: true,
+          businessDataComplete: true,
+          hoursConfigured: true,
+          servicesReviewed: true,
+          teamAdded: true,
+        },
+        completed: true,
+      },
+      credits: 20,
+      plan: 'pro',
+    },
+    {
+      id: generateId(),
+      email: 'mulher@teste.com',
+      name: 'Ana Costa',
+      hashedPassword: btoa(password),
+      onboardingData: {
+        ...createEmptyOnboardingData(),
+        account: { email: 'mulher@teste.com', password, nome: 'Ana Costa' },
+        business: {
+          nome: 'Salão da Ana',
+          segmento: 'salao',
+          endereco: 'Rua B, 456',
+          telefone: '(11) 99999-0002',
+        },
+        progress: {
+          accountCreated: true,
+          businessDataComplete: true,
+          hoursConfigured: true,
+          servicesReviewed: true,
+          teamAdded: true,
+        },
+        completed: true,
+      },
+      credits: 20,
+      plan: 'pro',
+    },
+    {
+      id: generateId(),
+      email: 'lojista@teste.com',
+      name: 'Rede Infinity',
+      hashedPassword: btoa(password),
+      onboardingData: {
+        ...createEmptyOnboardingData(),
+        account: { email: 'lojista@teste.com', password, nome: 'Rede Infinity' },
+        business: {
+          nome: 'Rede Infinity de Beleza',
+          segmento: 'salao',
+          endereco: 'Av Central, 789',
+          telefone: '(11) 99999-0003',
+        },
+        progress: {
+          accountCreated: true,
+          businessDataComplete: true,
+          hoursConfigured: true,
+          servicesReviewed: true,
+          teamAdded: true,
+        },
+        completed: true,
+      },
+      credits: 999,
+      plan: 'premium',
+    },
+  ]
+  saveUsers(users)
+  return users
+}
+
 export function getUsers(): AuthUser[] {
   const raw = safeLocalStorage.getItem(AUTH_KEY)
-  return raw ? JSON.parse(raw) : []
+  if (!raw) return seedUsers()
+  return JSON.parse(raw)
 }
 
 function saveUsers(users: AuthUser[]): void {

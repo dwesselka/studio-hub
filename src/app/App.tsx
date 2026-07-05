@@ -40,6 +40,31 @@ const PagamentoPage = lazy(() =>
     default: m.PagamentoPage,
   })),
 )
+const AnalyticsPage = lazy(() =>
+  import('@/features/analytics/pages/analytics-page').then((m) => ({
+    default: m.AnalyticsPage,
+  })),
+)
+const ClientesPage = lazy(() =>
+  import('@/features/clientes/pages/clientes-page').then((m) => ({
+    default: m.ClientesPage,
+  })),
+)
+const ServicosPage = lazy(() =>
+  import('@/features/servicos/pages/servicos-page').then((m) => ({
+    default: m.ServicosPage,
+  })),
+)
+const EquipePage = lazy(() =>
+  import('@/features/equipe/pages/equipe-page').then((m) => ({
+    default: m.EquipePage,
+  })),
+)
+const ConfiguracoesPage = lazy(() =>
+  import('@/features/configuracoes/pages/configuracoes-page').then((m) => ({
+    default: m.ConfiguracoesPage,
+  })),
+)
 
 export default function App() {
   return (
@@ -66,6 +91,11 @@ export default function App() {
               <Route path="relatorios" element={<RelatoriosPage />} />
               <Route path="fidelizacao" element={<FidelizacaoPage />} />
               <Route path="pagamentos" element={<PagamentoPage />} />
+              <Route path="analytics" element={<AnalyticsPage />} />
+              <Route path="clientes" element={<ClientesPage />} />
+              <Route path="servicos" element={<ServicosPage />} />
+              <Route path="equipe" element={<EquipePage />} />
+              <Route path="configuracoes" element={<ConfiguracoesPage />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

@@ -33,21 +33,27 @@ describe('Critério: Landing page pública sem autenticação', () => {
     expect(await screen.findByRole('heading', { name: /Criar minha conta/i })).toBeInTheDocument()
   })
 
-  it('LandingPage exibe chatbot e seções principais', () => {
+  it('LandingPage exibe seções principais', () => {
     renderWithRouter(<LandingPage />)
     expect(screen.getByRole('main')).toBeInTheDocument()
-    expect(screen.getByLabelText(/Abrir assistente virtual/i)).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /Sua agenda cheia/i })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: /Infinity Partner/i })).toBeInTheDocument()
   })
 })
 
 describe('Critério: CTA principal leva ao fluxo de cadastro', () => {
-  it('Hero CTA aponta para /cadastro', () => {
+  it('Hero CTA aponta para /cadastro com segmento', async () => {
+    const user = userEvent.setup()
     renderWithRouter(<Hero />)
-    const ctaSalao = screen.getByRole('link', { name: /Começar para Salão/i })
-    expect(ctaSalao).toHaveAttribute('href', `${SITE.cadastroPath}?segmento=salao`)
-    const ctaBarbearia = screen.getByRole('link', { name: /Começar para Barbearia/i })
-    expect(ctaBarbearia).toHaveAttribute('href', `${SITE.cadastroPath}?segmento=barbearia`)
+    expect(screen.getByRole('link', { name: /Começar para Salão/i })).toHaveAttribute(
+      'href',
+      `${SITE.cadastroPath}?segmento=salao`,
+    )
+    await user.click(screen.getByRole('button', { name: /Ver opção Barbearia/i }))
+    expect(screen.getByRole('link', { name: /Começar para Barbearia/i })).toHaveAttribute(
+      'href',
+      `${SITE.cadastroPath}?segmento=barbearia`,
+    )
   })
 
   it('Header CTA aponta para /cadastro', () => {
@@ -89,6 +95,97 @@ describe('Critério: CTA principal leva ao fluxo de cadastro', () => {
   })
 })
 
+describe('Critério: Validação de formulário no cadastro', () => {
+  it('exibe erros de validação para campos vazios', async () => {
+    const user = userEvent.setup()
+    renderWithRouter(<CadastroPage />)
+
+    await user.click(screen.getByRole('button', { name: /Criar conta/i }))
+
+    expect(await screen.findByText(/nome deve ter pelo menos 3 caracteres/i)).toBeInTheDocument()
+    expect(screen.getByText(/formato de e-mail inválido/i)).toBeInTheDocument()
+    expect(screen.getByText(/telefone deve incluir DDD/i)).toBeInTheDocument()
+    expect(
+      screen.getByText(/nome do negócio deve ter pelo menos 2 caracteres/i),
+    ).toBeInTheDocument()
+    expect(screen.getByText(/selecione um segmento/i)).toBeInTheDocument()
+  })
+
+  it('exibe erro para e-mail inválido', async () => {
+    const user = userEvent.setup()
+    renderWithRouter(<CadastroPage />)
+
+    await user.type(screen.getByLabelText(/Seu nome/i), 'Maria Silva')
+    await user.type(screen.getByLabelText(/E-mail/i), 'email-invalido')
+    await user.type(screen.getByLabelText(/Telefone/i), '11999999999')
+    await user.type(screen.getByLabelText(/Nome do negócio/i), 'Studio Test')
+    await user.selectOptions(screen.getByLabelText(/Segmento/i), 'salao')
+
+    await user.click(screen.getByRole('button', { name: /Criar conta/i }))
+
+    expect(await screen.findByText(/formato de e-mail inválido/i)).toBeInTheDocument()
+  })
+
+  it('exibe erro para telefone com formato inválido', async () => {
+    const user = userEvent.setup()
+    renderWithRouter(<CadastroPage />)
+
+    await user.type(screen.getByLabelText(/Seu nome/i), 'Maria Silva')
+    await user.type(screen.getByLabelText(/E-mail/i), 'maria@test.com')
+    await user.type(screen.getByLabelText(/Telefone/i), '123')
+    await user.type(screen.getByLabelText(/Nome do negócio/i), 'Studio Test')
+    await user.selectOptions(screen.getByLabelText(/Segmento/i), 'salao')
+
+    await user.click(screen.getByRole('button', { name: /Criar conta/i }))
+
+    expect(await screen.findByText(/telefone deve incluir DDD/i)).toBeInTheDocument()
+  })
+
+  it('exibe erro para nome muito curto', async () => {
+    const user = userEvent.setup()
+    renderWithRouter(<CadastroPage />)
+
+    await user.type(screen.getByLabelText(/Seu nome/i), 'AB')
+    await user.type(screen.getByLabelText(/E-mail/i), 'maria@test.com')
+    await user.type(screen.getByLabelText(/Telefone/i), '11999999999')
+    await user.type(screen.getByLabelText(/Nome do negócio/i), 'Studio Test')
+    await user.selectOptions(screen.getByLabelText(/Segmento/i), 'salao')
+
+    await user.click(screen.getByRole('button', { name: /Criar conta/i }))
+
+    expect(await screen.findByText(/pelo menos 3 caracteres/i)).toBeInTheDocument()
+  })
+
+  it('exibe estado de carregamento durante submissão', async () => {
+    const user = userEvent.setup()
+    renderWithRouter(<CadastroPage />)
+
+    await user.type(screen.getByLabelText(/Seu nome/i), 'Maria Silva')
+    await user.type(screen.getByLabelText(/E-mail/i), 'maria@test.com')
+    await user.type(screen.getByLabelText(/Telefone/i), '11999999999')
+    await user.type(screen.getByLabelText(/Nome do negócio/i), 'Studio Test')
+    await user.selectOptions(screen.getByLabelText(/Segmento/i), 'salao')
+
+    const submitBtn = screen.getByRole('button', { name: /Criar conta/i })
+    await user.click(submitBtn)
+
+    expect(await screen.findByText(/Criando conta/i)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Criando conta/i })).toBeDisabled()
+  })
+
+  it('campos possuem atributos de acessibilidade', () => {
+    renderWithRouter(<CadastroPage />)
+
+    expect(screen.getByLabelText(/Seu nome/i)).toHaveAttribute('aria-invalid', 'false')
+    expect(screen.getByLabelText(/E-mail/i)).toHaveAttribute('type', 'email')
+    expect(screen.getByLabelText(/Telefone/i)).toHaveAttribute('type', 'tel')
+    expect(screen.getByLabelText(/Segmento/i)).toBeInstanceOf(HTMLSelectElement)
+
+    const form = screen.getByRole('button', { name: /Criar conta/i }).closest('form')
+    expect(form).toHaveAttribute('novalidate')
+  })
+})
+
 describe('Critério: Página responsiva em mobile e desktop', () => {
   it('index.html define viewport para mobile', () => {
     const html = readFileSync(resolve(process.cwd(), 'index.html'), 'utf-8')
@@ -109,8 +206,9 @@ describe('Critério: Página responsiva em mobile e desktop', () => {
     expect(css).toMatch(/@media \(min-width: 768px\)[\s\S]*\.header__nav[\s\S]*display:\s*flex/)
   })
 
-  it('hero usa layout em coluna no mobile e grid no desktop', () => {
+  it('hero usa layout flexível responsivo', () => {
     const css = readFileSync(resolve(process.cwd(), 'src/styles/globals.css'), 'utf-8')
-    expect(css).toMatch(/\.hero-split[\s\S]*grid-template-columns/)
+    expect(css).toMatch(/\.hero-section[\s\S]*min-height/)
+    expect(css).toMatch(/\.hero-panel[\s\S]*flex/)
   })
 })

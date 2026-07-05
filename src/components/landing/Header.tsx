@@ -34,9 +34,14 @@ const Header: React.FC = () => {
           <a href="#planos">Planos</a>
           <a href="#faq">FAQ</a>
         </nav>
-        <Link to={SITE.cadastroPath} className="btn btn--primary btn--sm" onClick={handleCta}>
-          {SITE.ctaLabel}
-        </Link>
+        <div className="header__actions">
+          <Link to="/login" className="header__login-link">
+            Entrar
+          </Link>
+          <Link to={SITE.cadastroPath} className="btn btn--primary btn--sm" onClick={handleCta}>
+            {SITE.ctaLabel}
+          </Link>
+        </div>
       </div>
     </header>
   )

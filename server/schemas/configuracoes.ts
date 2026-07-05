@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { timeString, phoneString, emailString } from './common'
+import { phoneString, emailString } from './common'
 import { dayHoursSchema } from './onboarding'
 
 export const updateConfigSchema = z.object({

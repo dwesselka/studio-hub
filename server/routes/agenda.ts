@@ -27,16 +27,16 @@ router.get('/', validateQuery(agendaFiltersQuery), async (c) => {
   return successPaginated(c, items.map(toAppointmentResponse), total, filters.page, filters.perPage)
 })
 
-router.get('/date/:date', validateParams(uuidParam.pick({ date: true })), async (c) => {
+router.get('/date/:date', async (c) => {
   const userId = c.get('userId')
   const date = c.req.param('date')
-  const { items, total } = await agendaService.listAppointments(userId, { date, page: 1, perPage: 100 })
+  const { items } = await agendaService.listAppointments(userId, { date, page: 1, perPage: 100 })
   return success(c, items.map(toAppointmentResponse))
 })
 
 router.get('/range', validateQuery(dateRangeQuery), async (c) => {
   const userId = c.get('userId')
-  const { startDate, endDate } = c.req.valid('query')
+  const { startDate } = c.req.valid('query')
   const appointments = await agendaService.listAppointments(userId, {
     date: startDate,
     view: 'week',

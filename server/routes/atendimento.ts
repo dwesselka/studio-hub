@@ -4,7 +4,7 @@ import { success, successPaginated, created } from '../lib/response'
 import { authGuard } from '../lib/middleware'
 import * as atendimentoService from '../services/atendimento'
 import { createAtendimentoSchema, updateAtendimentoSchema } from '../schemas/atendimento'
-import { uuidParam, paginationQuery } from '../schemas/common'
+import { uuidParam } from '../schemas/common'
 import { toAtendimentoResponse } from '../dto/atendimento'
 import type { CreateAtendimentoInput } from '../schemas/atendimento'
 

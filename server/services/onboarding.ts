@@ -1,5 +1,4 @@
 import { prisma } from '../../src/lib/prisma'
-import { AppError } from '../lib/errors'
 
 const SEGMENT_SERVICES: Record<string, { name: string; duration: number; price: number; category: string }[]> = {
   salao: [

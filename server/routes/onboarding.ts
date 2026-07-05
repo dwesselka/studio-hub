@@ -12,7 +12,7 @@ router.use('/*', authGuard)
 router.put('/business', validateBody(businessDataSchema), async (c) => {
   const userId = c.get('userId')
   const data = c.req.valid('json')
-  const user = await onboardingService.saveBusinessData(userId, data)
+  await onboardingService.saveBusinessData(userId, data)
   return success(c, { onboardingData: { business: data } })
 })
 
@@ -27,7 +27,7 @@ router.put('/services', validateBody(servicesSchema), async (c) => {
   const userId = c.get('userId')
   const services = c.req.valid('json')
   await onboardingService.saveServices(userId, services)
-  return success(c, { onboardingData: { services: services.map((s: { name: string; duration: number; price: number; category: string }, i: number) => ({ id: crypto.randomUUID(), ...s })) } })
+  return success(c, { onboardingData: { services: services.map((s: { name: string; duration: number; price: number; category: string }) => ({ id: crypto.randomUUID(), ...s })) } })
 })
 
 router.put('/team', validateBody(teamSchema), async (c) => {
@@ -39,7 +39,7 @@ router.put('/team', validateBody(teamSchema), async (c) => {
 
 router.post('/complete', async (c) => {
   const userId = c.get('userId')
-  const user = await onboardingService.completeOnboarding(userId)
+  await onboardingService.completeOnboarding(userId)
   return success(c, { onboardingData: { completed: true } })
 })
 

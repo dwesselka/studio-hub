@@ -2,7 +2,6 @@ import { safeLocalStorage } from '@/lib/storage'
 
 interface Storable {
   id: string
-  [key: string]: unknown
 }
 
 interface DBOptions {

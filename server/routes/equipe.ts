@@ -20,29 +20,29 @@ router.get('/', async (c) => {
 
 router.get('/:id', validateParams(uuidParam), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
+  const { id } = c.get('validParams')
   const member = await equipeService.getTeamMemberById(userId, id)
   return success(c, toTeamMemberResponse(member))
 })
 
 router.post('/', validateBody(createTeamMemberSchema), async (c) => {
   const userId = c.get('userId')
-  const data = c.req.valid('json') as CreateTeamMemberInput
+  const data = c.get('validBody') as CreateTeamMemberInput
   const member = await equipeService.createTeamMember(userId, data)
   return created(c, toTeamMemberResponse(member))
 })
 
 router.put('/:id', validateParams(uuidParam), validateBody(updateTeamMemberSchema), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
-  const data = c.req.valid('json')
+  const { id } = c.get('validParams')
+  const data = c.get('validBody')
   const member = await equipeService.updateTeamMember(userId, id, data)
   return success(c, toTeamMemberResponse(member))
 })
 
 router.delete('/:id', validateParams(uuidParam), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
+  const { id } = c.get('validParams')
   await equipeService.deleteTeamMember(userId, id)
   return noContent(c)
 })

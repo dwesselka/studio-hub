@@ -17,7 +17,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
     return <Navigate to="/login" replace />
   }
 
-  if (!user.onboardingData.completed) {
+  if (!user.onboardingData?.completed) {
     return <Navigate to="/cadastro" replace />
   }
 

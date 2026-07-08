@@ -154,13 +154,13 @@ async function seedAppointments(userId: string, teamMembers: { id: string; name:
     const slotsToUse = dayOffset >= 0 ? timeSlots.slice(0, 4) : timeSlots.slice(0, 6)
 
     for (let i = 0; i < slotsToUse.length; i++) {
-      const clientIdx = (dayOffset + i) % clientRotations.length
+      const clientIdx = Math.abs(dayOffset + i) % clientRotations.length
       const client = clientRotations[clientIdx]
-      const svcIdx = (dayOffset + i) % services.length
+      const svcIdx = Math.abs(dayOffset + i) % services.length
       const service = services[svcIdx]
-      const memberIdx = (dayOffset + i) % teamMembers.length
+      const memberIdx = Math.abs(dayOffset + i) % teamMembers.length
       const member = teamMembers[memberIdx]
-      const statusIdx = (dayOffset + i) % STATUSES.length
+      const statusIdx = Math.abs(dayOffset + i) % STATUSES.length
       const status = STATUSES[statusIdx]
 
       const startTime = slotsToUse[i]
@@ -190,7 +190,11 @@ async function seedAppointments(userId: string, teamMembers: { id: string; name:
   await prisma.appointment.createMany({ data: appointments })
   console.log(`    Agendamentos criados (${appointments.length} registros)`)
 
-  return appointments
+  return prisma.appointment.findMany({
+    where: { userId },
+    select: { id: true, clientName: true, clientPhone: true, professionalId: true, professionalName: true, date: true, startTime: true, endTime: true, serviceName: true, servicePrice: true, serviceDuration: true, status: true },
+    orderBy: { date: 'asc' },
+  })
 }
 
 async function seedAtendimentos(userId: string, appointments: { id: string; clientName: string; clientPhone: string; professionalId: string; professionalName: string; date: string; startTime: string; endTime: string; serviceName: string; servicePrice: number; serviceDuration: number; status: string }[], services: { id: string; name: string; duration: number; price: number }[]) {
@@ -414,7 +418,6 @@ async function main() {
 
     const team = await prisma.teamMember.findMany({ where: { userId: user.id }, select: { id: true, name: true } })
     const services = await prisma.service.findMany({ where: { userId: user.id }, select: { id: true, name: true, duration: true, price: true } })
-
     const appointments = await seedAppointments(user.id, team, services)
     if (appointments) {
       await seedAtendimentos(user.id, appointments, services)

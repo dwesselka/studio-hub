@@ -3,7 +3,7 @@ import { db } from '../db'
 import { ApiRequestError } from '../types'
 import type { ApiRequest } from '../types'
 
-interface AuthUser {
+export interface AuthUser {
   id: string
   email: string
   name: string
@@ -30,12 +30,15 @@ interface AuthUser {
     completed: boolean
   }
   createdAt: string
+  [key: string]: unknown
 }
 
-interface Session {
+export interface Session {
+  id: string
   userId: string
   token: string
   expiresAt: string
+  [key: string]: unknown
 }
 
 const usersTable = db.getOrCreate<AuthUser>('auth_users')
@@ -108,6 +111,7 @@ export function registerAuthHandlers(): void {
 
     const token = generateToken()
     const session: Session = {
+      id: crypto.randomUUID(),
       userId: user.id,
       token,
       expiresAt: new Date(Date.now() + 86400000).toISOString(),
@@ -145,6 +149,7 @@ export function registerAuthHandlers(): void {
 
     const token = generateToken()
     const session: Session = {
+      id: crypto.randomUUID(),
       userId: user.id,
       token,
       expiresAt: new Date(Date.now() + 86400000).toISOString(),

@@ -18,7 +18,7 @@ router.get('/program', async (c) => {
 
 router.put('/program', validateBody(loyaltyProgramSchema), async (c) => {
   const userId = c.get('userId')
-  const data = c.req.valid('json')
+  const data = c.get('validBody')
   const program = await fidelizacaoService.updateLoyaltyProgram(userId, data)
   return success(c, toLoyaltyProgramResponse(program))
 })
@@ -31,7 +31,7 @@ router.get('/promotions', async (c) => {
 
 router.post('/promotions', validateBody(createPromotionSchema), async (c) => {
   const userId = c.get('userId')
-  const data = c.req.valid('json')
+  const data = c.get('validBody')
   const promotion = await fidelizacaoService.createPromotion(userId, data)
   return created(c, toPromotionResponse(promotion))
 })
@@ -39,7 +39,7 @@ router.post('/promotions', validateBody(createPromotionSchema), async (c) => {
 router.put('/promotions/:id', validateBody(updatePromotionSchema), async (c) => {
   const userId = c.get('userId')
   const id = c.req.param('id')
-  const data = c.req.valid('json')
+  const data = c.get('validBody')
   const promotion = await fidelizacaoService.updatePromotion(userId, id, data)
   return success(c, toPromotionResponse(promotion))
 })

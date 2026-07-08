@@ -19,6 +19,8 @@ export function validate(schemas: ValidationSchemas): MiddlewareHandler {
           (issue) => `${issue.path.join('.')}: ${issue.message}`,
         )
         errors.params = formatted
+      } else {
+        c.set('validParams', result.data)
       }
     }
 
@@ -29,6 +31,8 @@ export function validate(schemas: ValidationSchemas): MiddlewareHandler {
           (issue) => `${issue.path.join('.')}: ${issue.message}`,
         )
         errors.query = formatted
+      } else {
+        c.set('validQuery', result.data)
       }
     }
 
@@ -42,6 +46,8 @@ export function validate(schemas: ValidationSchemas): MiddlewareHandler {
           if (!errors[path]) errors[path] = []
           errors[path].push(issue.message)
         }
+      } else {
+        c.set('validBody', result.data)
       }
     }
 

@@ -22,29 +22,29 @@ router.get('/', async (c) => {
 
 router.get('/:id', validateParams(uuidParam), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
+  const { id } = c.get('validParams')
   const service = await servicosService.getServiceById(userId, id)
   return success(c, toServiceResponse(service))
 })
 
 router.post('/', validateBody(createServiceSchema), async (c) => {
   const userId = c.get('userId')
-  const data = c.req.valid('json') as CreateServiceInput
+  const data = c.get('validBody') as CreateServiceInput
   const service = await servicosService.createService(userId, data)
   return created(c, toServiceResponse(service))
 })
 
 router.put('/:id', validateParams(uuidParam), validateBody(updateServiceSchema), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
-  const data = c.req.valid('json')
+  const { id } = c.get('validParams')
+  const data = c.get('validBody')
   const service = await servicosService.updateService(userId, id, data)
   return success(c, toServiceResponse(service))
 })
 
 router.delete('/:id', validateParams(uuidParam), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
+  const { id } = c.get('validParams')
   await servicosService.deleteService(userId, id)
   return noContent(c)
 })

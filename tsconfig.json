@@ -24,6 +24,9 @@
       "@/*": [
         "./src/*"
       ],
+      "@api": [
+        "./src/lib/api/index.ts"
+      ],
       "@api/*": [
         "./src/lib/api/*"
       ],

@@ -4,6 +4,7 @@ import type { PaymentMethod } from '@/features/pagamento/types'
 import { METHOD_LABELS } from '@/features/pagamento/types'
 import { useCreatePayment } from '@/features/pagamento/hooks/use-pagamento-data'
 import { getPaymentReceiptHtml } from '@/lib/pagamento-db'
+import type { Payment } from '@/features/pagamento/types'
 
 interface PaymentDialogProps {
   atendimentoId: string
@@ -85,7 +86,7 @@ export function PaymentDialog({
       (p) => p.id === paymentResult?.paymentId || p.receiptNumber === paymentResult?.receiptNumber,
     )
     if (!payment) return
-    const html = getPaymentReceiptHtml(payment)
+    const html = getPaymentReceiptHtml(payment as unknown as Payment)
     const w = window.open('', '_blank')
     w?.document.write(html)
     w?.document.close()

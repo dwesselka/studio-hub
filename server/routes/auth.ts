@@ -9,7 +9,7 @@ import { toAuthUserResponse } from '../dto/auth'
 const router = new Hono()
 
 router.post('/signup', validateBody(signupSchema), async (c) => {
-  const { email, password, name } = c.req.valid('json')
+  const { email, password, name } = c.get('validBody') as { email: string; password: string; name: string }
   const result = await authService.signup(email, password, name)
   return created(c, {
     user: toAuthUserResponse(result.user),
@@ -19,7 +19,7 @@ router.post('/signup', validateBody(signupSchema), async (c) => {
 })
 
 router.post('/login', validateBody(loginSchema), async (c) => {
-  const { email, password } = c.req.valid('json')
+  const { email, password } = c.get('validBody') as { email: string; password: string }
   const result = await authService.login(email, password)
   return success(c, {
     user: toAuthUserResponse(result.user),
@@ -29,7 +29,7 @@ router.post('/login', validateBody(loginSchema), async (c) => {
 })
 
 router.post('/refresh', validateBody(refreshSchema), async (c) => {
-  const { refreshToken } = c.req.valid('json')
+  const { refreshToken } = c.get('validBody') as { refreshToken: string }
   const result = await authService.refreshTokens(refreshToken)
   return success(c, {
     user: toAuthUserResponse(result.user),

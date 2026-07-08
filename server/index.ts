@@ -2,10 +2,12 @@ import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { secureHeaders } from 'hono/secure-headers'
+import { swaggerUI } from '@hono/swagger-ui'
 import { requestId } from './lib/middleware'
 import { requestLogger } from './lib/logger'
 import { rateLimit } from './lib/rate-limit'
 import { errorHandler } from './lib/error-handler'
+import { openApiSpec } from './lib/api-spec'
 
 import authRoutes from './routes/auth'
 import agendaRoutes from './routes/agenda'
@@ -36,6 +38,10 @@ app.use('/v1/auth/*', rateLimit({ maxRequests: 20, windowMs: 60000 }))
 app.onError(errorHandler)
 
 app.get('/health', (c) => c.json({ status: 'ok', timestamp: new Date().toISOString() }))
+
+app.get('/openapi.json', (c) => c.json(openApiSpec))
+
+app.get('/docs', swaggerUI({ url: '/openapi.json' }))
 
 const v1 = new Hono()
 

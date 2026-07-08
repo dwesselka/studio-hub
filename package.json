@@ -25,14 +25,13 @@
     "db:studio": "prisma studio",
     "db:reset": "prisma migrate reset --force",
     "db:generate": "prisma generate",
-    "server": "tsx server/index.ts",
-    "server:dev": "tsx watch server/index.ts"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "server": "node --env-file .env --import tsx server/index.ts",
+    "server:dev": "node --env-file .env --import tsx --watch server/index.ts"
   },
   "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^8.5.0",
     "@hono/node-server": "^2.0.8",
+    "@hono/swagger-ui": "^0.6.1",
     "@hookform/resolvers": "^5.4.0",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",

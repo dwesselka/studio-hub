@@ -22,7 +22,7 @@ router.use('/*', authGuard)
 
 router.get('/', validateQuery(agendaFiltersQuery), async (c) => {
   const userId = c.get('userId')
-  const filters = c.req.valid('query')
+  const filters = c.get('validQuery')
   const { items, total } = await agendaService.listAppointments(userId, filters)
   return successPaginated(c, items.map(toAppointmentResponse), total, filters.page, filters.perPage)
 })
@@ -36,7 +36,7 @@ router.get('/date/:date', async (c) => {
 
 router.get('/range', validateQuery(dateRangeQuery), async (c) => {
   const userId = c.get('userId')
-  const { startDate } = c.req.valid('query')
+  const { startDate } = c.get('validQuery')
   const appointments = await agendaService.listAppointments(userId, {
     date: startDate,
     view: 'week',
@@ -48,72 +48,72 @@ router.get('/range', validateQuery(dateRangeQuery), async (c) => {
 
 router.post('/', validateBody(createAppointmentSchema), async (c) => {
   const userId = c.get('userId')
-  const data = c.req.valid('json') as CreateAppointmentInput
+  const data = c.get('validBody') as CreateAppointmentInput
   const appointment = await agendaService.createAppointment(userId, data)
   return created(c, toAppointmentResponse(appointment))
 })
 
 router.get('/conflicts', validateQuery(conflictCheckQuery), async (c) => {
   const userId = c.get('userId')
-  const params = c.req.valid('query')
+  const params = c.get('validQuery')
   const result = await agendaService.checkConflicts(userId, params)
   return success(c, result)
 })
 
 router.get('/suggestions', validateQuery(suggestionsQuery), async (c) => {
   const userId = c.get('userId')
-  const params = c.req.valid('query')
+  const params = c.get('validQuery')
   const suggestions = await agendaService.getSuggestions(userId, params)
   return success(c, suggestions)
 })
 
 router.get('/:id', validateParams(uuidParam), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
+  const { id } = c.get('validParams')
   const appointment = await agendaService.getAppointmentById(userId, id)
   return success(c, toAppointmentResponse(appointment))
 })
 
 router.put('/:id', validateParams(uuidParam), validateBody(updateAppointmentSchema), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
-  const data = c.req.valid('json')
+  const { id } = c.get('validParams')
+  const data = c.get('validBody')
   const appointment = await agendaService.updateAppointment(userId, id, data)
   return success(c, toAppointmentResponse(appointment))
 })
 
 router.patch('/:id/confirm', validateParams(uuidParam), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
+  const { id } = c.get('validParams')
   const appointment = await agendaService.changeStatus(userId, id, 'confirmed')
   return success(c, toAppointmentResponse(appointment))
 })
 
 router.patch('/:id/cancel', validateParams(uuidParam), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
+  const { id } = c.get('validParams')
   const appointment = await agendaService.changeStatus(userId, id, 'cancelled')
   return success(c, toAppointmentResponse(appointment))
 })
 
 router.patch('/:id/no-show', validateParams(uuidParam), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
+  const { id } = c.get('validParams')
   const appointment = await agendaService.changeStatus(userId, id, 'no-show')
   return success(c, toAppointmentResponse(appointment))
 })
 
 router.post('/:id/reschedule', validateParams(uuidParam), validateBody(rescheduleSchema), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
-  const data = c.req.valid('json') as RescheduleInput
+  const { id } = c.get('validParams')
+  const data = c.get('validBody') as RescheduleInput
   const appointment = await agendaService.rescheduleAppointment(userId, id, data)
   return success(c, toAppointmentResponse(appointment))
 })
 
 router.delete('/:id', validateParams(uuidParam), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
+  const { id } = c.get('validParams')
   await agendaService.deleteAppointment(userId, id)
   return noContent(c)
 })

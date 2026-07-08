@@ -61,7 +61,7 @@ export default function LoginPage() {
 
     try {
       const user = await login(email, password)
-      navigate(user.onboardingData.completed ? '/app' : '/cadastro')
+      navigate(user.onboardingData?.completed ? '/app' : '/cadastro')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao fazer login')
     } finally {

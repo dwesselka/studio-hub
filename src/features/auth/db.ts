@@ -1,156 +1,22 @@
 import { safeLocalStorage } from '@/lib/storage'
 import type { AuthUser } from '@/features/onboarding/types'
-import { createEmptyOnboardingData } from '@/features/onboarding/db'
-import { generateId } from '@/features/onboarding/types'
 
-const AUTH_KEY = 'infinity_auth'
 const SESSION_KEY = 'infinity_session'
+const CREDITS_KEY = 'infinity_credits'
 
-function seedUsers(): AuthUser[] {
-  const password = '123456'
-  const users: AuthUser[] = [
-    {
-      id: generateId(),
-      email: 'homem@teste.com',
-      name: 'Carlos Silva',
-      hashedPassword: btoa(password),
-      onboardingData: {
-        ...createEmptyOnboardingData(),
-        account: { email: 'homem@teste.com', password, nome: 'Carlos Silva' },
-        business: {
-          nome: 'Barbearia do Carlos',
-          segmento: 'barbearia',
-          endereco: 'Rua A, 123',
-          telefone: '(11) 99999-0001',
-        },
-        progress: {
-          accountCreated: true,
-          businessDataComplete: true,
-          hoursConfigured: true,
-          servicesReviewed: true,
-          teamAdded: true,
-        },
-        completed: true,
-      },
-      credits: 20,
-      plan: 'pro',
-    },
-    {
-      id: generateId(),
-      email: 'mulher@teste.com',
-      name: 'Ana Costa',
-      hashedPassword: btoa(password),
-      onboardingData: {
-        ...createEmptyOnboardingData(),
-        account: { email: 'mulher@teste.com', password, nome: 'Ana Costa' },
-        business: {
-          nome: 'Salão da Ana',
-          segmento: 'salao',
-          endereco: 'Rua B, 456',
-          telefone: '(11) 99999-0002',
-        },
-        progress: {
-          accountCreated: true,
-          businessDataComplete: true,
-          hoursConfigured: true,
-          servicesReviewed: true,
-          teamAdded: true,
-        },
-        completed: true,
-      },
-      credits: 20,
-      plan: 'pro',
-    },
-    {
-      id: generateId(),
-      email: 'lojista@teste.com',
-      name: 'Rede Infinity',
-      hashedPassword: btoa(password),
-      onboardingData: {
-        ...createEmptyOnboardingData(),
-        account: { email: 'lojista@teste.com', password, nome: 'Rede Infinity' },
-        business: {
-          nome: 'Rede Infinity de Beleza',
-          segmento: 'salao',
-          endereco: 'Av Central, 789',
-          telefone: '(11) 99999-0003',
-        },
-        progress: {
-          accountCreated: true,
-          businessDataComplete: true,
-          hoursConfigured: true,
-          servicesReviewed: true,
-          teamAdded: true,
-        },
-        completed: true,
-      },
-      credits: 999,
-      plan: 'premium',
-    },
-  ]
-  saveUsers(users)
-  return users
-}
-
-export function getUsers(): AuthUser[] {
-  const raw = safeLocalStorage.getItem(AUTH_KEY)
-  if (!raw) return seedUsers()
-  return JSON.parse(raw)
-}
-
-function saveUsers(users: AuthUser[]): void {
-  safeLocalStorage.setItem(AUTH_KEY, JSON.stringify(users))
-}
-
-export function findUserByEmail(email: string): AuthUser | undefined {
-  return getUsers().find((u) => u.email === email)
-}
-
-export function findUserById(id: string): AuthUser | undefined {
-  return getUsers().find((u) => u.id === id)
-}
-
-export function createUser(
-  email: string,
-  password: string,
-  name: string,
-  plan: AuthUser['plan'] = 'starter',
-): AuthUser {
-  const users = getUsers()
-
-  if (users.find((u) => u.email === email)) {
-    throw new Error('Este e-mail já está cadastrado')
+function getCreditsMap(): Record<string, number> {
+  const raw = safeLocalStorage.getItem(CREDITS_KEY)
+  if (!raw) return {}
+  try {
+    const parsed = JSON.parse(raw)
+    return typeof parsed === 'object' && parsed !== null ? parsed : {}
+  } catch {
+    return {}
   }
-
-  const creditMap: Record<AuthUser['plan'], number> = {
-    starter: 5,
-    pro: 20,
-    premium: 999,
-  }
-
-  const user: AuthUser = {
-    id: generateId(),
-    email,
-    name,
-    hashedPassword: btoa(password),
-    onboardingData: createEmptyOnboardingData(),
-    credits: creditMap[plan],
-    plan,
-  }
-
-  user.onboardingData.account = { email, password, nome: name }
-  user.onboardingData.progress.accountCreated = true
-
-  users.push(user)
-  saveUsers(users)
-  return user
 }
 
-export function authenticateUser(email: string, password: string): AuthUser | null {
-  const user = findUserByEmail(email)
-  if (!user) return null
-  if (user.hashedPassword !== btoa(password)) return null
-  return user
+function saveCreditsMap(map: Record<string, number>): void {
+  safeLocalStorage.setItem(CREDITS_KEY, JSON.stringify(map))
 }
 
 export function setSession(userId: string): void {
@@ -168,17 +34,7 @@ export function getSessionUserId(): string | null {
 export function getCurrentUser(): AuthUser | null {
   const userId = getSessionUserId()
   if (!userId) return null
-  return findUserById(userId) ?? null
-}
-
-export function updateUser(userId: string, updater: (user: AuthUser) => AuthUser): AuthUser | null {
-  const users = getUsers()
-  const index = users.findIndex((u) => u.id === userId)
-  if (index === -1) return null
-
-  users[index] = updater(users[index])
-  saveUsers(users)
-  return users[index]
+  return { id: userId } as AuthUser
 }
 
 export function deductCredit(userId: string): {
@@ -186,17 +42,20 @@ export function deductCredit(userId: string): {
   remaining: number
   error?: string
 } {
-  const user = findUserById(userId)
-  if (!user) return { success: false, remaining: 0, error: 'Usuário não encontrado' }
-  if (user.credits <= 0) return { success: false, remaining: 0, error: 'Sem créditos disponíveis' }
+  const credits = getCreditsMap()
+  const current = credits[userId] ?? 5
 
-  const updated = updateUser(userId, (u) => ({ ...u, credits: u.credits - 1 }))
-  if (!updated) return { success: false, remaining: 0, error: 'Erro ao atualizar' }
+  if (current <= 0) {
+    return { success: false, remaining: 0, error: 'Sem créditos disponíveis' }
+  }
 
-  return { success: true, remaining: updated.credits }
+  credits[userId] = current - 1
+  saveCreditsMap(credits)
+
+  return { success: true, remaining: credits[userId] }
 }
 
 export function getUserCredits(userId: string): number {
-  const user = findUserById(userId)
-  return user?.credits ?? 0
+  const credits = getCreditsMap()
+  return credits[userId] ?? 0
 }

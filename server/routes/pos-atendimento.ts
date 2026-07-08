@@ -20,7 +20,7 @@ router.get('/feedback', async (c) => {
 
 router.post('/feedback', validateBody(createFeedbackSchema), async (c) => {
   const userId = c.get('userId')
-  const data = c.req.valid('json')
+  const data = c.get('validBody')
   const feedback = await posAtendimentoService.createFeedback(userId, data)
   return created(c, toFeedbackResponse(feedback))
 })
@@ -33,7 +33,7 @@ router.get('/campaigns', async (c) => {
 
 router.post('/campaigns', validateBody(createCampaignSchema), async (c) => {
   const userId = c.get('userId')
-  const data = c.req.valid('json')
+  const data = c.get('validBody')
   const campaign = await posAtendimentoService.createCampaign(userId, data)
   return created(c, toCampaignResponse(campaign))
 })
@@ -41,7 +41,7 @@ router.post('/campaigns', validateBody(createCampaignSchema), async (c) => {
 router.put('/campaigns/:id', validateBody(updateCampaignSchema), async (c) => {
   const userId = c.get('userId')
   const id = c.req.param('id')
-  const data = c.req.valid('json')
+  const data = c.get('validBody')
   const campaign = await posAtendimentoService.updateCampaign(userId, id, data)
   return success(c, toCampaignResponse(campaign))
 })

@@ -11,28 +11,28 @@ router.use('/*', authGuard)
 
 router.put('/business', validateBody(businessDataSchema), async (c) => {
   const userId = c.get('userId')
-  const data = c.req.valid('json')
+  const data = c.get('validBody')
   await onboardingService.saveBusinessData(userId, data)
   return success(c, { onboardingData: { business: data } })
 })
 
 router.put('/hours', validateBody(hoursSchema), async (c) => {
   const userId = c.get('userId')
-  const hours = c.req.valid('json')
+  const hours = c.get('validBody')
   await onboardingService.saveHours(userId, hours)
   return success(c, { onboardingData: { hours } })
 })
 
 router.put('/services', validateBody(servicesSchema), async (c) => {
   const userId = c.get('userId')
-  const services = c.req.valid('json')
+  const services = c.get('validBody')
   await onboardingService.saveServices(userId, services)
   return success(c, { onboardingData: { services: services.map((s: { name: string; duration: number; price: number; category: string }) => ({ id: crypto.randomUUID(), ...s })) } })
 })
 
 router.put('/team', validateBody(teamSchema), async (c) => {
   const userId = c.get('userId')
-  const team = c.req.valid('json')
+  const team = c.get('validBody')
   await onboardingService.saveTeam(userId, team)
   return success(c, { onboardingData: { team } })
 })

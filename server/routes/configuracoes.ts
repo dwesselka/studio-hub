@@ -17,7 +17,7 @@ router.get('/', async (c) => {
 
 router.put('/', validateBody(updateConfigSchema), async (c) => {
   const userId = c.get('userId')
-  const data = c.req.valid('json')
+  const data = c.get('validBody')
   const config = await configService.updateConfig(userId, data)
   return success(c, config)
 })

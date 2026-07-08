@@ -6,6 +6,9 @@ declare module 'hono' {
   interface ContextVariableMap {
     userId: string
     userEmail: string
+    validBody: Record<string, unknown>
+    validParams: Record<string, string>
+    validQuery: Record<string, string>
   }
 }
 

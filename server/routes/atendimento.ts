@@ -23,22 +23,22 @@ router.get('/', async (c) => {
 
 router.get('/:id', validateParams(uuidParam), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
+  const { id } = c.get('validParams')
   const atendimento = await atendimentoService.getAtendimentoById(userId, id)
   return success(c, toAtendimentoResponse(atendimento))
 })
 
 router.post('/', validateBody(createAtendimentoSchema), async (c) => {
   const userId = c.get('userId')
-  const data = c.req.valid('json') as CreateAtendimentoInput
+  const data = c.get('validBody') as CreateAtendimentoInput
   const atendimento = await atendimentoService.createAtendimento(userId, data)
   return created(c, toAtendimentoResponse(atendimento))
 })
 
 router.put('/:id', validateParams(uuidParam), validateBody(updateAtendimentoSchema), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
-  const data = c.req.valid('json')
+  const { id } = c.get('validParams')
+  const data = c.get('validBody')
   const atendimento = await atendimentoService.updateAtendimento(userId, id, data)
   return success(c, toAtendimentoResponse(atendimento))
 })

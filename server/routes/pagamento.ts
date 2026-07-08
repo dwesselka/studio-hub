@@ -23,22 +23,22 @@ router.get('/', async (c) => {
 
 router.get('/:id', validateParams(uuidParam), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
+  const { id } = c.get('validParams')
   const payment = await pagamentoService.getPaymentById(userId, id)
   return success(c, toPaymentResponse(payment))
 })
 
 router.post('/', validateBody(createPaymentSchema), async (c) => {
   const userId = c.get('userId')
-  const data = c.req.valid('json') as CreatePaymentInput
+  const data = c.get('validBody') as CreatePaymentInput
   const payment = await pagamentoService.createPayment(userId, data)
   return created(c, toPaymentResponse(payment))
 })
 
 router.put('/:id', validateParams(uuidParam), validateBody(updatePaymentSchema), async (c) => {
   const userId = c.get('userId')
-  const { id } = c.req.valid('param')
-  const data = c.req.valid('json')
+  const { id } = c.get('validParams')
+  const data = c.get('validBody')
   const payment = await pagamentoService.updatePayment(userId, id, data)
   return success(c, toPaymentResponse(payment))
 })

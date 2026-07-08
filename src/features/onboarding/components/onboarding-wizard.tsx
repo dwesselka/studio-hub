@@ -76,8 +76,8 @@ export function OnboardingWizard({
     try {
       if (!user) {
         trackCtaClick('onboarding-signup', bus.segmento)
-        const newUser = await signup(acc.email, acc.password, acc.nome)
-        saveBusinessData(newUser.id, bus)
+        await signup(acc.email, acc.password, acc.nome)
+        await saveBusinessData(bus)
         setAccount(acc)
         setBusiness(bus)
 
@@ -85,7 +85,7 @@ export function OnboardingWizard({
         setServices(prepopulated)
       } else {
         if (!userId) return
-        saveBusinessData(userId, bus)
+        await saveBusinessData(bus)
         setBusiness(bus)
 
         if (existingServices?.length === 0) {
@@ -102,23 +102,23 @@ export function OnboardingWizard({
     }
   }
 
-  const handleHours = (newHours: DayHours[]) => {
+  const handleHours = async (newHours: DayHours[]) => {
     setHours(newHours)
-    if (userId) saveHours(userId, newHours)
+    if (userId) await saveHours(newHours)
     setStep(2)
   }
 
-  const handleServices = (newServices: ServiceItem[]) => {
+  const handleServices = async (newServices: ServiceItem[]) => {
     setServices(newServices)
-    if (userId) saveServices(userId, newServices)
+    if (userId) await saveServices(newServices)
     setStep(3)
   }
 
-  const handleTeam = (newTeam: TeamMember[]) => {
+  const handleTeam = async (newTeam: TeamMember[]) => {
     setTeam(newTeam)
     if (userId) {
-      saveTeam(userId, newTeam)
-      completeOnboarding(userId)
+      await saveTeam(newTeam)
+      await completeOnboarding()
       refreshUser()
       sendWhatsApp({
         to: business?.telefone || '(11) 99999-9999',
@@ -129,10 +129,10 @@ export function OnboardingWizard({
     trackCtaClick('onboarding-complete')
   }
 
-  const handleSkipTeam = () => {
+  const handleSkipTeam = async () => {
     if (userId) {
-      saveTeam(userId, [])
-      completeOnboarding(userId)
+      await saveTeam([])
+      await completeOnboarding()
       refreshUser()
       sendWhatsApp({
         to: business?.telefone || '(11) 99999-9999',

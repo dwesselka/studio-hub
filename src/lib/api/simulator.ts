@@ -91,19 +91,16 @@ class NetworkSimulator {
       timestamp: new Date().toISOString(),
       method,
       path,
-      requestId,
-    } as SimulationEvent & { requestId: string })
+    })
 
     if (!this.checkRateLimit()) {
-      const event = {
-        type: 'rate-limit' as const,
+      this.emit({
+        type: 'rate-limit',
         timestamp: new Date().toISOString(),
         method,
         path,
         status: 429,
-        requestId,
-      }
-      this.emit(event)
+      })
       throw Object.assign(new Error('Muitas requisições'), {
         code: 'RATE_LIMITED',
         status: 429,
@@ -128,7 +125,6 @@ class NetworkSimulator {
         status,
         error: `Erro simulado ${status}`,
         durationMs,
-        requestId,
       })
       throw Object.assign(new Error(`Erro simulado ${status}`), {
         code: 'SERVER_ERROR',
@@ -147,7 +143,6 @@ class NetworkSimulator {
         path,
         status: 200,
         durationMs,
-        requestId,
       })
       return result
     } catch (err) {
@@ -159,7 +154,6 @@ class NetworkSimulator {
         path,
         error: (err as Error).message,
         durationMs,
-        requestId,
       })
       throw err
     }

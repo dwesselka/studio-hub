@@ -7,11 +7,10 @@ import type {
   OnboardingProgress,
 } from '@/features/onboarding/types'
 import { DEFAULT_HOURS, SEGMENT_SERVICES, generateId } from '@/features/onboarding/types'
+import { apiClient } from '@/lib/api'
 import { safeLocalStorage } from '@/lib/storage'
 
 const STORAGE_KEY = 'infinity_auth'
-
-const BASE_URL = import.meta.env.VITE_API_URL || '/v1'
 
 async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   const raw = safeLocalStorage.getItem(STORAGE_KEY)
@@ -26,14 +25,11 @@ async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> 
     headers['Authorization'] = `Bearer ${tokens.accessToken}`
   }
 
-  const res = await fetch(`${BASE_URL}${path}`, { ...options, headers })
-  const json: { success: boolean; data?: T; error?: { message: string } } = await res.json()
+  const method = (options.method as 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE') ?? 'GET'
+  const body = options.body ? JSON.parse(options.body as string) : undefined
 
-  if (!res.ok || !json.success) {
-    throw new Error(json.error?.message || `Erro ${res.status}`)
-  }
-
-  return json.data as T
+  const response = await apiClient.request<T>(method, path, { body, headers })
+  return response.data
 }
 
 export function createEmptyOnboardingData(): OnboardingData {

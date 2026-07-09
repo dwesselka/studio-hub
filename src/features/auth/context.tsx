@@ -1,6 +1,7 @@
 import { createContext, useState, useCallback, type ReactNode } from 'react'
 import type { AuthUser } from '@/features/onboarding/types'
 import { safeLocalStorage } from '@/lib/storage'
+import { apiClient } from '@/lib/api'
 
 const STORAGE_KEY = 'infinity_auth'
 
@@ -28,11 +29,6 @@ interface AuthResponse {
   user: RawUser
   accessToken: string
   refreshToken: string
-}
-
-interface ApiErrorResponse {
-  success: false
-  error: { code: string; message: string; details?: unknown }
 }
 
 function normalizeUser(raw: RawUser): AuthUser {
@@ -94,43 +90,38 @@ async function refreshTokens(): Promise<boolean> {
   if (!tokens?.refreshToken) return false
 
   try {
-    const res = await fetch('/v1/auth/refresh', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken: tokens.refreshToken }),
-    })
-    const json = await res.json()
-    if (!res.ok) return false
-
-    const { accessToken, refreshToken } = (
-      json as { data: { accessToken: string; refreshToken: string } }
-    ).data
-    saveTokens({ accessToken, refreshToken })
+    const { data } = await apiClient.post<
+      { refreshToken: string },
+      { accessToken: string; refreshToken: string }
+    >('/v1/auth/refresh', { refreshToken: tokens.refreshToken })
+    saveTokens(data)
     return true
   } catch {
     return false
   }
 }
 
+function authHeaders(): Record<string, string> {
+  const tokens = getTokens()
+  return tokens?.accessToken ? { Authorization: `Bearer ${tokens.accessToken}` } : {}
+}
+
 async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const headers: Record<string, string> = {
+  const headers = {
     'Content-Type': 'application/json',
+    ...authHeaders(),
     ...(options.headers as Record<string, string>),
   }
-  const tokens = getTokens()
-  if (tokens?.accessToken) {
-    headers['Authorization'] = `Bearer ${tokens.accessToken}`
+
+  const method = (options.method as 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE') ?? 'GET'
+  const body = options.body ? JSON.parse(options.body as string) : undefined
+
+  try {
+    const response = await apiClient.request<T>(method, path, { body, headers })
+    return response.data
+  } catch (err) {
+    throw err instanceof Error ? err : new Error(String(err))
   }
-
-  const res = await fetch(path, { ...options, headers })
-  const json = await res.json()
-
-  if (!res.ok) {
-    const err = json as ApiErrorResponse
-    throw new Error(err.error?.message || `Erro ${res.status}`)
-  }
-
-  return (json as { data: T }).data
 }
 
 export interface AuthContextValue {

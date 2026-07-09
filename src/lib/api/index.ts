@@ -1,5 +1,11 @@
 export { apiClient } from './client'
-export { simulator, DEFAULT_NETWORK_CONFIG } from './simulator'
+export {
+  simulator,
+  DEFAULT_NETWORK_CONFIG,
+  type SimulationEvent,
+  type SimulationEventType,
+  type SimulationListener,
+} from './simulator'
 export { mockServer } from './server'
 export { ApiRequestError } from './types'
 export type {
@@ -7,11 +13,9 @@ export type {
   ApiResponse,
   ApiResult,
   NetworkConfig,
-  SimulationEvent,
-  SimulationEventType,
-  SimulationListener,
+  PaginatedRequest,
+  PaginatedResponse,
 } from './types'
-export type { PaginatedRequest, PaginatedResponse } from './types'
 
 export { registerAuthHandlers } from './handlers/auth'
 export { registerOnboardingHandlers } from './handlers/onboarding'

@@ -126,7 +126,8 @@ export function registerAuthHandlers(): void {
           name: user.name,
           onboardingData: user.onboardingData,
         },
-        token,
+        accessToken: token,
+        refreshToken: token,
       },
       201,
     )
@@ -163,7 +164,8 @@ export function registerAuthHandlers(): void {
         name: user.name,
         onboardingData: user.onboardingData,
       },
-      token,
+      accessToken: token,
+      refreshToken: token,
     })
   })
 
@@ -177,11 +179,45 @@ export function registerAuthHandlers(): void {
     const user = usersTable.getById(session.userId)
     if (!user) throw ApiRequestError.unauthorized('Usuário não encontrado')
 
+    const business = user.onboardingData?.business
+
     return mockServer['jsonResponse']({
       id: user.id,
       email: user.email,
       name: user.name,
+      credits: 0,
+      plan: 'starter',
+      businessName: business?.nome ?? null,
+      businessSegment: business?.segmento ?? null,
+      businessAddress: business?.endereco ?? null,
+      businessPhone: business?.telefone ?? null,
+      businessLogo: business?.logo ?? null,
+      onboardingCompleted: user.onboardingData?.completed ?? false,
       onboardingData: user.onboardingData,
+    })
+  })
+
+  mockServer.post('/auth/refresh', async (req: ApiRequest) => {
+    const { refreshToken } = req.body as { refreshToken: string }
+    const session = sessionsTable.findOne((s) => s.token === refreshToken)
+    if (!session) throw ApiRequestError.unauthorized('Refresh token inválido')
+
+    const user = usersTable.getById(session.userId)
+    if (!user) throw ApiRequestError.unauthorized('Usuário não encontrado')
+
+    const newToken = generateToken()
+    sessionsTable.delete(session.id)
+    const newSession: Session = {
+      id: crypto.randomUUID(),
+      userId: user.id,
+      token: newToken,
+      expiresAt: new Date(Date.now() + 86400000).toISOString(),
+    }
+    sessionsTable.insert(newSession)
+
+    return mockServer['jsonResponse']({
+      accessToken: newToken,
+      refreshToken: newToken,
     })
   })
 

@@ -79,7 +79,7 @@ function createLogger(level: ApiEnvironmentConfig['logLevel']) {
   }
 }
 
-export function applyEnvironment(env?: ApiEnvironment) {
+export async function applyEnvironment(env?: ApiEnvironment) {
   const environment = env ?? detectEnvironment()
   const config = ENVIRONMENTS[environment]
 

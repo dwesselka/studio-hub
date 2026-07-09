@@ -1,4 +1,10 @@
 import { simulator } from './simulator'
+import { apiClient } from './client'
+import { realApiHandler } from './real-client'
+import { registerAuthHandlers } from './handlers/auth'
+import { registerOnboardingHandlers } from './handlers/onboarding'
+import { registerAgendaHandlers } from './handlers/agenda'
+import { registerDashboardHandlers } from './handlers/dashboard'
 
 export type ApiEnvironment = 'development' | 'homologation' | 'production'
 
@@ -29,13 +35,13 @@ export const ENVIRONMENTS: Record<ApiEnvironment, ApiEnvironmentConfig> = {
   homologation: {
     name: 'homologation',
     label: 'Homologação',
-    mockEnabled: true,
+    mockEnabled: false,
     devToolsEnabled: false,
-    baseLatencyMs: 100,
-    jitterMs: 50,
+    baseLatencyMs: 0,
+    jitterMs: 0,
     errorRate: 0,
     logLevel: 'info',
-    apiUrl: '/api',
+    apiUrl: import.meta.env.VITE_API_URL || '/api',
   },
   production: {
     name: 'production',
@@ -73,7 +79,7 @@ function createLogger(level: ApiEnvironmentConfig['logLevel']) {
   }
 }
 
-export function applyEnvironment(env?: ApiEnvironment): ApiEnvironmentConfig {
+export function applyEnvironment(env?: ApiEnvironment) {
   const environment = env ?? detectEnvironment()
   const config = ENVIRONMENTS[environment]
 
@@ -81,14 +87,26 @@ export function applyEnvironment(env?: ApiEnvironment): ApiEnvironmentConfig {
   logger.info(`Ambiente: ${config.label}`)
 
   if (config.mockEnabled) {
+    registerAuthHandlers()
+    registerOnboardingHandlers()
+    registerAgendaHandlers()
+    registerDashboardHandlers()
+
     simulator.updateConfig({
       baseLatencyMs: config.baseLatencyMs,
       jitterMs: config.jitterMs,
       errorRate: config.errorRate,
     })
+
+    const { mockServer } = await import('./server')
+    mockServer.start()
+
     logger.debug(
       `Mock configurado: latência=${config.baseLatencyMs}ms, jitter=${config.jitterMs}ms, erro=${config.errorRate * 100}%`,
     )
+  } else {
+    apiClient.setHandler(realApiHandler)
+    logger.info('Cliente real configurado')
   }
 
   return config

@@ -1,6 +1,11 @@
 import { prisma } from '../../src/lib/prisma'
 import { hashPassword, verifyPassword } from '../lib/crypto'
-import { createToken, createRefreshToken, verifyRefreshToken } from '../lib/token'
+import {
+  createToken,
+  createRefreshToken,
+  verifyRefreshToken,
+  invalidateRefreshToken,
+} from '../lib/token'
 import { AppError } from '../lib/errors'
 
 const userSelect = {
@@ -17,7 +22,19 @@ const userSelect = {
   onboardingCompleted: true,
 } as const
 
-function formatUser(user: { id: string; email: string; name: string; credits: number; plan: string; businessName: string | null; businessSegment: string | null; businessAddress: string | null; businessPhone: string | null; businessLogo: string | null; onboardingCompleted: boolean }) {
+function formatUser(user: {
+  id: string
+  email: string
+  name: string
+  credits: number
+  plan: string
+  businessName: string | null
+  businessSegment: string | null
+  businessAddress: string | null
+  businessPhone: string | null
+  businessLogo: string | null
+  onboardingCompleted: boolean
+}) {
   return {
     id: user.id,
     email: user.email,
@@ -107,6 +124,8 @@ export async function refreshTokens(refreshTokenStr: string) {
   if (!user) {
     throw new AppError(404, 'NOT_FOUND', 'Usuário não encontrado')
   }
+
+  invalidateRefreshToken(refreshTokenStr)
 
   const [newAccessToken, newRefreshToken] = await Promise.all([
     createToken(user.id, user.email, '15m'),

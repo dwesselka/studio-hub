@@ -30,7 +30,7 @@ describe('Critério: Landing page pública sem autenticação', () => {
     window.history.pushState({}, '', '/cadastro')
     render(<App />)
 
-    expect(await screen.findByRole('heading', { name: /Criar minha conta/i })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /Comece grátis/i })).toBeInTheDocument()
   })
 
   it('LandingPage exibe seções principais', () => {

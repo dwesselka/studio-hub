@@ -1,6 +1,8 @@
 import { sign, verify, decode, type AlgorithmTypes } from 'hono/jwt'
 
 const ALGORITHM = 'HS256' as AlgorithmTypes
+const REFRESH_SECRET_SUFFIX = '_refresh'
+const usedRefreshTokens = new Set<string>()
 
 function getSecret(): string {
   const secret = process.env.JWT_SECRET
@@ -10,17 +12,20 @@ function getSecret(): string {
   return secret
 }
 
-const REFRESH_SECRET_SUFFIX = '_refresh'
-
 export interface TokenPayload {
   sub: string
   email: string
   iat: number
   exp: number
+  jti: string
   type?: 'access' | 'refresh'
 }
 
-export async function createToken(userId: string, email: string, expiresIn: string = '15m'): Promise<string> {
+export async function createToken(
+  userId: string,
+  email: string,
+  expiresIn: string = '15m',
+): Promise<string> {
   const now = Math.floor(Date.now() / 1000)
   const ms = parseDuration(expiresIn)
   const payload = {
@@ -28,6 +33,7 @@ export async function createToken(userId: string, email: string, expiresIn: stri
     email,
     iat: now,
     exp: now + Math.floor(ms / 1000),
+    jti: crypto.randomUUID(),
     type: 'access' as const,
   }
   return await sign(payload, getSecret(), ALGORITHM)
@@ -40,21 +46,32 @@ export async function createRefreshToken(userId: string, email: string): Promise
     email,
     iat: now,
     exp: now + 7 * 24 * 60 * 60,
+    jti: crypto.randomUUID(),
     type: 'refresh' as const,
   }
   return await sign(payload, getSecret() + REFRESH_SECRET_SUFFIX, ALGORITHM)
 }
 
 export async function verifyToken(token: string): Promise<TokenPayload> {
-  return await verify(token, getSecret(), ALGORITHM) as TokenPayload
+  return (await verify(token, getSecret(), ALGORITHM)) as TokenPayload
 }
 
 export async function verifyRefreshToken(token: string): Promise<TokenPayload | null> {
   try {
-    return await verify(token, getSecret() + REFRESH_SECRET_SUFFIX, ALGORITHM) as TokenPayload
+    if (usedRefreshTokens.has(token)) return null
+    const payload = (await verify(
+      token,
+      getSecret() + REFRESH_SECRET_SUFFIX,
+      ALGORITHM,
+    )) as TokenPayload
+    return payload
   } catch {
     return null
   }
+}
+
+export function invalidateRefreshToken(token: string): void {
+  usedRefreshTokens.add(token)
 }
 
 export function decodeToken(token: string): TokenPayload | null {

@@ -1,4 +1,4 @@
-# Decisões Arquiteturais (ADR) — Infinity Partner
+# Decisões Arquiteturais (ADR) — StudioHub
 
 ## Visão
 
@@ -11,12 +11,13 @@ Registro das decisões arquiteturais importantes, com opções consideradas, van
 **Contexto:** Precisávamos de um framework HTTP para Node.js.
 
 **Opções:**
-| Opção | Vantagens | Desvantagens |
-|---|---|---|
-| **Hono.js** | Leve, rápido, tipado (TS first), middleware simples, compatível com múltiplos runtimes | Ecossistema menor que Express |
-| Express | Mais popular, vasto ecossistema | Tipagem fraca, middleware verboso, mais pesado |
-| Fastify | Rápido, schema-based (JSON Schema) | Curva de aprendizado, mais verboso |
-| NestJS | Arquitetura modular, DI, opinionated | Overengineering para o escopo, complexidade alta |
+
+| Opção       | Vantagens                                                                              | Desvantagens                                     |
+| ----------- | -------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| **Hono.js** | Leve, rápido, tipado (TS first), middleware simples, compatível com múltiplos runtimes | Ecossistema menor que Express                    |
+| Express     | Mais popular, vasto ecossistema                                                        | Tipagem fraca, middleware verboso, mais pesado   |
+| Fastify     | Rápido, schema-based (JSON Schema)                                                     | Curva de aprendizado, mais verboso               |
+| NestJS      | Arquitetura modular, DI, opinionated                                                   | Overengineering para o escopo, complexidade alta |
 
 **Decisão:** Hono.js.
 
@@ -29,12 +30,13 @@ Registro das decisões arquiteturais importantes, com opções consideradas, van
 **Contexto:** Necessidade de ORM para PostgreSQL.
 
 **Opções:**
-| Opção | Vantagens | Desvantagens |
-|---|---|---|
-| **Prisma** | Schema-first, migrations automáticas, types gerados, DX excelente | Performance inferior a raw SQL em queries complexas, maior bundle |
-| Drizzle ORM | Leve, SQL-like, performance | Ecossistema menor, migrations menos maduras |
-| Kysely | Tipado, SQL-like, performático | Sem migrations próprias, mais verboso |
-| Raw SQL | Performance máxima | Sem types, sem migrations, manutenção difícil |
+
+| Opção       | Vantagens                                                         | Desvantagens                                                      |
+| ----------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| **Prisma**  | Schema-first, migrations automáticas, types gerados, DX excelente | Performance inferior a raw SQL em queries complexas, maior bundle |
+| Drizzle ORM | Leve, SQL-like, performance                                       | Ecossistema menor, migrations menos maduras                       |
+| Kysely      | Tipado, SQL-like, performático                                    | Sem migrations próprias, mais verboso                             |
+| Raw SQL     | Performance máxima                                                | Sem types, sem migrations, manutenção difícil                     |
 
 **Decisão:** Prisma.
 
@@ -47,12 +49,13 @@ Registro das decisões arquiteturais importantes, com opções consideradas, van
 **Contexto:** Gerenciamento de dados do servidor no frontend.
 
 **Opções:**
-| Opção | Vantagens | Desvantagens |
-|---|---|---|
-| **TanStack Query** | Cache automático, refetch inteligente, mutations, devtools | Dependência externa, curva de tipos |
-| SWR | Leve, simples | Menos recursos que RQ |
-| Zustand + fetch manual | Zero dependências | Reimplementar cache, loading, error states |
-| Context + fetch | Nativo, sem libs | Sem cache, sem dedup, boilerplate |
+
+| Opção                  | Vantagens                                                  | Desvantagens                               |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------ |
+| **TanStack Query**     | Cache automático, refetch inteligente, mutations, devtools | Dependência externa, curva de tipos        |
+| SWR                    | Leve, simples                                              | Menos recursos que RQ                      |
+| Zustand + fetch manual | Zero dependências                                          | Reimplementar cache, loading, error states |
+| Context + fetch        | Nativo, sem libs                                           | Sem cache, sem dedup, boilerplate          |
 
 **Decisão:** TanStack Query.
 
@@ -65,9 +68,10 @@ Registro das decisões arquiteturais importantes, com opções consideradas, van
 **Contexto:** Arquitetura SPA vs Next.js.
 
 **Opções:**
-| Opção | Vantagens | Desvantagens |
-|---|---|---|
-| **Vite SPA** | Simples, deploy estático, sem SSR | Sem SEO dinâmico (landing é estática) |
+
+| Opção               | Vantagens                           | Desvantagens                                    |
+| ------------------- | ----------------------------------- | ----------------------------------------------- |
+| **Vite SPA**        | Simples, deploy estático, sem SSR   | Sem SEO dinâmico (landing é estática)           |
 | Next.js com SSR/SSG | SEO, Server Components, performance | Complexidade, custo de servidor, lock-in Vercel |
 
 **Decisão:** Vite SPA + Hono.js separado.
@@ -81,11 +85,12 @@ Registro das decisões arquiteturais importantes, com opções consideradas, van
 **Contexto:** Desenvolvimento e teste sem backend real.
 
 **Opções:**
-| Opção | Vantagens | Desvantagens |
-|---|---|---|
+
+| Opção                         | Vantagens                                                  | Desvantagens                                   |
+| ----------------------------- | ---------------------------------------------------------- | ---------------------------------------------- |
 | **MSW (Mock Service Worker)** | Intercepta no nível do fetch, realista, funciona em testes | Complexidade de setup, manutenção dos handlers |
-| Mock manual (if/else) | Simples de implementar | Espalhado no código, propenso a ficar obsoleto |
-| json-server | Zero código | Não reflete a API real, sem tipos |
+| Mock manual (if/else)         | Simples de implementar                                     | Espalhado no código, propenso a ficar obsoleto |
+| json-server                   | Zero código                                                | Não reflete a API real, sem tipos              |
 
 **Decisão:** MSW com camada de abstração.
 
@@ -98,11 +103,12 @@ Registro das decisões arquiteturais importantes, com opções consideradas, van
 **Contexto:** Estrutura de pastas do frontend.
 
 **Opções:**
-| Opção | Vantagens | Desvantagens |
-|---|---|---|
-| **Feature-first** | Coeso, fácil de navegar, escalável | Pode duplicar utils entre features |
-| Type-first (types/ui/utils/) | Separação clara por tipo | Navegação difícil em projetos grandes, componentes distantes dos dados |
-| Page-first | Simples, intuitivo | Componentes inchados, sem reuso |
+
+| Opção                        | Vantagens                          | Desvantagens                                                           |
+| ---------------------------- | ---------------------------------- | ---------------------------------------------------------------------- |
+| **Feature-first**            | Coeso, fácil de navegar, escalável | Pode duplicar utils entre features                                     |
+| Type-first (types/ui/utils/) | Separação clara por tipo           | Navegação difícil em projetos grandes, componentes distantes dos dados |
+| Page-first                   | Simples, intuitivo                 | Componentes inchados, sem reuso                                        |
 
 **Decisão:** Feature-first com pastas compartilhadas.
 

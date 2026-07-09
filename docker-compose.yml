@@ -6,7 +6,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: infinity_partner
+      POSTGRES_DB: studiohub
       POSTGRES_USER: infinity
       POSTGRES_PASSWORD: infinity123
     volumes:

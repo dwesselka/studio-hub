@@ -37,7 +37,7 @@ describe('Critério: Landing page pública sem autenticação', () => {
     renderWithRouter(<LandingPage />)
     expect(screen.getByRole('main')).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /Sua agenda cheia/i })).toBeInTheDocument()
-    expect(screen.getByRole('region', { name: /Infinity Partner/i })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: /StudioHub/i })).toBeInTheDocument()
   })
 })
 

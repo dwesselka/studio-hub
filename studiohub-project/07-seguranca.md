@@ -1,4 +1,4 @@
-# Segurança — Infinity Partner
+# Segurança — StudioHub
 
 ## Visão
 
@@ -38,10 +38,10 @@ export async function hashPassword(password: string): Promise<string> {
 
 ## Rate Limit
 
-| Rota | Limite | Janela |
-|---|---|---|
-| Geral (`/v1/*`) | 120 requisições | 1 minuto |
-| Auth (`/v1/auth/*`) | 20 requisições | 1 minuto |
+| Rota                | Limite          | Janela   |
+| ------------------- | --------------- | -------- |
+| Geral (`/v1/*`)     | 120 requisições | 1 minuto |
+| Auth (`/v1/auth/*`) | 20 requisições  | 1 minuto |
 
 Implementado em memória (servidor único). Para escala, migrar para Redis.
 
@@ -58,22 +58,25 @@ Aplicados via middleware `secureHeaders` do Hono:
 ## CORS
 
 ```typescript
-app.use('/*', cors({
-  origin: process.env.CORS_ORIGIN?.split(',') ?? ['http://localhost:5173'],
-  credentials: true,
-}))
+app.use(
+  '/*',
+  cors({
+    origin: process.env.CORS_ORIGIN?.split(',') ?? ['http://localhost:5173'],
+    credentials: true,
+  }),
+)
 ```
 
 ## Proteções
 
-| Ameaça | Mitigação |
-|---|---|
-| SQL Injection | Eliminado pelo Prisma (queries parametrizadas) |
-| XSS | React escapa HTML automaticamente + Content Security Policy |
-| CSRF | SameSite cookies + token em header |
-| Brute Force | Rate limit + scrypt (lento por design) |
-| Token Leak | Access token curto (15min) + refresh token rotativo |
-| Timing Attack | timingSafeEqual na comparação de senhas |
+| Ameaça        | Mitigação                                                   |
+| ------------- | ----------------------------------------------------------- |
+| SQL Injection | Eliminado pelo Prisma (queries parametrizadas)              |
+| XSS           | React escapa HTML automaticamente + Content Security Policy |
+| CSRF          | SameSite cookies + token em header                          |
+| Brute Force   | Rate limit + scrypt (lento por design)                      |
+| Token Leak    | Access token curto (15min) + refresh token rotativo         |
+| Timing Attack | timingSafeEqual na comparação de senhas                     |
 
 ## Futuro (Fase 2)
 

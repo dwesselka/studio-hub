@@ -62,7 +62,7 @@ export default function Chatbot() {
           ref={panelRef}
           className="chatbot-panel"
           role="dialog"
-          aria-label="Assistente virtual do Infinity Partner"
+          aria-label="Assistente virtual do StudioHub"
           aria-modal="true"
         >
           <header className="chatbot-panel__header">

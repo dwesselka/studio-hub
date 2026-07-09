@@ -13,7 +13,7 @@ export interface ChatbotKnowledge {
 
 export const chatbotKnowledge: ChatbotKnowledge = {
   greeting:
-    'Olá! Sou a assistente do Infinity Partner. Posso ajudar com dúvidas sobre planos, funcionalidades e como começar. Como posso ajudar?',
+    'Olá! Sou a assistente do StudioHub. Posso ajudar com dúvidas sobre planos, funcionalidades e como começar. Como posso ajudar?',
   topics: [
     {
       keywords: [
@@ -40,7 +40,7 @@ export const chatbotKnowledge: ChatbotKnowledge = {
         'como funciona',
       ],
       answer:
-        'O Infinity Partner oferece:\n\n• Agendamento com IA e lembretes automáticos\n• Registro de atendimentos e insumos\n• Pagamentos Pix e cartão\n• Relatórios e dashboard\n• Campanhas de fidelização\n• Chatbot para seus clientes\n\nPosso detalhar alguma dessas funcionalidades?',
+        'O StudioHub oferece:\n\n• StudioHub Agenda — Agendamento inteligente\n• StudioHub Pay — Pagamentos Pix e cartão\n• StudioHub Clientes — CRM completo\n• StudioHub Finance — Controle financeiro\n• StudioHub Marketing — Campanhas e fidelização\n• StudioHub AI — Inteligência artificial\n• StudioHub Insights — Relatórios e analytics\n\nPosso detalhar algum desses módulos?',
     },
     {
       keywords: ['agendamento', 'agenda', 'marcar', 'horário', 'horarios'],

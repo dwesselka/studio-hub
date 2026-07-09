@@ -1,6 +1,6 @@
-# Visão Geral — Infinity Partner
+# Visão Geral — StudioHub
 
-> **Nota:** O projeto é referenciado internamente como "StudioHub Connect" nos documentos de definição. O nome oficial do produto é **Infinity Partner**.
+> **Nota:** O nome oficial do produto é **StudioHub**.
 
 ## Missão
 
@@ -10,20 +10,20 @@ Não somos apenas mais um sistema de agendamento. Somos uma plataforma SaaS comp
 
 ## Stack
 
-| Camada | Tecnologia | Versão |
-|---|---|---|
-| Frontend | React + TypeScript + Vite | 19 / 6 / 8 |
-| Estilização | Tailwind CSS | 4 |
-| Componentes | Radix UI | - |
-| Roteamento | React Router DOM | 7 |
-| Formulários | React Hook Form + Zod | 7 / 4 |
-| Server State | TanStack React Query | 5 |
-| Animação | Framer Motion | 12 |
-| Backend | Hono.js | 4 |
-| ORM | Prisma | 7 |
-| Database | PostgreSQL | 16 |
-| Testes | Vitest + Testing Library | 4 |
-| Linter | ESLint | 10 |
+| Camada       | Tecnologia                | Versão     |
+| ------------ | ------------------------- | ---------- |
+| Frontend     | React + TypeScript + Vite | 19 / 6 / 8 |
+| Estilização  | Tailwind CSS              | 4          |
+| Componentes  | Radix UI                  | -          |
+| Roteamento   | React Router DOM          | 7          |
+| Formulários  | React Hook Form + Zod     | 7 / 4      |
+| Server State | TanStack React Query      | 5          |
+| Animação     | Framer Motion             | 12         |
+| Backend      | Hono.js                   | 4          |
+| ORM          | Prisma                    | 7          |
+| Database     | PostgreSQL                | 16         |
+| Testes       | Vitest + Testing Library  | 4          |
+| Linter       | ESLint                    | 10         |
 
 ## Princípios
 
@@ -69,7 +69,7 @@ flowchart TB
 ## Estrutura do monorepo
 
 ```
-infinity-partner/
+studiohub/
 ├── src/                    # Frontend React
 │   ├── app/                # App root + rotas
 │   ├── components/         # Componentes compartilhados

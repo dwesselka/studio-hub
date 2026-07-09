@@ -1,4 +1,4 @@
-# Fluxos — Infinity Partner
+# Fluxos — StudioHub
 
 ## Visão
 
@@ -11,9 +11,9 @@ flowchart TB
     START(["Potencial cliente"]) --> LP["Landing Page"]
     LP -->|"CTA: Começar grátis"| CAD["Cadastro"]
     LP -->|"CTA: Ver planos"| PLANOS["Página de Planos"]
-    
+
     CAD --> ON["Onboarding"]
-    
+
     subgraph Onboarding
         ON1["Passo 1: Dados da conta<br/>Email, senha, nome"]
         ON2["Passo 2: Dados do negócio<br/>Nome, segmento, endereço, telefone"]
@@ -21,21 +21,21 @@ flowchart TB
         ON4["Passo 4: Serviços<br/>Catálogo pré-populado por segmento"]
         ON5["Passo 5: Equipe<br/>Profissionais, cargos, comissões"]
     end
-    
+
     ON1 --> ON2 --> ON3 --> ON4 --> ON5
     ON5 --> DASH["Dashboard"]
-    
+
     DASH --> CAD_CLIENTE["Cadastrar primeiro cliente"]
     DASH --> CAD_SERVICO["Ajustar serviços"]
     DASH --> CAD_EQUIPE["Ajustar equipe"]
-    
+
     CAD_CLIENTE --> AGENDA["Acessar agenda"]
     AGENDA --> NOVO_AGE["Novo agendamento"]
-    
+
     NOVO_AGE -->|"Cliente chega"| ATEND["Iniciar Atendimento"]
     ATEND -->|"Finalizar"| PAGTO["Pagamento"]
     PAGTO -->|"PIX/Cartão/Dinheiro"| CONCLUIDO(["Atendimento concluído"])
-    
+
     PAGTO --> POS["Pós-Atendimento"]
     POS -->|"Automático"| FEEDBACK["Solicitar feedback NPS"]
     POS -->|"Automático"| CAMPANHA["Disparar campanhas<br/>Retorno · Aniversário · Upsell"]
@@ -110,13 +110,13 @@ sequenceDiagram
     P->>FE: Abre tela de atendimento
     FE->>API: GET /v1/atendimentos?date=today
     API-->>FE: Lista de agendamentos do dia
-    
+
     P->>FE: Cliente chegou → "Iniciar"
     FE->>API: POST /v1/atendimentos { appointmentId }
     API->>DB: Create Atendimento (status: EM_ANDAMENTO)
     API->>DB: Update Appointment (status: EM_ATENDIMENTO)
     API-->>FE: 201 { atendimento }
-    
+
     P->>FE: Serviços realizados + Insumos
     P->>FE: "Finalizar"
     FE->>API: PATCH /v1/atendimentos/:id/complete { services, supplies, notes }
@@ -124,7 +124,7 @@ sequenceDiagram
     API->>DB: Update Appointment (status: CONCLUIDO)
     API->>DB: Deduz insumos do estoque
     API-->>FE: { atendimento, totalValue }
-    
+
     FE->>API: GET /v1/pagamentos?atendimentoId=X (sugestão de valores)
     FE-->>P: "Total: R$ 89,90. Qual forma de pagamento?"
 ```
@@ -140,11 +140,11 @@ sequenceDiagram
     P->>FE: Abre tela de pagamento
     FE->>API: GET /v1/pagamentos?atendimentoId=X
     API-->>FE: Valores sugeridos por serviço/profissional
-    
+
     P->>FE: Seleciona método PIX
     FE->>API: POST /v1/pagamentos { atendimentoId, method: "PIX" }
     API-->>FE: QR Code + Copia e Cola
-    
+
     P->>FE: Confirma pagamento
     FE->>API: PATCH /v1/pagamentos/:id/confirm { paidValue }
     API-->>FE: { payment: { status: "CONCLUIDO", netValue } }
@@ -161,7 +161,7 @@ flowchart TB
     STEP3 --> STEP4["Passo 4: Equipe<br/>• Nome do profissional<br/>• Cargo/função<br/>• Especialidades<br/>• Comissão"]
     STEP4 --> DONE["Onboarding concluído!"]
     DONE --> DASH["Dashboard"]
-    
+
     STEP1 -.->|"POST /v1/onboarding/business"| API1
     STEP2 -.->|"POST /v1/onboarding/hours"| API2
     STEP3 -.->|"POST /v1/onboarding/services"| API3
@@ -176,10 +176,10 @@ flowchart LR
     ATEND["Atendimento concluído"] --> FDBK["Dispara feedback<br/>via WhatsApp"]
     FDBK -->|"Cliente responde"| NPS["Registra NPS"]
     FDBK -->|"Sem resposta em 24h"| RELEMBRAR["Relembrar via WhatsApp"]
-    
+
     ATEND --> PTS["Acumula pontos<br/>(programa fidelidade)"]
     PTS --> SALDO["ClientePoints.balance += points"]
-    
+
     ATEND --> CAMP["Verifica campanhas ativas"]
     CAMP -->|"30 dias sem visita"| RETORNO["Campanha de Retorno"]
     CAMP -->|"Aniversário próximo"| ANIV["Campanha de Aniversário"]
@@ -188,8 +188,8 @@ flowchart LR
 
 ## Responsabilidades por papel
 
-| Papel | Ações |
-|---|---|
+| Papel            | Ações                                                                        |
+| ---------------- | ---------------------------------------------------------------------------- |
 | **Proprietário** | Configurar negócio, ver dashboard, gerenciar equipe/serviços, ver relatórios |
-| **Profissional** | Ver agenda, realizar atendimento, registrar pagamento |
-| **Cliente** | Agendar (futuro: autoatendimento), receber lembretes, dar feedback |
+| **Profissional** | Ver agenda, realizar atendimento, registrar pagamento                        |
+| **Cliente**      | Agendar (futuro: autoatendimento), receber lembretes, dar feedback           |

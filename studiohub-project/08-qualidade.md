@@ -1,4 +1,4 @@
-# Qualidade — Infinity Partner
+# Qualidade — StudioHub
 
 ## Visão
 
@@ -6,15 +6,15 @@ Pipeline de qualidade: ESLint, Prettier, Husky, GitHub Actions, testes, coverage
 
 ## Ferramentas
 
-| Ferramenta | Função |
-|---|---|
-| ESLint 10 | Linting TypeScript + React |
-| Prettier 3 | Formatação automática |
-| Husky 9 | Git hooks (pre-commit) |
-| lint-staged | Lint apenas arquivos staged |
-| Vitest 4 | Test runner (frontend + backend) |
-| Testing Library | Testes de componentes React |
-| GitHub Actions | CI/CD |
+| Ferramenta      | Função                           |
+| --------------- | -------------------------------- |
+| ESLint 10       | Linting TypeScript + React       |
+| Prettier 3      | Formatação automática            |
+| Husky 9         | Git hooks (pre-commit)           |
+| lint-staged     | Lint apenas arquivos staged      |
+| Vitest 4        | Test runner (frontend + backend) |
+| Testing Library | Testes de componentes React      |
+| GitHub Actions  | CI/CD                            |
 
 ## Scripts
 
@@ -29,6 +29,7 @@ pnpm build       # tsc -b && vite build
 ## Husky + lint-staged
 
 No pre-commit:
+
 1. `lint-staged` roda ESLint + Prettier nos arquivos modificados
 2. Se falhar, o commit é bloqueado
 

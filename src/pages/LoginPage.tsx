@@ -138,7 +138,7 @@ export default function LoginPage() {
           </div>
 
           <div className="text-[11px] text-zinc-600">
-            &copy; 2026 Infinity Partner. Todos os direitos reservados.
+            &copy; 2026 StudioHub. Todos os direitos reservados.
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-# DevOps — Infinity Partner
+# DevOps — StudioHub
 
 ## Visão
 
@@ -6,11 +6,11 @@ Pipeline, deploy, ambientes, variáveis, backup, monitoramento, logs.
 
 ## Ambientes
 
-| Ambiente | URL | Mock |
-|---|---|---|
-| Development | `http://localhost:5173` | Sim (MSW) |
-| Homologação | `https://homolog.infinity-partner.com.br` | Sim (MSW) |
-| Produção | `https://infinity-partner.com.br` | Não |
+| Ambiente    | URL                                | Mock      |
+| ----------- | ---------------------------------- | --------- |
+| Development | `http://localhost:5173`            | Sim (MSW) |
+| Homologação | `https://homolog.studiohub.com.br` | Sim (MSW) |
+| Produção    | `https://studiohub.com.br`         | Não       |
 
 ## Pipeline (GitHub Actions)
 
@@ -46,14 +46,14 @@ flowchart LR
 
 ```bash
 # Frontend (Vite: VITE_*)
-VITE_API_URL=https://api.infinity-partner.com.br
+VITE_API_URL=https://api.studiohub.com.br
 VITE_ENV=production
 
 # Backend
-DATABASE_URL=postgresql://user:pass@host:5432/infinity_partner
+DATABASE_URL=postgresql://user:pass@host:5432/studiohub
 JWT_SECRET=<chave-segura-de-256-bits>
 PORT=3001
-CORS_ORIGIN=https://infinity-partner.com.br
+CORS_ORIGIN=https://studiohub.com.br
 ```
 
 ## Docker
@@ -63,9 +63,9 @@ CORS_ORIGIN=https://infinity-partner.com.br
 services:
   postgres:
     image: postgres:16-alpine
-    ports: ["5432:5432"]
+    ports: ['5432:5432']
     environment:
-      POSTGRES_DB: infinity_partner
+      POSTGRES_DB: studiohub
       POSTGRES_USER: infinity
       POSTGRES_PASSWORD: infinity123
 ```

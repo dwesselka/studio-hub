@@ -1,4 +1,4 @@
-# APIs — Infinity Partner
+# APIs — StudioHub
 
 ## Visão
 
@@ -6,7 +6,7 @@ Documentação dos endpoints da API. Objetivo, método, rota, headers, body, que
 
 ## Formato Padrão
 
-- **Base URL:** `http://localhost:3001/v1` (dev) / `https://api.infinity-partner.com.br/v1` (prod)
+- **Base URL:** `http://localhost:3001/v1` (dev) / `https://api.studiohub.com.br/v1` (prod)
 - **Content-Type:** `application/json`
 - **Auth:** `Authorization: Bearer <accessToken>` (rotas protegidas)
 - **Request ID:** `X-Request-Id` (gerado automaticamente, retornado no response)
@@ -20,6 +20,7 @@ Documentação dos endpoints da API. Objetivo, método, rota, headers, body, que
 **Objetivo:** Criar nova conta
 
 **Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -32,6 +33,7 @@ Documentação dos endpoints da API. Objetivo, método, rota, headers, body, que
 ```
 
 **Response (201):**
+
 ```json
 {
   "success": true,
@@ -45,6 +47,7 @@ Documentação dos endpoints da API. Objetivo, método, rota, headers, body, que
 ```
 
 **Regras:**
+
 - Email único
 - Password mínimo 6 caracteres
 - Segmento deve ser válido (SALAO, BARBEARIA, CLINICA)
@@ -93,15 +96,17 @@ Todas as rotas requerem `Authorization: Bearer <token>`.
 **Objetivo:** Listar agendamentos com filtros
 
 **Query Params:**
-| Parâmetro | Tipo | Descrição |
-|---|---|---|
-| date | string | Filtro por data (YYYY-MM-DD) |
-| professionalId | string | Filtro por profissional |
-| status | string | Filtro por status |
-| page | number | Paginação (default 1) |
-| perPage | number | Itens por página (default 50) |
+
+| Parâmetro      | Tipo   | Descrição                     |
+| -------------- | ------ | ----------------------------- |
+| date           | string | Filtro por data (YYYY-MM-DD)  |
+| professionalId | string | Filtro por profissional       |
+| status         | string | Filtro por status             |
+| page           | number | Paginação (default 1)         |
+| perPage        | number | Itens por página (default 50) |
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -115,6 +120,7 @@ Todas as rotas requerem `Authorization: Bearer <token>`.
 **Objetivo:** Criar agendamento
 
 **Body:**
+
 ```json
 {
   "clientName": "Maria Silva",
@@ -128,6 +134,7 @@ Todas as rotas requerem `Authorization: Bearer <token>`.
 ```
 
 **Regras:**
+
 - Não permitir sobreposição de horários com mesmo profissional
 - Horário deve estar dentro do expediente
 - Serviço e profissional devem pertencer ao mesmo estabelecimento
@@ -204,16 +211,16 @@ Todas as rotas requerem `Authorization: Bearer <token>`.
 
 Os seguintes domínios seguem o mesmo padrão CRUD:
 
-| Domínio | Métodos | Rota base |
-|---|---|---|
-| Equipe | GET, POST, PATCH, DELETE | `/v1/equipe` |
-| Serviços | GET, POST, PATCH, DELETE | `/v1/servicos` |
-| Pagamentos | GET, POST, PATCH | `/v1/pagamentos` |
-| Configurações | GET, PATCH | `/v1/configuracoes` |
-| Fidelização | GET, POST, PATCH | `/v1/fidelizacao` |
-| Pós-Atendimento | GET, POST | `/v1/pos-atendimento` |
-| Relatórios | GET | `/v1/relatorios` |
-| Onboarding | GET, POST, PATCH | `/v1/onboarding` |
+| Domínio         | Métodos                  | Rota base             |
+| --------------- | ------------------------ | --------------------- |
+| Equipe          | GET, POST, PATCH, DELETE | `/v1/equipe`          |
+| Serviços        | GET, POST, PATCH, DELETE | `/v1/servicos`        |
+| Pagamentos      | GET, POST, PATCH         | `/v1/pagamentos`      |
+| Configurações   | GET, PATCH               | `/v1/configuracoes`   |
+| Fidelização     | GET, POST, PATCH         | `/v1/fidelizacao`     |
+| Pós-Atendimento | GET, POST                | `/v1/pos-atendimento` |
+| Relatórios      | GET                      | `/v1/relatorios`      |
+| Onboarding      | GET, POST, PATCH         | `/v1/onboarding`      |
 
 ---
 

@@ -1,4 +1,4 @@
-# Frontend — Infinity Partner
+# Frontend — StudioHub
 
 ## Visão
 
@@ -6,16 +6,16 @@ Definir a organização do frontend React: quando consumir API, usar React Query
 
 ## Decisões de uso
 
-| Tecnologia | Quando usar |
-|---|---|
-| **API (fetch)** | Toda comunicação com backend passa pelo `ApiClient` em `@/lib/api/client.ts`. Nunca chamar fetch diretamente. |
-| **TanStack Query** | Todo dado assíncrono do servidor. `useQuery` para leitura, `useMutation` para escrita. Cache gerenciado automaticamente. |
-| **Zustand** | Não utilizado no projeto. Estado global é gerenciado por React Query (server state) + Context (auth, theme). |
-| **Server Components** | Não utilizado. O App é Client-Side Rendered (Vite SPA). |
-| **Client Components** | Todos os componentes são Client Components. |
-| **Server Actions** | Não utilizado. O backend é separado (Hono.js). |
-| **Route Handlers** | Não utilizado. O backend Hono.js é o servidor de API. |
-| **React Hook Form + Zod** | Todo formulário. RHF gerencia estado, Zod valida no submit. Esquemas compartilhados com backend. |
+| Tecnologia                | Quando usar                                                                                                              |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **API (fetch)**           | Toda comunicação com backend passa pelo `ApiClient` em `@/lib/api/client.ts`. Nunca chamar fetch diretamente.            |
+| **TanStack Query**        | Todo dado assíncrono do servidor. `useQuery` para leitura, `useMutation` para escrita. Cache gerenciado automaticamente. |
+| **Zustand**               | Não utilizado no projeto. Estado global é gerenciado por React Query (server state) + Context (auth, theme).             |
+| **Server Components**     | Não utilizado. O App é Client-Side Rendered (Vite SPA).                                                                  |
+| **Client Components**     | Todos os componentes são Client Components.                                                                              |
+| **Server Actions**        | Não utilizado. O backend é separado (Hono.js).                                                                           |
+| **Route Handlers**        | Não utilizado. O backend Hono.js é o servidor de API.                                                                    |
+| **React Hook Form + Zod** | Todo formulário. RHF gerencia estado, Zod valida no submit. Esquemas compartilhados com backend.                         |
 
 ## Estrutura de features
 
@@ -104,34 +104,34 @@ flowchart LR
 
 ## Hooks globais
 
-| Hook | Localização | Função |
-|---|---|---|
-| `use-media-query` | `src/hooks/` | Responsividade |
-| `use-online-status` | `src/hooks/` | Status de conexão |
-| `use-reduced-motion` | `src/hooks/` | Acessibilidade (prefers-reduced-motion) |
-| `use-focus-trap` | `src/hooks/` | Acessibilidade (modal focus trap) |
-| `useMotionConfig` | `src/lib/animation/motion.ts` | Configuração de animação |
+| Hook                 | Localização                   | Função                                  |
+| -------------------- | ----------------------------- | --------------------------------------- |
+| `use-media-query`    | `src/hooks/`                  | Responsividade                          |
+| `use-online-status`  | `src/hooks/`                  | Status de conexão                       |
+| `use-reduced-motion` | `src/hooks/`                  | Acessibilidade (prefers-reduced-motion) |
+| `use-focus-trap`     | `src/hooks/`                  | Acessibilidade (modal focus trap)       |
+| `useMotionConfig`    | `src/lib/animation/motion.ts` | Configuração de animação                |
 
 ## Roteamento
 
-| Path | Componente | Auth | Público |
-|---|---|---|---|
-| `/` | LandingPage | - | Sim |
-| `/cadastro` | OnboardingPage | - | Sim |
-| `/login` | LoginPage | - | Sim |
-| `/app` | AuthGuard → AppLayout → Outlet | Sim | - |
-| `/app/` | DashboardPage | Sim | - |
-| `/app/agendamentos` | AgendaPage | Sim | - |
-| `/app/atendimento` | AtendimentoPage | Sim | - |
-| `/app/pos-atendimento` | PosAtendimentoPage | Sim | - |
-| `/app/relatorios` | RelatoriosPage | Sim | - |
-| `/app/fidelizacao` | FidelizacaoPage | Sim | - |
-| `/app/pagamentos` | PagamentoPage | Sim | - |
-| `/app/analytics` | AnalyticsPage | Sim | - |
-| `/app/clientes` | ClientesPage | Sim | - |
-| `/app/servicos` | ServicosPage | Sim | - |
-| `/app/equipe` | EquipePage | Sim | - |
-| `/app/configuracoes` | ConfiguracoesPage | Sim | - |
+| Path                   | Componente                     | Auth | Público |
+| ---------------------- | ------------------------------ | ---- | ------- |
+| `/`                    | LandingPage                    | -    | Sim     |
+| `/cadastro`            | OnboardingPage                 | -    | Sim     |
+| `/login`               | LoginPage                      | -    | Sim     |
+| `/app`                 | AuthGuard → AppLayout → Outlet | Sim  | -       |
+| `/app/`                | DashboardPage                  | Sim  | -       |
+| `/app/agendamentos`    | AgendaPage                     | Sim  | -       |
+| `/app/atendimento`     | AtendimentoPage                | Sim  | -       |
+| `/app/pos-atendimento` | PosAtendimentoPage             | Sim  | -       |
+| `/app/relatorios`      | RelatoriosPage                 | Sim  | -       |
+| `/app/fidelizacao`     | FidelizacaoPage                | Sim  | -       |
+| `/app/pagamentos`      | PagamentoPage                  | Sim  | -       |
+| `/app/analytics`       | AnalyticsPage                  | Sim  | -       |
+| `/app/clientes`        | ClientesPage                   | Sim  | -       |
+| `/app/servicos`        | ServicosPage                   | Sim  | -       |
+| `/app/equipe`          | EquipePage                     | Sim  | -       |
+| `/app/configuracoes`   | ConfiguracoesPage              | Sim  | -       |
 
 ## Tratamento de estados
 

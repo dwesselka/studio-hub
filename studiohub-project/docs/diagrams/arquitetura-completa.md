@@ -8,7 +8,7 @@ C4Context
     Person(profissional, "Profissional", "Cabeleireiro, barbeiro, etc.")
     Person(proprietario, "Proprietário", "Dono do estabelecimento")
 
-    System_Boundary(sistema, "Infinity Partner") {
+    System_Boundary(sistema, "StudioHub") {
         Container(frontend, "Frontend", "React + Vite", "SPA com Tailwind, Radix UI, TanStack Query")
         Container(backend, "Backend", "Hono.js + Node.js", "API REST com Prisma ORM")
         ContainerDb(db, "Database", "PostgreSQL 16", "Dados do sistema")

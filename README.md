@@ -1,17 +1,17 @@
-# Infinity Partner — StudioHub Connect
+# StudioHub — Onde a beleza encontra a gestão
 
 SaaS de gestão para salões de beleza, barbearias e clínicas estéticas.
 
 ## Stack
 
-| Camada | Tecnologia |
-|---|---|
-| Frontend | React 19, TypeScript 6, Vite 8, Tailwind CSS 4, Radix UI |
-| Backend | Hono.js, TypeScript |
-| ORM | Prisma 7 |
-| Database | PostgreSQL 16 |
-| Validação | Zod 4 |
-| Testes | Vitest |
+| Camada    | Tecnologia                                               |
+| --------- | -------------------------------------------------------- |
+| Frontend  | React 19, TypeScript 6, Vite 8, Tailwind CSS 4, Radix UI |
+| Backend   | Hono.js, TypeScript                                      |
+| ORM       | Prisma 7                                                 |
+| Database  | PostgreSQL 16                                            |
+| Validação | Zod 4                                                    |
+| Testes    | Vitest                                                   |
 
 ## Pré-requisitos
 
@@ -45,26 +45,26 @@ Backend em `http://localhost:3001/v1` · Frontend em `http://localhost:5173`
 
 ## Scripts
 
-| Comando | Descrição |
-|---|---|
-| `pnpm dev` | Frontend (Vite) |
-| `pnpm server:dev` | Backend (Hono com watch) |
-| `pnpm build` | Build de produção |
-| `pnpm test` | Testes frontend |
-| `pnpm test:server` | Testes backend |
-| `pnpm db:migrate` | Prisma migrate dev |
-| `pnpm db:seed` | Popular banco |
-| `pnpm db:studio` | Prisma Studio |
-| `pnpm lint` | ESLint |
+| Comando            | Descrição                |
+| ------------------ | ------------------------ |
+| `pnpm dev`         | Frontend (Vite)          |
+| `pnpm server:dev`  | Backend (Hono com watch) |
+| `pnpm build`       | Build de produção        |
+| `pnpm test`        | Testes frontend          |
+| `pnpm test:server` | Testes backend           |
+| `pnpm db:migrate`  | Prisma migrate dev       |
+| `pnpm db:seed`     | Popular banco            |
+| `pnpm db:studio`   | Prisma Studio            |
+| `pnpm lint`        | ESLint                   |
 
 ## Variáveis de Ambiente
 
-| Variável | Descrição | Padrão |
-|---|---|---|
-| `DATABASE_URL` | Conexão PostgreSQL | `postgresql://...` |
-| `JWT_SECRET` | Chave para assinar tokens | obrigatório |
-| `PORT` | Porta do servidor | `3001` |
-| `CORS_ORIGIN` | Origins permitidas | `http://localhost:5173` |
+| Variável       | Descrição                 | Padrão                  |
+| -------------- | ------------------------- | ----------------------- |
+| `DATABASE_URL` | Conexão PostgreSQL        | `postgresql://...`      |
+| `JWT_SECRET`   | Chave para assinar tokens | obrigatório             |
+| `PORT`         | Porta do servidor         | `3001`                  |
+| `CORS_ORIGIN`  | Origins permitidas        | `http://localhost:5173` |
 
 ## Arquitetura
 
@@ -107,20 +107,20 @@ POST /v1/auth/logout   → { message }
 
 ### Domínios (requerem autenticação)
 
-| Grupo | Rotas |
-|---|---|
-| Agenda | CRUD agendamentos, confirmação, cancelamento, reagendamento, conflitos, sugestões |
-| Clientes | CRUD + filtros por status/busca |
-| Equipe | CRUD membros da equipe |
-| Serviços | CRUD + listagem agrupada por categoria |
-| Atendimentos | CRUD com serviços prestados e insumos |
-| Pagamentos | CRUD + métodos (PIX, crédito, débito, dinheiro) |
-| Fidelização | Programa de pontos, promoções, transações |
-| Pós-Atendimento | Feedback e campanhas |
-| Onboarding | Configuração inicial (dados, horários, serviços, equipe) |
-| Dashboard | Métricas, hoje, analytics, status |
-| Relatórios | KPIs por período |
-| Configurações | Preferências da empresa |
+| Grupo           | Rotas                                                                             |
+| --------------- | --------------------------------------------------------------------------------- |
+| Agenda          | CRUD agendamentos, confirmação, cancelamento, reagendamento, conflitos, sugestões |
+| Clientes        | CRUD + filtros por status/busca                                                   |
+| Equipe          | CRUD membros da equipe                                                            |
+| Serviços        | CRUD + listagem agrupada por categoria                                            |
+| Atendimentos    | CRUD com serviços prestados e insumos                                             |
+| Pagamentos      | CRUD + métodos (PIX, crédito, débito, dinheiro)                                   |
+| Fidelização     | Programa de pontos, promoções, transações                                         |
+| Pós-Atendimento | Feedback e campanhas                                                              |
+| Onboarding      | Configuração inicial (dados, horários, serviços, equipe)                          |
+| Dashboard       | Métricas, hoje, analytics, status                                                 |
+| Relatórios      | KPIs por período                                                                  |
+| Configurações   | Preferências da empresa                                                           |
 
 ### Formato de Resposta
 

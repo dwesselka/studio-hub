@@ -13,7 +13,7 @@ jobs:
       postgres:
         image: postgres:16-alpine
         env:
-          POSTGRES_DB: infinity_partner
+          POSTGRES_DB: studiohub
           POSTGRES_USER: infinity
           POSTGRES_PASSWORD: infinity123
         ports:
@@ -40,12 +40,12 @@ jobs:
 
       - run: pnpm test
         env:
-          DATABASE_URL: postgresql://infinity:infinity123@localhost:5432/infinity_partner
+          DATABASE_URL: postgresql://infinity:infinity123@localhost:5432/studiohub
           JWT_SECRET: ci-jwt-secret-for-testing
 
       - run: pnpm test:server
         env:
-          DATABASE_URL: postgresql://infinity:infinity123@localhost:5432/infinity_partner
+          DATABASE_URL: postgresql://infinity:infinity123@localhost:5432/studiohub
           JWT_SECRET: ci-jwt-secret-for-testing
 
       - run: pnpm build

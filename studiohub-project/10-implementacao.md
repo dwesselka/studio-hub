@@ -1,4 +1,4 @@
-# Ordem de Implementação — Infinity Partner
+# Ordem de Implementação — StudioHub
 
 ## Visão
 

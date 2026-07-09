@@ -19,7 +19,7 @@ Não queremos apenas desenvolver funcionalidades. Queremos construir um produto 
 
 # Contexto
 
-O projeto chama-se **Infinity Partner** (anteriormente StudioHub Connect).
+O projeto chama-se **StudioHub**.
 
 É uma plataforma SaaS para gestão de salões de beleza e barbearias.
 

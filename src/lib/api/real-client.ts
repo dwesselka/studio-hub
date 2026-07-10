@@ -3,6 +3,12 @@ import { ApiRequestError } from './types'
 
 const REAL_API_BASE = import.meta.env.VITE_API_URL || '/api'
 
+interface ApiEnvelope<T = unknown> {
+  data?: T
+  error?: { code?: string; message?: string; details?: unknown }
+  meta?: { requestId?: string; timestamp?: string }
+}
+
 async function getAuthToken(): Promise<string | null> {
   try {
     const raw = localStorage.getItem('infinity_auth_tokens')
@@ -42,7 +48,7 @@ export async function realApiHandler(req: ApiRequest): Promise<ApiResponse> {
       body: req.body ? JSON.stringify(req.body) : undefined,
     })
 
-    const data = await response.json()
+    const data: ApiEnvelope = await response.json()
 
     if (!response.ok) {
       throw new ApiRequestError(

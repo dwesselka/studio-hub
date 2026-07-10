@@ -8,6 +8,9 @@ export interface AuthUser {
   email: string
   name: string
   hashedPassword: string
+  role: string
+  credits: number
+  plan: string
   onboardingData: {
     account: { email: string; password: string; nome: string } | null
     business: {
@@ -63,6 +66,25 @@ function hashPassword(password: string): string {
   return `sha256_mock_${Math.abs(hash).toString(16)}`
 }
 
+function toUserProfile(user: AuthUser) {
+  const business = user.onboardingData?.business
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    role: user.role,
+    businessOwnerId: null,
+    credits: user.credits,
+    plan: user.plan,
+    businessName: business?.nome ?? null,
+    businessSegment: business?.segmento ?? null,
+    businessAddress: business?.endereco ?? null,
+    businessPhone: business?.telefone ?? null,
+    businessLogo: business?.logo ?? null,
+    onboardingCompleted: user.onboardingData?.completed ?? false,
+  }
+}
+
 export function registerAuthHandlers(): void {
   mockServer.post('/auth/signup', async (req: ApiRequest) => {
     const { email, password, name } = req.body as { email: string; password: string; name: string }
@@ -89,6 +111,9 @@ export function registerAuthHandlers(): void {
       email,
       name,
       hashedPassword: hashPassword(password),
+      role: 'lojista',
+      credits: 5,
+      plan: 'starter',
       onboardingData: {
         account: { email, password, nome: name },
         business: null,
@@ -120,12 +145,7 @@ export function registerAuthHandlers(): void {
 
     return mockServer['jsonResponse'](
       {
-        user: {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          onboardingData: user.onboardingData,
-        },
+        user: toUserProfile(user),
         accessToken: token,
         refreshToken: token,
       },
@@ -157,24 +177,8 @@ export function registerAuthHandlers(): void {
     }
     sessionsTable.insert(session)
 
-    const business = user.onboardingData?.business
-
     return mockServer['jsonResponse']({
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: 'lojista',
-        businessOwnerId: null,
-        credits: 0,
-        plan: 'starter',
-        businessName: business?.nome ?? null,
-        businessSegment: business?.segmento ?? null,
-        businessAddress: business?.endereco ?? null,
-        businessPhone: business?.telefone ?? null,
-        businessLogo: business?.logo ?? null,
-        onboardingCompleted: user.onboardingData?.completed ?? false,
-      },
+      user: toUserProfile(user),
       accessToken: token,
       refreshToken: token,
     })
@@ -190,22 +194,8 @@ export function registerAuthHandlers(): void {
     const user = usersTable.getById(session.userId)
     if (!user) throw ApiRequestError.unauthorized('Usuário não encontrado')
 
-    const business = user.onboardingData?.business
-
     return mockServer['jsonResponse']({
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      role: 'lojista',
-      businessOwnerId: null,
-      credits: 0,
-      plan: 'starter',
-      businessName: business?.nome ?? null,
-      businessSegment: business?.segmento ?? null,
-      businessAddress: business?.endereco ?? null,
-      businessPhone: business?.telefone ?? null,
-      businessLogo: business?.logo ?? null,
-      onboardingCompleted: user.onboardingData?.completed ?? false,
+      ...toUserProfile(user),
       onboardingData: user.onboardingData,
     })
   })

@@ -1,0 +1,41 @@
+language: pt-BR
+
+reviews:
+  profile: assertive
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbitai summary"
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  path_filters:
+    - "!**/*.lock"
+    - "!**/node_modules/**"
+    - "!**/dist/**"
+    - "!**/pnpm-lock.yaml"
+  path_instructions:
+    - path: "server/**/*.ts"
+      instructions: |
+        - Verificar se todas as rotas têm authGuard e roleGuard apropriados
+        - Verificar se os schemas de validação (zod) cobrem os campos obrigatórios
+        - Verificar se erros são tratados com os status HTTP corretos (400, 401, 403, 404, 409)
+        - Sinalizar qualquer uso de 'any' sem justificativa
+    - path: "src/**/*.ts"
+      instructions: |
+        - Verificar se componentes React usam os hooks corretamente
+        - Verificar se tipos estão sendo exportados/importados corretamente
+        - Sinalizar uso de 'any' sem justificativa
+    - path: "prisma/schema.prisma"
+      instructions: |
+        - Verificar se novos campos têm valores default ou são opcionais quando necessário
+        - Verificar se relações estão corretamente definidas com onDelete apropriado
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - main
+      - develop
+      - feature/*
+
+chat:
+  auto_reply: true

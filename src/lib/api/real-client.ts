@@ -1,0 +1,68 @@
+import type { ApiRequest, ApiResponse } from './types'
+import { ApiRequestError } from './types'
+
+const REAL_API_BASE = import.meta.env.VITE_API_URL || '/api'
+
+async function getAuthToken(): Promise<string | null> {
+  try {
+    const raw = localStorage.getItem('infinity_auth_tokens')
+    if (raw) {
+      const { accessToken } = JSON.parse(raw)
+      return accessToken || null
+    }
+  } catch {
+    return null
+  }
+  return null
+}
+
+export async function realApiHandler(req: ApiRequest): Promise<ApiResponse> {
+  const url = new URL(`${REAL_API_BASE}${req.path}`, window.location.origin)
+
+  if (req.params) {
+    for (const [key, value] of Object.entries(req.params)) {
+      url.searchParams.set(key, value)
+    }
+  }
+
+  const token = await getAuthToken()
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(req.headers || {}),
+  }
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`
+  }
+
+  try {
+    const response = await fetch(url.toString(), {
+      method: req.method,
+      headers,
+      body: req.body ? JSON.stringify(req.body) : undefined,
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      throw new ApiRequestError(
+        data.error?.code || 'SERVER_ERROR',
+        data.error?.message || 'Erro no servidor',
+        response.status,
+        data.error?.details,
+      )
+    }
+
+    return {
+      data,
+      status: response.status,
+      statusText: response.statusText,
+      headers: Object.fromEntries(response.headers.entries()),
+      timestamp: data.meta?.timestamp || new Date().toISOString(),
+      requestId: data.meta?.requestId || crypto.randomUUID(),
+    }
+  } catch (err) {
+    if (err instanceof ApiRequestError) throw err
+    throw ApiRequestError.serverError((err as Error).message)
+  }
+}

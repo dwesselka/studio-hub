@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { simulator } from './simulator'
-import type { NetworkConfig, SimulationEvent } from './types'
+import { simulator, type NetworkConfig, type SimulationEvent } from './simulator'
 
 const styles = `
 .mock-devtools {
@@ -160,7 +159,7 @@ const styles = `
 }
 `
 
-export function MockDevTools(): JSX.Element | null {
+export function MockDevTools() {
   const [open, setOpen] = useState(false)
   const [config, setConfig] = useState<NetworkConfig>(simulator.getConfig())
   const [events, setEvents] = useState<SimulationEvent[]>([])

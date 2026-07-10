@@ -14,7 +14,7 @@ export function sendWhatsApp(message: WhatsAppMessage): Promise<{ success: boole
 
 export function buildWelcomeMessage(businessName: string, dashboardUrl: string): string {
   return [
-    `🖐️ Olá! Seja bem-vindo ao *Infinity Partner*!`,
+    `🖐️ Olá! Seja bem-vindo ao *StudioHub*!`,
     ``,
     `Seu negócio *${businessName}* já está configurado e pronto para receber agendamentos.`,
     ``,

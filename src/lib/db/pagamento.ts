@@ -80,7 +80,7 @@ export function simulatePixPayment(totalValue: number): PixPaymentResponse {
         </g>
       </svg>`,
     )}`,
-    copyPaste: `00020126580014BR.GOV.BCB.PIX0136${tx}@pix.infinity.com.br5204000053039865406${totalValue.toFixed(2).replace('.', '')}5802BR5925Infinity Partner${generateId().slice(0, 10)}`,
+    copyPaste: `00020126580014BR.GOV.BCB.PIX0136${tx}@pix.studiohub.com.br5204000053039865406${totalValue.toFixed(2).replace('.', '')}5802BR5925StudioHub${generateId().slice(0, 10)}`,
     transactionId: tx,
     expiresAt: new Date(Date.now() + 300_000).toISOString(),
   }
@@ -271,7 +271,7 @@ export function getPaymentReceiptHtml(payment: Payment): string {
 </style></head>
 <body>
   <div class="header">
-    <h1>Infinity Partner</h1>
+    <h1>StudioHub</h1>
     <p>Recibo de Pagamento</p>
     <p>Nº ${payment.receiptNumber}</p>
   </div>

@@ -3,7 +3,7 @@ import { db } from '../db'
 import { ApiRequestError } from '../types'
 import type { ApiRequest } from '../types'
 
-interface Appointment {
+export interface Appointment {
   id: string
   clientName: string
   clientPhone: string

@@ -1,0 +1,287 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                 String       @id @default(uuid())
+  email              String       @unique
+  name               String
+  hashedPassword     String
+  credits            Int          @default(5)
+  plan               String       @default("starter")
+  businessName       String?
+  businessSegment    String?
+  businessAddress    String?
+  businessPhone      String?
+  businessLogo       String?
+  onboardingCompleted Boolean    @default(false)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
+  businessHours      BusinessHour[]
+  services           Service[]
+  teamMembers        TeamMember[]
+  clients            Cliente[]
+  consumables        Consumable[]
+  appointments       Appointment[]
+  atendimentos       Atendimento[]
+  payments           Payment[]
+  loyaltyProgram     LoyaltyProgram?
+  clientPoints       ClientPoints[]
+  pointsTransactions PointsTransaction[]
+  promotions         LoyaltyPromotion[]
+  feedbacks          Feedback[]
+  campaigns          Campaign[]
+}
+
+model BusinessHour {
+  id        String   @id @default(uuid())
+  userId    String
+  dayOfWeek Int
+  isOpen    Boolean  @default(true)
+  openTime  String   @default("08:00")
+  closeTime String   @default("18:00")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Service {
+  id       String  @id @default(uuid())
+  userId   String
+  name     String
+  duration Int
+  price    Int
+  category String
+  active   Boolean @default(true)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, active])
+}
+
+model TeamMember {
+  id          String   @id @default(uuid())
+  userId      String
+  name        String
+  role        String
+  phone       String
+  email       String
+  active      Boolean  @default(true)
+  commission  Int?
+  specialties String[]
+  photo       String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, active])
+}
+
+model Cliente {
+  id           String   @id @default(uuid())
+  userId       String
+  nome         String
+  email        String
+  telefone     String
+  segmento     String?
+  ultimaVisita String?
+  totalVisitas Int      @default(0)
+  totalGasto   Int      @default(0)
+  status       String   @default("novo")
+  aniversario  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([userId, nome])
+}
+
+model Consumable {
+  id           String  @id @default(uuid())
+  userId       String
+  name         String
+  unit         String
+  currentStock Int
+  minStock     Int
+  category     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Appointment {
+  id                String   @id @default(uuid())
+  userId            String
+  clientName        String
+  clientPhone       String
+  clientEmail       String?
+  serviceId         String
+  serviceName       String
+  serviceDuration   Int
+  servicePrice      Int
+  professionalId    String
+  professionalName  String
+  date              String
+  startTime         String
+  endTime           String
+  status            String   @default("pending")
+  notes             String?
+  reminderSent      Boolean  @default(false)
+  confirmationSent  Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date])
+  @@index([userId, professionalId, date, status])
+}
+
+model Atendimento {
+  id                String   @id @default(uuid())
+  userId            String
+  appointmentId     String
+  clientName        String
+  clientPhone       String
+  professionalId    String
+  professionalName  String
+  date              String
+  startTime         String
+  endTime           String
+  services          Json
+  supplies          Json
+  notes             String?
+  status            String   @default("in-progress")
+  totalValue        Int
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date, status])
+}
+
+model Payment {
+  id               String    @id @default(uuid())
+  userId           String
+  atendimentoId    String
+  clientName       String
+  clientPhone      String
+  professionalName String
+  serviceNames     String[]
+  date             String
+  totalValue       Int
+  method           String
+  status           String    @default("pending")
+  paidValue        Int       @default(0)
+  feeValue         Int       @default(0)
+  netValue         Int       @default(0)
+  pixQrCode        String?
+  pixCopyPaste     String?
+  receiptNumber    String?
+  paidAt           DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([userId, atendimentoId])
+}
+
+model LoyaltyProgram {
+  id                String  @id @default(uuid())
+  userId            String  @unique
+  pointsPerCurrency Int     @default(10)
+  pointsPerVisit    Int     @default(50)
+  pointsExpiryDays  Int     @default(180)
+  enabled           Boolean @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ClientPoints {
+  id          String   @id @default(uuid())
+  userId      String
+  clientPhone String
+  clientName  String
+  balance     Int      @default(0)
+  lifetime    Int      @default(0)
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, clientPhone])
+}
+
+model PointsTransaction {
+  id           String   @id @default(uuid())
+  userId       String
+  clientPhone  String
+  clientName   String
+  type         String
+  amount       Int
+  balanceAfter Int
+  description  String
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model LoyaltyPromotion {
+  id              String   @id @default(uuid())
+  userId          String
+  name            String
+  segment         String
+  discountPercent Int      @default(0)
+  requiredPoints  Int      @default(0)
+  serviceId       String?
+  serviceName     String?
+  expiresAt       String
+  status          String   @default("active")
+  statsSent       Int      @default(0)
+  statsRedeemed   Int      @default(0)
+  createdAt       DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Feedback {
+  id            String   @id @default(uuid())
+  userId        String
+  atendimentoId String
+  clientName    String
+  clientPhone   String
+  score         Int
+  comment       String?
+  createdAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Campaign {
+  id                String   @id @default(uuid())
+  userId            String
+  name              String
+  type              String
+  status            String   @default("active")
+  segment           String
+  triggerDays       Int
+  messageTemplate   String
+  serviceSuggestion String?
+  statsSent         Int      @default(0)
+  statsResponded    Int      @default(0)
+  statsConverted    Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

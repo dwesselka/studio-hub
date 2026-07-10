@@ -17,7 +17,6 @@ interface PendingRequest {
 }
 
 class ApiClient {
-  private baseUrl = '/api'
   private requestInterceptors: RequestInterceptor[] = []
   private responseInterceptors: ResponseInterceptor[] = []
   private errorInterceptors: ErrorInterceptor[] = []
@@ -173,7 +172,12 @@ class ApiClient {
 
   get<TResponse = unknown>(
     path: string,
-    options?: { params?: Record<string, string>; cacheMs?: number; signal?: AbortSignal },
+    options?: {
+      params?: Record<string, string>
+      headers?: Record<string, string>
+      cacheMs?: number
+      signal?: AbortSignal
+    },
   ): Promise<ApiResponse<TResponse>> {
     return this.request('GET', path, options)
   }
@@ -181,7 +185,11 @@ class ApiClient {
   post<TBody = unknown, TResponse = unknown>(
     path: string,
     body?: TBody,
-    options?: { params?: Record<string, string>; signal?: AbortSignal },
+    options?: {
+      params?: Record<string, string>
+      headers?: Record<string, string>
+      signal?: AbortSignal
+    },
   ): Promise<ApiResponse<TResponse>> {
     return this.request('POST', path, { ...options, body })
   }
@@ -189,7 +197,11 @@ class ApiClient {
   put<TBody = unknown, TResponse = unknown>(
     path: string,
     body?: TBody,
-    options?: { params?: Record<string, string>; signal?: AbortSignal },
+    options?: {
+      params?: Record<string, string>
+      headers?: Record<string, string>
+      signal?: AbortSignal
+    },
   ): Promise<ApiResponse<TResponse>> {
     return this.request('PUT', path, { ...options, body })
   }
@@ -197,14 +209,22 @@ class ApiClient {
   patch<TBody = unknown, TResponse = unknown>(
     path: string,
     body?: TBody,
-    options?: { params?: Record<string, string>; signal?: AbortSignal },
+    options?: {
+      params?: Record<string, string>
+      headers?: Record<string, string>
+      signal?: AbortSignal
+    },
   ): Promise<ApiResponse<TResponse>> {
     return this.request('PATCH', path, { ...options, body })
   }
 
   delete<TResponse = unknown>(
     path: string,
-    options?: { params?: Record<string, string>; signal?: AbortSignal },
+    options?: {
+      params?: Record<string, string>
+      headers?: Record<string, string>
+      signal?: AbortSignal
+    },
   ): Promise<ApiResponse<TResponse>> {
     return this.request('DELETE', path, options ?? {})
   }

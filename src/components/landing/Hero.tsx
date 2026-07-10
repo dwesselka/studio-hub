@@ -113,7 +113,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="hero-section" aria-label={`Infinity Partner para ${current.label}`}>
+    <section className="hero-section" aria-label={`StudioHub para ${current.label}`}>
       <div className="hero-toggle">
         {SEGMENTS.map((seg) => (
           <button

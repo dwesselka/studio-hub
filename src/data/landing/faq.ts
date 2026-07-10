@@ -12,7 +12,7 @@ export const faq: FAQItem[] = [
   {
     question: 'Preciso instalar algum aplicativo?',
     answer:
-      'Não. O Infinity Partner funciona no navegador do celular e do computador. Seus clientes também agendam por um link, sem precisar baixar nada.',
+      'Não. O StudioHub funciona no navegador do celular e do computador. Seus clientes também agendam por um link, sem precisar baixar nada.',
   },
   {
     question: 'Quais formas de pagamento são aceitas?',

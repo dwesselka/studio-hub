@@ -108,7 +108,7 @@ export const AppHeader = memo(function AppHeader({
         <Link
           to="/app"
           className="flex items-center gap-2.5 lg:hidden"
-          aria-label="Infinity Partner - Início"
+          aria-label="StudioHub - Início"
         >
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
             IP

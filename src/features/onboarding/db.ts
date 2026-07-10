@@ -1,6 +1,4 @@
-import { safeLocalStorage } from '@/lib/storage'
 import type {
-  AuthUser,
   OnboardingData,
   BusinessData,
   DayHours,
@@ -9,6 +7,30 @@ import type {
   OnboardingProgress,
 } from '@/features/onboarding/types'
 import { DEFAULT_HOURS, SEGMENT_SERVICES, generateId } from '@/features/onboarding/types'
+import { apiClient } from '@/lib/api'
+import { safeLocalStorage } from '@/lib/storage'
+
+const STORAGE_KEY = 'infinity_auth'
+
+async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const raw = safeLocalStorage.getItem(STORAGE_KEY)
+  const tokens: { accessToken?: string } | null = raw ? JSON.parse(raw) : null
+
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(options.headers as Record<string, string>),
+  }
+
+  if (tokens?.accessToken) {
+    headers['Authorization'] = `Bearer ${tokens.accessToken}`
+  }
+
+  const method = (options.method as 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE') ?? 'GET'
+  const body = options.body ? JSON.parse(options.body as string) : undefined
+
+  const response = await apiClient.request<T>(method, path, { body, headers })
+  return response.data
+}
 
 export function createEmptyOnboardingData(): OnboardingData {
   return {
@@ -28,57 +50,52 @@ export function createEmptyOnboardingData(): OnboardingData {
   }
 }
 
-export function updateUserOnboarding(
-  userId: string,
-  updater: (data: OnboardingData) => OnboardingData,
-): AuthUser | null {
-  const AUTH_KEY = 'infinity_auth'
-  const users: AuthUser[] = JSON.parse(safeLocalStorage.getItem(AUTH_KEY) || '[]')
-  const index = users.findIndex((u) => u.id === userId)
-  if (index === -1) return null
-
-  users[index].onboardingData = updater(users[index].onboardingData)
-  safeLocalStorage.setItem(AUTH_KEY, JSON.stringify(users))
-  return users[index]
+export async function saveBusinessData(
+  data: BusinessData,
+): Promise<{ onboardingData: { business: BusinessData } }> {
+  return apiFetch('/onboarding/business', {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  })
 }
 
-export function saveBusinessData(userId: string, data: BusinessData): AuthUser | null {
-  return updateUserOnboarding(userId, (onboarding) => ({
-    ...onboarding,
-    business: data,
-    progress: { ...onboarding.progress, businessDataComplete: true },
-  }))
+export async function saveHours(
+  hours: DayHours[],
+): Promise<{ onboardingData: { hours: DayHours[] } }> {
+  return apiFetch('/onboarding/hours', {
+    method: 'PUT',
+    body: JSON.stringify(hours),
+  })
 }
 
-export function saveHours(userId: string, hours: DayHours[]): AuthUser | null {
-  return updateUserOnboarding(userId, (onboarding) => ({
-    ...onboarding,
-    hours,
-    progress: { ...onboarding.progress, hoursConfigured: true },
+export async function saveServices(
+  services: ServiceItem[],
+): Promise<{ onboardingData: { services: ServiceItem[] } }> {
+  const body = services.map(({ name, duration, price, category }) => ({
+    name,
+    duration,
+    price,
+    category,
   }))
+  return apiFetch('/onboarding/services', {
+    method: 'PUT',
+    body: JSON.stringify(body),
+  })
 }
 
-export function saveServices(userId: string, services: ServiceItem[]): AuthUser | null {
-  return updateUserOnboarding(userId, (onboarding) => ({
-    ...onboarding,
-    services,
-    progress: { ...onboarding.progress, servicesReviewed: true },
-  }))
+export async function saveTeam(
+  team: TeamMember[],
+): Promise<{ onboardingData: { team: TeamMember[] } }> {
+  return apiFetch('/onboarding/team', {
+    method: 'PUT',
+    body: JSON.stringify(team),
+  })
 }
 
-export function saveTeam(userId: string, team: TeamMember[]): AuthUser | null {
-  return updateUserOnboarding(userId, (onboarding) => ({
-    ...onboarding,
-    team,
-    progress: { ...onboarding.progress, teamAdded: true },
-  }))
-}
-
-export function completeOnboarding(userId: string): AuthUser | null {
-  return updateUserOnboarding(userId, (onboarding) => ({
-    ...onboarding,
-    completed: true,
-  }))
+export async function completeOnboarding(): Promise<{ onboardingData: { completed: boolean } }> {
+  return apiFetch('/onboarding/complete', {
+    method: 'POST',
+  })
 }
 
 export function getPrePopulatedServices(segmento: string): ServiceItem[] {

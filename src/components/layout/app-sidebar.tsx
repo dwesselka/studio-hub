@@ -142,14 +142,14 @@ export const AppSidebar = memo(function AppSidebar({
       >
         <Link to="/app" className="flex items-center gap-2.5" onClick={onMobileClose}>
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
-            IP
+            SH
           </span>
           {!collapsed && (
             <div className="flex flex-col">
-              <span className="text-sm font-semibold leading-tight text-foreground">
-                Infinity Partner
+              <span className="text-sm font-semibold leading-tight text-foreground">StudioHub</span>
+              <span className="text-[10px] text-muted-foreground">
+                Onde a beleza encontra a gestão
               </span>
-              <span className="text-[10px] text-muted-foreground">Gestão inteligente</span>
             </div>
           )}
         </Link>

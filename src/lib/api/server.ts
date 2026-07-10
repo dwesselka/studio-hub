@@ -70,7 +70,7 @@ export class MockServer {
     return null
   }
 
-  private jsonResponse<T>(data: T, status = 200): ApiResponse<T> {
+  jsonResponse<T>(data: T, status = 200): ApiResponse<T> {
     return {
       data,
       status,
@@ -86,7 +86,14 @@ export class MockServer {
     this.started = true
 
     apiClient.setHandler(async (req) => {
-      const cleanedPath = req.path.replace(/^\/api/, '') || '/'
+      const normalizedHeaders: Record<string, string> = {}
+      if (req.headers) {
+        for (const [key, value] of Object.entries(req.headers)) {
+          normalizedHeaders[key.toLowerCase()] = value
+        }
+      }
+
+      const cleanedPath = req.path.replace(/^\/(api|v1)/, '') || '/'
       const match = this.matchRoute(req.method, cleanedPath)
 
       if (!match) {
@@ -95,6 +102,7 @@ export class MockServer {
 
       const enrichedReq: ApiRequest = {
         ...req,
+        headers: normalizedHeaders,
         params: { ...req.params, ...match.params },
         path: cleanedPath,
       }
@@ -112,8 +120,6 @@ export class MockServer {
   isStarted(): boolean {
     return this.started
   }
-
-  protected jsonResponse = this.jsonResponse
 }
 
 export const mockServer = new MockServer()

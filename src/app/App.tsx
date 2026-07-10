@@ -110,7 +110,7 @@ export default function App() {
             <Route
               path="/app"
               element={
-                <AuthGuard>
+                <AuthGuard role="lojista">
                   <AppLayout />
                 </AuthGuard>
               }

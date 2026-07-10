@@ -66,8 +66,8 @@ services:
     ports: ['5432:5432']
     environment:
       POSTGRES_DB: studiohub
-      POSTGRES_USER: infinity
-      POSTGRES_PASSWORD: infinity123
+      POSTGRES_USER: studio_hub
+      POSTGRES_PASSWORD: studio123
 ```
 
 ## Monitoramento

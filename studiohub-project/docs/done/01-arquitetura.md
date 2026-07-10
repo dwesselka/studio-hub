@@ -20,7 +20,7 @@ sequenceDiagram
     User->>React: Interage com UI
     React->>RQ: useQuery / useMutation
     RQ->>API: fetch()
-    
+
     alt Desenvolvimento / Homologação
         API->>Mock: Intercepta requisição
         Mock-->>API: Resposta mockada (com latência simulada)
@@ -32,7 +32,7 @@ sequenceDiagram
         Hono-->>Vite: JSON response
         Vite-->>API: Resposta
     end
-    
+
     API-->>RQ: Dados formatados
     RQ-->>React: Cache atualizado
     React-->>User: UI re-renderizada
@@ -50,6 +50,7 @@ sequenceDiagram
 ## Padrão de resposta
 
 ### Sucesso
+
 ```json
 {
   "success": true,
@@ -59,6 +60,7 @@ sequenceDiagram
 ```
 
 ### Sucesso paginado
+
 ```json
 {
   "success": true,
@@ -77,6 +79,7 @@ sequenceDiagram
 ```
 
 ### Erro
+
 ```json
 {
   "success": false,
@@ -91,15 +94,15 @@ sequenceDiagram
 
 ## Códigos de erro padronizados
 
-| Código | HTTP | Descrição |
-|---|---|---|
-| `BAD_REQUEST` | 400 | Requisição mal formatada |
-| `UNAUTHORIZED` | 401 | Token ausente ou inválido |
-| `FORBIDDEN` | 403 | Sem permissão |
-| `NOT_FOUND` | 404 | Recurso não encontrado |
-| `CONFLICT` | 409 | Conflito (ex: email duplicado) |
-| `VALIDATION_ERROR` | 422 | Dados inválidos (Zod) |
-| `SERVER_ERROR` | 500 | Erro interno |
+| Código             | HTTP | Descrição                      |
+| ------------------ | ---- | ------------------------------ |
+| `BAD_REQUEST`      | 400  | Requisição mal formatada       |
+| `UNAUTHORIZED`     | 401  | Token ausente ou inválido      |
+| `FORBIDDEN`        | 403  | Sem permissão                  |
+| `NOT_FOUND`        | 404  | Recurso não encontrado         |
+| `CONFLICT`         | 409  | Conflito (ex: email duplicado) |
+| `VALIDATION_ERROR` | 422  | Dados inválidos (Zod)          |
+| `SERVER_ERROR`     | 500  | Erro interno                   |
 
 ## Middleware Pipeline (Backend)
 
@@ -126,13 +129,13 @@ flowchart LR
 
 ## Convenções de nomenclatura
 
-| Contexto | Padrão | Exemplo |
-|---|---|---|
-| Arquivos TS/TSX | kebab-case | `appointment-card.tsx` |
-| Componentes React | PascalCase | `AppointmentCard` |
-| Funções/ hooks | camelCase | `useAgendaData` |
-| Pastas | kebab-case | `pos-atendimento/` |
-| Rotas API | kebab-case | `POST /v1/pos-atendimento/feedback` |
-| Tabelas Prisma | PascalCase | `Appointment`, `TeamMember` |
-| Colunas DB | camelCase | `createdAt`, `businessName` |
-| Variáveis ambiente | UPPER_SNAKE | `DATABASE_URL`, `JWT_SECRET` |
+| Contexto           | Padrão      | Exemplo                             |
+| ------------------ | ----------- | ----------------------------------- |
+| Arquivos TS/TSX    | kebab-case  | `appointment-card.tsx`              |
+| Componentes React  | PascalCase  | `AppointmentCard`                   |
+| Funções/ hooks     | camelCase   | `useAgendaData`                     |
+| Pastas             | kebab-case  | `pos-atendimento/`                  |
+| Rotas API          | kebab-case  | `POST /v1/pos-atendimento/feedback` |
+| Tabelas Prisma     | PascalCase  | `Appointment`, `TeamMember`         |
+| Colunas DB         | camelCase   | `createdAt`, `businessName`         |
+| Variáveis ambiente | UPPER_SNAKE | `DATABASE_URL`, `JWT_SECRET`        |

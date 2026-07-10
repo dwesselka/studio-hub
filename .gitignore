@@ -1,5 +1,7 @@
 node_modules
 dist
+coverage
+*.tsbuildinfo
 *.local
 code_review_report.md
 enterprise-excellence-review.md
@@ -7,3 +9,6 @@ enterprise-excellence-review.md
 .env
 !.env.example
 .opencode/
+
+# Vitepress
+studiohub-project/guide/docs/.vitepress/cache/

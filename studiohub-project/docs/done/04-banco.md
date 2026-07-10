@@ -212,11 +212,11 @@ pnpm db:studio         # Prisma Studio GUI
 
 O seed cria 3 usuários de teste:
 
-| Email             | Nome          | Segmento  | Plano   |
-| ----------------- | ------------- | --------- | ------- |
-| homem@teste.com   | Carlos Silva  | Barbearia | Pro     |
-| mulher@teste.com  | Ana Costa     | Salão     | Pro     |
-| lojista@teste.com | Rede Infinity | Salão     | Premium |
+| Email             | Nome         | Segmento  | Plano   |
+| ----------------- | ------------ | --------- | ------- |
+| homem@teste.com   | Carlos Silva | Barbearia | Pro     |
+| mulher@teste.com  | Ana Costa    | Salão     | Pro     |
+| lojista@teste.com | Studio Hub   | Salão     | Premium |
 
 Cada um com: agenda de horários, equipe, serviços, clientes, agendamentos (~66), atendimentos (~36), pagamentos (~36), feedbacks, campanhas e programa de fidelidade.
 

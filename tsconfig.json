@@ -1,19 +1,15 @@
 {
   "compilerOptions": {
+    "composite": true,
     "target": "ES2022",
     "useDefineForClassFields": true,
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
-    "noEmit": true,
     "jsx": "react-jsx",
     "strict": true,
     "noUnusedLocals": true,
@@ -21,21 +17,11 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@api": [
-        "./src/lib/api/index.ts"
-      ],
-      "@api/*": [
-        "./src/lib/api/*"
-      ],
-      "@test/*": [
-        "./src/test/*"
-      ]
+      "@/*": ["./src/*"],
+      "@api": ["./src/lib/api/index.ts"],
+      "@api/*": ["./src/lib/api/*"],
+      "@test/*": ["./src/test/*"]
     }
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

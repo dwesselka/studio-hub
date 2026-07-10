@@ -1,0 +1,167 @@
+/* ── StudioHub Brand Theme ────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Brand Colors */
+  --vp-c-brand-1: #a64d52;
+  --vp-c-brand-2: #8a3f44;
+  --vp-c-brand-3: #f9ece8;
+  --vp-c-brand-light: #f9ece8;
+  --vp-c-brand-dark: #8a3f44;
+
+  /* Accent */
+  --vp-c-accent: #b8956a;
+  --vp-c-accent-dark: #96784f;
+
+  /* Typography */
+  --vp-font-family-base: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --vp-font-family-mono: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', monospace;
+
+  /* Backgrounds */
+  --vp-c-bg: #fffcfa;
+  --vp-c-bg-alt: #f7f2ed;
+  --vp-c-bg-elv: #ffffff;
+  --vp-c-bg-soft: #f5f3f0;
+
+  /* Text */
+  --vp-c-text-1: #1e1714;
+  --vp-c-text-2: #5a4f4b;
+  --vp-c-text-3: #8a7a73;
+
+  /* Border */
+  --vp-c-border: #e8ddd4;
+  --vp-c-divider: #e8ddd4;
+
+  /* Shadows */
+  --vp-shadow-sm: 0 1px 3px 0 rgb(44 36 32 / 0.06), 0 1px 2px -1px rgb(44 36 32 / 0.06);
+  --vp-shadow-md: 0 4px 12px -2px rgb(44 36 32 / 0.08), 0 2px 6px -2px rgb(44 36 32 / 0.04);
+  --vp-shadow-lg: 0 12px 32px -8px rgb(44 36 32 / 0.12), 0 4px 12px -4px rgb(44 36 32 / 0.06);
+
+  /* Border Radius */
+  --vp-border-radius: 0.75rem;
+}
+
+.dark {
+  --vp-c-brand-1: #c97a7e;
+  --vp-c-brand-2: #a64d52;
+  --vp-c-brand-3: #4a2a2c;
+  --vp-c-brand-light: #5a3537;
+  --vp-c-brand-dark: #c97a7e;
+
+  --vp-c-accent: #c9a962;
+  --vp-c-accent-dark: #dfbb68;
+
+  --vp-c-bg: #1a1815;
+  --vp-c-bg-elder: #2d2a26;
+  --vp-c-bg-soft: #24211e;
+  --vp-c-bg-alt: #24211e;
+
+  --vp-c-text-1: #f0ebe3;
+  --vp-c-text-2: #b5aaa1;
+  --vp-c-text-3: #8a7e73;
+
+  --vp-c-border: #3d3834;
+  --vp-c-divider: #3d3834;
+}
+
+/* Custom Elements */
+
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3 {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.vp-doc h1 {
+  color: var(--vp-c-brand-2);
+}
+
+.vp-doc h2 {
+  border-bottom: 2px solid var(--vp-c-brand-3);
+  padding-bottom: 0.5rem;
+}
+
+.vp-doc a {
+  color: var(--vp-c-brand-1);
+  font-weight: 500;
+}
+
+.vp-doc a:hover {
+  color: var(--vp-c-brand-2);
+}
+
+/* Nav */
+.VPNavBar {
+  border-bottom: 1px solid var(--vp-c-border);
+}
+
+.VPNavBar .title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--vp-c-brand-2);
+}
+
+/* Sidebar */
+.VPSidebar {
+  background: var(--vp-c-bg-soft);
+  border-right: 1px solid var(--vp-c-border);
+}
+
+/* Tables */
+.vp-doc table {
+  border: 1px solid var(--vp-c-border);
+  border-radius: var(--vp-border-radius);
+  overflow: hidden;
+}
+
+.vp-doc th {
+  background: var(--vp-c-brand-3);
+  color: var(--vp-c-brand-2);
+  font-weight: 600;
+}
+
+.vp-doc tr:nth-child(even) {
+  background: var(--vp-c-bg-soft);
+}
+
+/* Code blocks */
+.vp-doc div[class*='language-'] {
+  border-radius: var(--vp-border-radius);
+  border: 1px solid var(--vp-c-border);
+}
+
+/* Blockquotes */
+.vp-doc blockquote {
+  border-left: 4px solid var(--vp-c-brand-1);
+  background: var(--vp-c-brand-3);
+  padding: 1rem 1.25rem;
+  border-radius: 0 var(--vp-border-radius) var(--vp-border-radius) 0;
+}
+
+/* Custom Block */
+.vp-doc .custom-block {
+  border-radius: var(--vp-border-radius);
+  border: 1px solid var(--vp-c-border);
+}
+
+.vp-doc .custom-block.tip {
+  border-color: var(--vp-c-brand-1);
+  background: var(--vp-c-brand-3);
+}
+
+.vp-doc .custom-block.warning {
+  border-color: var(--vp-c-accent);
+}
+
+/* Badge */
+.vp-doc .badge {
+  background: var(--vp-c-brand-1);
+  color: #fff;
+  border-radius: 2rem;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+}

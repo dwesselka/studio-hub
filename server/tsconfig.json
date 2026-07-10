@@ -10,5 +10,9 @@
     "rootDir": ".."
   },
   "include": ["./**/*.ts", "../src/lib/prisma.ts"],
-  "references": [{ "path": "../tsconfig.json" }]
+  "references": [
+    {
+      "path": "../tsconfig.json"
+    }
+  ]
 }

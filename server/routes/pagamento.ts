@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { validateBody, validateParams } from '../lib/validate'
 import { success, successPaginated, created } from '../lib/response'
-import { authGuard } from '../lib/middleware'
+import { authGuard, roleGuard } from '../lib/middleware'
 import * as pagamentoService from '../services/pagamento'
 import { createPaymentSchema, updatePaymentSchema } from '../schemas/pagamento'
 import { uuidParam } from '../schemas/common'
@@ -10,7 +10,7 @@ import type { CreatePaymentInput } from '../schemas/pagamento'
 
 const router = new Hono()
 
-router.use('/*', authGuard)
+router.use('/*', authGuard, roleGuard('lojista'))
 
 router.get('/', async (c) => {
   const userId = c.get('userId')

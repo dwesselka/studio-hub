@@ -28,7 +28,10 @@ async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> 
   const method = (options.method as 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE') ?? 'GET'
   const body = options.body ? JSON.parse(options.body as string) : undefined
 
-  const response = await apiClient.request<T>(method, path, { body, headers })
+  const response = await apiClient.request<Record<string, unknown>, T>(method, path, {
+    body,
+    headers,
+  })
   return response.data
 }
 

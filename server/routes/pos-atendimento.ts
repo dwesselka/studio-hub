@@ -1,14 +1,18 @@
 import { Hono } from 'hono'
 import { validateBody } from '../lib/validate'
 import { success, successPaginated, created, noContent } from '../lib/response'
-import { authGuard } from '../lib/middleware'
+import { authGuard, roleGuard } from '../lib/middleware'
 import * as posAtendimentoService from '../services/pos-atendimento'
-import { createFeedbackSchema, createCampaignSchema, updateCampaignSchema } from '../schemas/pos-atendimento'
+import {
+  createFeedbackSchema,
+  createCampaignSchema,
+  updateCampaignSchema,
+} from '../schemas/pos-atendimento'
 import { toFeedbackResponse, toCampaignResponse } from '../dto/pos-atendimento'
 
 const router = new Hono()
 
-router.use('/*', authGuard)
+router.use('/*', authGuard, roleGuard('lojista', 'profissional'))
 
 router.get('/feedback', async (c) => {
   const userId = c.get('userId')

@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { validateBody, validateParams } from '../lib/validate'
 import { success, created, noContent } from '../lib/response'
-import { authGuard } from '../lib/middleware'
+import { authGuard, roleGuard } from '../lib/middleware'
 import * as servicosService from '../services/servicos'
 import { createServiceSchema, updateServiceSchema } from '../schemas/servicos'
 import { uuidParam } from '../schemas/common'
@@ -10,14 +10,19 @@ import type { CreateServiceInput } from '../schemas/servicos'
 
 const router = new Hono()
 
-router.use('/*', authGuard)
+router.use('/*', authGuard, roleGuard('lojista'))
 
 router.get('/', async (c) => {
   const userId = c.get('userId')
   const activeOnly = c.req.query('active') === 'true'
   const services = await servicosService.listServices(userId, activeOnly)
   const grouped = c.req.query('grouped') === 'true'
-  return success(c, grouped ? toServiceCategoryResponse(services.map(toServiceResponse)) : services.map(toServiceResponse))
+  return success(
+    c,
+    grouped
+      ? toServiceCategoryResponse(services.map(toServiceResponse))
+      : services.map(toServiceResponse),
+  )
 })
 
 router.get('/:id', validateParams(uuidParam), async (c) => {

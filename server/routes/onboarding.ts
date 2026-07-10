@@ -1,13 +1,13 @@
 import { Hono } from 'hono'
 import { validateBody } from '../lib/validate'
 import { success } from '../lib/response'
-import { authGuard } from '../lib/middleware'
+import { authGuard, roleGuard } from '../lib/middleware'
 import * as onboardingService from '../services/onboarding'
 import { businessDataSchema, hoursSchema, servicesSchema, teamSchema } from '../schemas/onboarding'
 
 const router = new Hono()
 
-router.use('/*', authGuard)
+router.use('/*', authGuard, roleGuard('lojista', 'profissional'))
 
 router.put('/business', validateBody(businessDataSchema), async (c) => {
   const userId = c.get('userId')
@@ -27,7 +27,16 @@ router.put('/services', validateBody(servicesSchema), async (c) => {
   const userId = c.get('userId')
   const services = c.get('validBody')
   await onboardingService.saveServices(userId, services)
-  return success(c, { onboardingData: { services: services.map((s: { name: string; duration: number; price: number; category: string }) => ({ id: crypto.randomUUID(), ...s })) } })
+  return success(c, {
+    onboardingData: {
+      services: services.map(
+        (s: { name: string; duration: number; price: number; category: string }) => ({
+          id: crypto.randomUUID(),
+          ...s,
+        }),
+      ),
+    },
+  })
 })
 
 router.put('/team', validateBody(teamSchema), async (c) => {
@@ -51,7 +60,12 @@ router.get('/prepopulated/:segmento', async (c) => {
 
 router.get('/progress', async (c) => {
   const userId = c.get('userId')
-  const user = await onboardingService.saveBusinessData(userId, { nome: '', segmento: '', endereco: '', telefone: '' })
+  const user = await onboardingService.saveBusinessData(userId, {
+    nome: '',
+    segmento: '',
+    endereco: '',
+    telefone: '',
+  })
   return success(c, {
     progress: {
       accountCreated: true,

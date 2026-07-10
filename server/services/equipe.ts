@@ -30,3 +30,23 @@ export async function deleteTeamMember(userId: string, id: string) {
   if (!existing) throw new AppError(404, 'NOT_FOUND', 'Membro não encontrado')
   await prisma.teamMember.delete({ where: { id } })
 }
+
+export async function createInvite(userId: string, teamMemberId: string) {
+  const member = await prisma.teamMember.findFirst({ where: { id: teamMemberId, userId } })
+  if (!member) throw new AppError(404, 'NOT_FOUND', 'Membro não encontrado')
+  if (member.userAccount) throw new AppError(409, 'CONFLICT', 'Membro já possui usuário vinculado')
+
+  const token = crypto.randomUUID()
+
+  await prisma.inviteToken.create({
+    data: {
+      token,
+      userId,
+      email: member.email,
+      teamMemberId,
+      expiresAt: new Date(Date.now() + 48 * 60 * 60 * 1000),
+    },
+  })
+
+  return { token, link: `/convite?token=${token}` }
+}

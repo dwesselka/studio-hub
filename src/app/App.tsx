@@ -9,6 +9,7 @@ import { ReminderScheduler } from '@/components/reminder-scheduler'
 const LandingPage = lazy(() => import('@/pages/LandingPage'))
 const OnboardingPage = lazy(() => import('@/pages/OnboardingPage'))
 const LoginPage = lazy(() => import('@/pages/LoginPage'))
+const ConvitePage = lazy(() => import('@/pages/ConvitePage'))
 const DashboardPage = lazy(() =>
   import('@/features/dashboard/pages/dashboard-page').then((m) => ({ default: m.DashboardPage })),
 )
@@ -76,6 +77,7 @@ export default function App() {
             <Route index element={<LandingPage />} />
             <Route path="/cadastro" element={<OnboardingPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/convite" element={<ConvitePage />} />
             <Route
               path="/app"
               element={

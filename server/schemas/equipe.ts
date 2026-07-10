@@ -16,3 +16,7 @@ export const updateTeamMemberSchema = createTeamMemberSchema.partial()
 
 export type CreateTeamMemberInput = z.infer<typeof createTeamMemberSchema>
 export type UpdateTeamMemberInput = z.infer<typeof updateTeamMemberSchema>
+
+export const conviteParamsSchema = z.object({
+  id: z.string().uuid(),
+})

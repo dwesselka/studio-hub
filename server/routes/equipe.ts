@@ -3,9 +3,13 @@ import { validateBody, validateParams } from '../lib/validate'
 import { success, created, noContent } from '../lib/response'
 import { authGuard, roleGuard } from '../lib/middleware'
 import * as equipeService from '../services/equipe'
-import { createTeamMemberSchema, updateTeamMemberSchema } from '../schemas/equipe'
+import {
+  createTeamMemberSchema,
+  updateTeamMemberSchema,
+  conviteParamsSchema,
+} from '../schemas/equipe'
 import { uuidParam } from '../schemas/common'
-import { toTeamMemberResponse } from '../dto/equipe'
+import { toTeamMemberResponse, toInviteResponse } from '../dto/equipe'
 import type { CreateTeamMemberInput } from '../schemas/equipe'
 
 const router = new Hono()
@@ -45,6 +49,13 @@ router.delete('/:id', validateParams(uuidParam), async (c) => {
   const { id } = c.get('validParams')
   await equipeService.deleteTeamMember(userId, id)
   return noContent(c)
+})
+
+router.post('/:id/convite', validateParams(conviteParamsSchema), async (c) => {
+  const userId = c.get('userId')
+  const { id } = c.get('validParams')
+  const result = await equipeService.createInvite(userId, id)
+  return created(c, toInviteResponse(result))
 })
 
 export default router

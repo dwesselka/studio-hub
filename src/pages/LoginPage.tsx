@@ -61,7 +61,13 @@ export default function LoginPage() {
 
     try {
       const user = await login(email, password)
-      navigate(user.onboardingData?.completed ? '/app' : '/cadastro')
+      const home: Record<string, string> = {
+        lojista: '/app',
+        profissional: '/app/profissional',
+        cliente: '/portal',
+      }
+      const redirect = user.onboardingData?.completed ? (home[user.role] ?? '/app') : '/cadastro'
+      navigate(redirect)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao fazer login')
     } finally {

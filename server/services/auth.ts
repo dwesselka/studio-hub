@@ -153,3 +153,51 @@ export async function getMe(userId: string) {
 
   return formatUser(user)
 }
+
+export async function ativarConvite(token: string, name: string, password: string) {
+  const invite = await prisma.inviteToken.findUnique({ where: { token } })
+
+  if (!invite) throw new AppError(404, 'NOT_FOUND', 'Convite não encontrado')
+  if (invite.usedAt) throw new AppError(409, 'CONFLICT', 'Convite já utilizado')
+  if (invite.expiresAt < new Date()) throw new AppError(410, 'EXPIRED', 'Convite expirado')
+
+  const [user] = await prisma.$transaction([
+    prisma.user.create({
+      data: {
+        email: invite.email,
+        name,
+        hashedPassword: hashPassword(password),
+        role: 'profissional',
+        businessOwnerId: invite.userId,
+        teamMemberId: invite.teamMemberId,
+      },
+      select: userSelect,
+    }),
+    prisma.inviteToken.update({
+      where: { id: invite.id },
+      data: { usedAt: new Date() },
+    }),
+  ])
+
+  const [accessToken, refreshToken] = await Promise.all([
+    createToken(user.id, user.email, '15m'),
+    createRefreshToken(user.id, user.email),
+  ])
+
+  return { user: formatUser(user), accessToken, refreshToken }
+}
+
+export async function validarConvite(token: string) {
+  const invite = await prisma.inviteToken.findUnique({ where: { token } })
+
+  if (!invite) throw new AppError(404, 'NOT_FOUND', 'Convite não encontrado')
+  if (invite.usedAt) throw new AppError(409, 'CONFLICT', 'Convite já utilizado')
+  if (invite.expiresAt < new Date()) throw new AppError(410, 'EXPIRED', 'Convite expirado')
+
+  const owner = await prisma.user.findUnique({
+    where: { id: invite.userId },
+    select: { businessName: true },
+  })
+
+  return { email: invite.email, businessName: owner?.businessName ?? null }
+}

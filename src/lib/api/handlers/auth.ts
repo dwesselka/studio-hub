@@ -8,6 +8,9 @@ export interface AuthUser {
   email: string
   name: string
   hashedPassword: string
+  role: string
+  credits: number
+  plan: string
   onboardingData: {
     account: { email: string; password: string; nome: string } | null
     business: {
@@ -63,6 +66,25 @@ function hashPassword(password: string): string {
   return `sha256_mock_${Math.abs(hash).toString(16)}`
 }
 
+function toUserProfile(user: AuthUser) {
+  const business = user.onboardingData?.business
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    role: user.role,
+    businessOwnerId: null,
+    credits: user.credits,
+    plan: user.plan,
+    businessName: business?.nome ?? null,
+    businessSegment: business?.segmento ?? null,
+    businessAddress: business?.endereco ?? null,
+    businessPhone: business?.telefone ?? null,
+    businessLogo: business?.logo ?? null,
+    onboardingCompleted: user.onboardingData?.completed ?? false,
+  }
+}
+
 export function registerAuthHandlers(): void {
   mockServer.post('/auth/signup', async (req: ApiRequest) => {
     const { email, password, name } = req.body as { email: string; password: string; name: string }
@@ -89,6 +111,9 @@ export function registerAuthHandlers(): void {
       email,
       name,
       hashedPassword: hashPassword(password),
+      role: 'lojista',
+      credits: 5,
+      plan: 'starter',
       onboardingData: {
         account: { email, password, nome: name },
         business: null,
@@ -120,12 +145,7 @@ export function registerAuthHandlers(): void {
 
     return mockServer['jsonResponse'](
       {
-        user: {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          onboardingData: user.onboardingData,
-        },
+        user: toUserProfile(user),
         accessToken: token,
         refreshToken: token,
       },
@@ -158,12 +178,7 @@ export function registerAuthHandlers(): void {
     sessionsTable.insert(session)
 
     return mockServer['jsonResponse']({
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        onboardingData: user.onboardingData,
-      },
+      user: toUserProfile(user),
       accessToken: token,
       refreshToken: token,
     })
@@ -179,22 +194,8 @@ export function registerAuthHandlers(): void {
     const user = usersTable.getById(session.userId)
     if (!user) throw ApiRequestError.unauthorized('Usuário não encontrado')
 
-    const business = user.onboardingData?.business
-
     return mockServer['jsonResponse']({
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      role: 'lojista',
-      businessOwnerId: null,
-      credits: 0,
-      plan: 'starter',
-      businessName: business?.nome ?? null,
-      businessSegment: business?.segmento ?? null,
-      businessAddress: business?.endereco ?? null,
-      businessPhone: business?.telefone ?? null,
-      businessLogo: business?.logo ?? null,
-      onboardingCompleted: user.onboardingData?.completed ?? false,
+      ...toUserProfile(user),
       onboardingData: user.onboardingData,
     })
   })
@@ -230,4 +231,106 @@ export function registerAuthHandlers(): void {
     }
     return mockServer['jsonResponse']({ message: 'Sessão encerrada' })
   })
+
+  seedMockUsers()
+}
+
+function seedMockUsers() {
+  if (usersTable.count() > 0) return
+
+  const baseHash = hashPassword('123456')
+
+  const users: AuthUser[] = [
+    {
+      id: 'seed-lojista-001',
+      email: 'homem@teste.com',
+      name: 'Carlos Silva',
+      hashedPassword: baseHash,
+      role: 'lojista',
+      credits: 20,
+      plan: 'pro',
+      onboardingData: {
+        account: { email: 'homem@teste.com', password: '123456', nome: 'Carlos Silva' },
+        business: {
+          nome: 'Barbearia do Carlos',
+          segmento: 'barbearia',
+          endereco: 'Rua A, 123',
+          telefone: '(11) 99999-0001',
+        },
+        hours: [],
+        services: [],
+        team: [],
+        progress: {
+          accountCreated: true,
+          businessDataComplete: true,
+          hoursConfigured: true,
+          servicesReviewed: true,
+          teamAdded: true,
+        },
+        completed: true,
+      },
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: 'seed-profissional-001',
+      email: 'carla.mendes@profissional.com',
+      name: 'Carla Mendes',
+      hashedPassword: baseHash,
+      role: 'profissional',
+      credits: 5,
+      plan: 'pro',
+      onboardingData: {
+        account: {
+          email: 'carla.mendes@profissional.com',
+          password: '123456',
+          nome: 'Carla Mendes',
+        },
+        business: {
+          nome: 'Rede Infinity de Beleza',
+          segmento: 'salao',
+          endereco: 'Av Central, 789',
+          telefone: '(11) 99999-0003',
+        },
+        hours: [],
+        services: [],
+        team: [],
+        progress: {
+          accountCreated: true,
+          businessDataComplete: true,
+          hoursConfigured: true,
+          servicesReviewed: true,
+          teamAdded: true,
+        },
+        completed: true,
+      },
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: 'seed-cliente-001',
+      email: 'ana.cliente@email.com',
+      name: 'Ana Costa',
+      hashedPassword: baseHash,
+      role: 'cliente',
+      credits: 0,
+      plan: 'free',
+      onboardingData: {
+        account: { email: 'ana.cliente@email.com', password: '123456', nome: 'Ana Costa' },
+        business: null,
+        hours: [],
+        services: [],
+        team: [],
+        progress: {
+          accountCreated: true,
+          businessDataComplete: false,
+          hoursConfigured: false,
+          servicesReviewed: false,
+          teamAdded: false,
+        },
+        completed: true,
+      },
+      createdAt: new Date().toISOString(),
+    },
+  ]
+
+  for (const u of users) usersTable.insert(u)
 }

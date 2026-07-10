@@ -1,4 +1,5 @@
-import { createContext, useState, useCallback, type ReactNode } from 'react'
+/* eslint-disable react-hooks/set-state-in-effect */
+import { createContext, useState, useCallback, useEffect, type ReactNode } from 'react'
 import type { AuthUser } from '@/features/onboarding/types'
 import { safeLocalStorage } from '@/lib/storage'
 import { apiClient } from '@/lib/api'
@@ -174,6 +175,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
+  useEffect(() => {
+    fetchUser()
+  }, [fetchUser])
+
   const signup = useCallback(
     async (email: string, password: string, name: string): Promise<AuthUser> => {
       const {
@@ -187,10 +192,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const newUser = normalizeUser(raw)
       saveTokens({ accessToken, refreshToken })
       setUser(newUser)
+      setIsLoading(false)
       return newUser
     },
     [],
   )
+
+  useEffect(() => {
+    fetchUser()
+  }, [fetchUser])
 
   const login = useCallback(async (email: string, password: string): Promise<AuthUser> => {
     const {
@@ -204,6 +214,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const authed = normalizeUser(raw)
     saveTokens({ accessToken, refreshToken })
     setUser(authed)
+    setIsLoading(false)
     return authed
   }, [])
 
@@ -215,6 +226,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     clearTokens()
     setUser(null)
+    setIsLoading(false)
   }, [])
 
   const refreshUser = useCallback(() => {

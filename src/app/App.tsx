@@ -2,6 +2,8 @@ import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AppProviders } from '@/providers'
 import { AppLayout } from '@/layouts/app-layout'
+import { ProfessionalLayout } from '@/layouts/professional-layout'
+import { ClientLayout } from '@/layouts/client-layout'
 import { AuthGuard } from '@/features/auth/guard'
 import { PageLoader } from '@/components/ui/page-loader'
 import { ReminderScheduler } from '@/components/reminder-scheduler'
@@ -9,6 +11,7 @@ import { ReminderScheduler } from '@/components/reminder-scheduler'
 const LandingPage = lazy(() => import('@/pages/LandingPage'))
 const OnboardingPage = lazy(() => import('@/pages/OnboardingPage'))
 const LoginPage = lazy(() => import('@/pages/LoginPage'))
+const ConvitePage = lazy(() => import('@/pages/ConvitePage'))
 const DashboardPage = lazy(() =>
   import('@/features/dashboard/pages/dashboard-page').then((m) => ({ default: m.DashboardPage })),
 )
@@ -66,6 +69,33 @@ const ConfiguracoesPage = lazy(() =>
   })),
 )
 
+const ProfessionalDashboard = lazy(() =>
+  import('@/features/profissional/pages/dashboard').then((m) => ({
+    default: m.ProfessionalDashboard,
+  })),
+)
+const ProfessionalAgenda = lazy(() =>
+  import('@/features/profissional/pages/agenda').then((m) => ({ default: m.ProfessionalAgenda })),
+)
+const ProfessionalAtendimentos = lazy(() =>
+  import('@/features/profissional/pages/atendimentos').then((m) => ({
+    default: m.ProfessionalAtendimentos,
+  })),
+)
+
+const ClientDashboard = lazy(() =>
+  import('@/features/cliente/pages/dashboard').then((m) => ({ default: m.ClientDashboard })),
+)
+const ClientAgendamentos = lazy(() =>
+  import('@/features/cliente/pages/agendamentos').then((m) => ({ default: m.ClientAgendamentos })),
+)
+const ClientFidelidade = lazy(() =>
+  import('@/features/cliente/pages/fidelidade').then((m) => ({ default: m.ClientFidelidade })),
+)
+const ClientPerfil = lazy(() =>
+  import('@/features/cliente/pages/perfil').then((m) => ({ default: m.ClientPerfil })),
+)
+
 export default function App() {
   return (
     <AppProviders>
@@ -76,10 +106,11 @@ export default function App() {
             <Route index element={<LandingPage />} />
             <Route path="/cadastro" element={<OnboardingPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/convite" element={<ConvitePage />} />
             <Route
               path="/app"
               element={
-                <AuthGuard>
+                <AuthGuard role="lojista">
                   <AppLayout />
                 </AuthGuard>
               }
@@ -96,6 +127,31 @@ export default function App() {
               <Route path="servicos" element={<ServicosPage />} />
               <Route path="equipe" element={<EquipePage />} />
               <Route path="configuracoes" element={<ConfiguracoesPage />} />
+            </Route>
+            <Route
+              path="/app/profissional"
+              element={
+                <AuthGuard role="profissional">
+                  <ProfessionalLayout />
+                </AuthGuard>
+              }
+            >
+              <Route index element={<ProfessionalDashboard />} />
+              <Route path="agenda" element={<ProfessionalAgenda />} />
+              <Route path="atendimentos" element={<ProfessionalAtendimentos />} />
+            </Route>
+            <Route
+              path="/portal"
+              element={
+                <AuthGuard role="cliente">
+                  <ClientLayout />
+                </AuthGuard>
+              }
+            >
+              <Route index element={<ClientDashboard />} />
+              <Route path="agendamentos" element={<ClientAgendamentos />} />
+              <Route path="fidelidade" element={<ClientFidelidade />} />
+              <Route path="perfil" element={<ClientPerfil />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

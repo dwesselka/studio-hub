@@ -33,3 +33,15 @@ export function toTeamMemberResponse(member: {
     photo: member.photo,
   }
 }
+
+export interface InviteResponse {
+  token: string
+  link: string
+}
+
+export function toInviteResponse(invite: { token: string; link: string }): InviteResponse {
+  return {
+    token: invite.token,
+    link: invite.link,
+  }
+}

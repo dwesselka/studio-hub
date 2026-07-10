@@ -4,9 +4,10 @@ import { LoadingSpinner } from '@/components/ui/loading'
 
 interface AuthGuardProps {
   children: React.ReactNode
+  role?: 'lojista' | 'profissional' | 'cliente'
 }
 
-export function AuthGuard({ children }: AuthGuardProps) {
+export function AuthGuard({ children, role }: AuthGuardProps) {
   const { user, isLoading } = useAuth()
 
   if (isLoading) {
@@ -15,6 +16,10 @@ export function AuthGuard({ children }: AuthGuardProps) {
 
   if (!user) {
     return <Navigate to="/login" replace />
+  }
+
+  if (role && user.role !== role) {
+    return <Navigate to="/" replace />
   }
 
   if (!user.onboardingData?.completed) {

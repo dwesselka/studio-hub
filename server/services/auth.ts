@@ -12,6 +12,8 @@ const userSelect = {
   id: true,
   email: true,
   name: true,
+  role: true,
+  businessOwnerId: true,
   credits: true,
   plan: true,
   businessName: true,
@@ -26,6 +28,8 @@ function formatUser(user: {
   id: string
   email: string
   name: string
+  role: string
+  businessOwnerId: string | null
   credits: number
   plan: string
   businessName: string | null
@@ -39,6 +43,8 @@ function formatUser(user: {
     id: user.id,
     email: user.email,
     name: user.name,
+    role: user.role,
+    businessOwnerId: user.businessOwnerId,
     credits: user.credits,
     plan: user.plan,
     businessName: user.businessName,

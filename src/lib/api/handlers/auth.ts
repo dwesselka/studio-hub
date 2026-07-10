@@ -185,6 +185,8 @@ export function registerAuthHandlers(): void {
       id: user.id,
       email: user.email,
       name: user.name,
+      role: 'lojista',
+      businessOwnerId: null,
       credits: 0,
       plan: 'starter',
       businessName: business?.nome ?? null,

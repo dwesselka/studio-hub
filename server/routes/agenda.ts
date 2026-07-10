@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { validateBody, validateQuery, validateParams } from '../lib/validate'
 import { success, successPaginated, created, noContent } from '../lib/response'
-import { authGuard } from '../lib/middleware'
+import { authGuard, roleGuard } from '../lib/middleware'
 import * as agendaService from '../services/agenda'
 import {
   createAppointmentSchema,
@@ -18,7 +18,7 @@ import type { CreateAppointmentInput, RescheduleInput } from '../schemas/agenda'
 
 const router = new Hono()
 
-router.use('/*', authGuard)
+router.use('/*', authGuard, roleGuard('lojista', 'profissional'))
 
 router.get('/', validateQuery(agendaFiltersQuery), async (c) => {
   const userId = c.get('userId')
@@ -103,13 +103,18 @@ router.patch('/:id/no-show', validateParams(uuidParam), async (c) => {
   return success(c, toAppointmentResponse(appointment))
 })
 
-router.post('/:id/reschedule', validateParams(uuidParam), validateBody(rescheduleSchema), async (c) => {
-  const userId = c.get('userId')
-  const { id } = c.get('validParams')
-  const data = c.get('validBody') as RescheduleInput
-  const appointment = await agendaService.rescheduleAppointment(userId, id, data)
-  return success(c, toAppointmentResponse(appointment))
-})
+router.post(
+  '/:id/reschedule',
+  validateParams(uuidParam),
+  validateBody(rescheduleSchema),
+  async (c) => {
+    const userId = c.get('userId')
+    const { id } = c.get('validParams')
+    const data = c.get('validBody') as RescheduleInput
+    const appointment = await agendaService.rescheduleAppointment(userId, id, data)
+    return success(c, toAppointmentResponse(appointment))
+  },
+)
 
 router.delete('/:id', validateParams(uuidParam), async (c) => {
   const userId = c.get('userId')

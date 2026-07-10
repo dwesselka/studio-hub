@@ -21,6 +21,7 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 import { navigationGroups } from '@/features/dashboard/data'
+import { useAuth } from '@/features/auth/use-auth'
 import { cn } from '@/lib/utils'
 import type { NavItem } from '@/types'
 
@@ -119,7 +120,21 @@ export const AppSidebar = memo(function AppSidebar({
   onMobileClose,
   className,
 }: AppSidebarProps) {
+  const { user } = useAuth()
   const location = useLocation()
+
+  const businessName = user?.onboardingData?.business?.nome
+  const businessLogo = user?.onboardingData?.business?.logo
+  const displayName = businessName || 'StudioHub'
+  const displaySubtitle = businessName
+    ? 'Onde a beleza encontra a gestão'
+    : 'Onde a beleza encontra a gestão'
+  const initials = displayName
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
 
   const isActive = useMemo(
     () => (href: string) => {
@@ -141,15 +156,23 @@ export const AppSidebar = memo(function AppSidebar({
         )}
       >
         <Link to="/app" className="flex items-center gap-2.5" onClick={onMobileClose}>
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
-            SH
-          </span>
+          {businessLogo ? (
+            <img
+              src={businessLogo}
+              alt={displayName}
+              className="h-8 w-8 shrink-0 rounded-lg object-contain"
+            />
+          ) : (
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
+              {initials}
+            </span>
+          )}
           {!collapsed && (
             <div className="flex flex-col">
-              <span className="text-sm font-semibold leading-tight text-foreground">StudioHub</span>
-              <span className="text-[10px] text-muted-foreground">
-                Onde a beleza encontra a gestão
+              <span className="text-sm font-semibold leading-tight text-foreground">
+                {displayName}
               </span>
+              <span className="text-[10px] text-muted-foreground">{displaySubtitle}</span>
             </div>
           )}
         </Link>

@@ -2,6 +2,7 @@ export interface AuthUserResponse {
   id: string
   email: string
   name: string
+  role: string
   credits: number
   plan: string
   businessName: string | null
@@ -34,6 +35,7 @@ export function toAuthUserResponse(user: {
   id: string
   email: string
   name: string
+  role: string
   credits: number
   plan: string
   businessName: string | null
@@ -47,6 +49,7 @@ export function toAuthUserResponse(user: {
     id: user.id,
     email: user.email,
     name: user.name,
+    role: user.role,
     credits: user.credits,
     plan: user.plan,
     businessName: user.businessName,

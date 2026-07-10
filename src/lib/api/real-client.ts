@@ -49,12 +49,13 @@ export async function realApiHandler(req: ApiRequest): Promise<ApiResponse> {
         data.error?.code || 'SERVER_ERROR',
         data.error?.message || 'Erro no servidor',
         response.status,
+        data.meta?.requestId || crypto.randomUUID(),
         data.error?.details,
       )
     }
 
     return {
-      data,
+      data: data.data,
       status: response.status,
       statusText: response.statusText,
       headers: Object.fromEntries(response.headers.entries()),

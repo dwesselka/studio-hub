@@ -157,12 +157,23 @@ export function registerAuthHandlers(): void {
     }
     sessionsTable.insert(session)
 
+    const business = user.onboardingData?.business
+
     return mockServer['jsonResponse']({
       user: {
         id: user.id,
         email: user.email,
         name: user.name,
-        onboardingData: user.onboardingData,
+        role: 'lojista',
+        businessOwnerId: null,
+        credits: 0,
+        plan: 'starter',
+        businessName: business?.nome ?? null,
+        businessSegment: business?.segmento ?? null,
+        businessAddress: business?.endereco ?? null,
+        businessPhone: business?.telefone ?? null,
+        businessLogo: business?.logo ?? null,
+        onboardingCompleted: user.onboardingData?.completed ?? false,
       },
       accessToken: token,
       refreshToken: token,

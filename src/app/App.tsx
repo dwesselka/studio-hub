@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AppProviders } from '@/providers'
 import { AppLayout } from '@/layouts/app-layout'
+import { ProfessionalLayout } from '@/layouts/professional-layout'
 import { AuthGuard } from '@/features/auth/guard'
 import { PageLoader } from '@/components/ui/page-loader'
 import { ReminderScheduler } from '@/components/reminder-scheduler'
@@ -67,6 +68,20 @@ const ConfiguracoesPage = lazy(() =>
   })),
 )
 
+const ProfessionalDashboard = lazy(() =>
+  import('@/features/profissional/pages/dashboard').then((m) => ({
+    default: m.ProfessionalDashboard,
+  })),
+)
+const ProfessionalAgenda = lazy(() =>
+  import('@/features/profissional/pages/agenda').then((m) => ({ default: m.ProfessionalAgenda })),
+)
+const ProfessionalAtendimentos = lazy(() =>
+  import('@/features/profissional/pages/atendimentos').then((m) => ({
+    default: m.ProfessionalAtendimentos,
+  })),
+)
+
 export default function App() {
   return (
     <AppProviders>
@@ -98,6 +113,18 @@ export default function App() {
               <Route path="servicos" element={<ServicosPage />} />
               <Route path="equipe" element={<EquipePage />} />
               <Route path="configuracoes" element={<ConfiguracoesPage />} />
+            </Route>
+            <Route
+              path="/app/profissional"
+              element={
+                <AuthGuard role="profissional">
+                  <ProfessionalLayout />
+                </AuthGuard>
+              }
+            >
+              <Route index element={<ProfessionalDashboard />} />
+              <Route path="agenda" element={<ProfessionalAgenda />} />
+              <Route path="atendimentos" element={<ProfessionalAtendimentos />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

@@ -38,7 +38,7 @@ function requireUser(req: ApiRequest) {
 }
 
 export function registerClienteHandlers(): void {
-  mockServer.get('/v1/cliente/dashboard', async (req) => {
+  mockServer.get('/cliente/dashboard', async (req) => {
     const user = requireUser(req)
     const appointmentsTable = db.getOrCreate<{
       id: string
@@ -76,7 +76,7 @@ export function registerClienteHandlers(): void {
     })
   })
 
-  mockServer.get('/v1/cliente/agendamentos', async (req) => {
+  mockServer.get('/cliente/agendamentos', async (req) => {
     const user = requireUser(req)
     const appointmentsTable = db.getOrCreate<{
       id: string
@@ -109,7 +109,7 @@ export function registerClienteHandlers(): void {
     )
   })
 
-  mockServer.patch('/v1/cliente/agendamentos/:id/cancelar', async (req) => {
+  mockServer.patch('/cliente/agendamentos/:id/cancelar', async (req) => {
     const user = requireUser(req)
     const { id } = req.params ?? {}
     if (!id) throw ApiRequestError.validation({ id: ['ID é obrigatório'] })
@@ -129,7 +129,7 @@ export function registerClienteHandlers(): void {
     return mockServer['jsonResponse']({ message: 'Agendamento cancelado com sucesso' })
   })
 
-  mockServer.get('/v1/cliente/fidelidade', async (req) => {
+  mockServer.get('/cliente/fidelidade', async (req) => {
     const user = requireUser(req)
     const loyaltyTable = db.getOrCreate<LoyaltyRow>('cliente_loyalty')
     let row = loyaltyTable.findOne((r) => r.userId === user.id)
@@ -172,7 +172,7 @@ export function registerClienteHandlers(): void {
     })
   })
 
-  mockServer.patch('/v1/cliente/perfil', async (req) => {
+  mockServer.patch('/cliente/perfil', async (req) => {
     const user = requireUser(req)
     const { name, telefone } = req.body as { name?: string; telefone?: string }
 

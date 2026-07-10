@@ -231,4 +231,106 @@ export function registerAuthHandlers(): void {
     }
     return mockServer['jsonResponse']({ message: 'Sessão encerrada' })
   })
+
+  seedMockUsers()
+}
+
+function seedMockUsers() {
+  if (usersTable.count() > 0) return
+
+  const baseHash = hashPassword('123456')
+
+  const users: AuthUser[] = [
+    {
+      id: 'seed-lojista-001',
+      email: 'homem@teste.com',
+      name: 'Carlos Silva',
+      hashedPassword: baseHash,
+      role: 'lojista',
+      credits: 20,
+      plan: 'pro',
+      onboardingData: {
+        account: { email: 'homem@teste.com', password: '123456', nome: 'Carlos Silva' },
+        business: {
+          nome: 'Barbearia do Carlos',
+          segmento: 'barbearia',
+          endereco: 'Rua A, 123',
+          telefone: '(11) 99999-0001',
+        },
+        hours: [],
+        services: [],
+        team: [],
+        progress: {
+          accountCreated: true,
+          businessDataComplete: true,
+          hoursConfigured: true,
+          servicesReviewed: true,
+          teamAdded: true,
+        },
+        completed: true,
+      },
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: 'seed-profissional-001',
+      email: 'carla.mendes@profissional.com',
+      name: 'Carla Mendes',
+      hashedPassword: baseHash,
+      role: 'profissional',
+      credits: 5,
+      plan: 'pro',
+      onboardingData: {
+        account: {
+          email: 'carla.mendes@profissional.com',
+          password: '123456',
+          nome: 'Carla Mendes',
+        },
+        business: {
+          nome: 'Rede Infinity de Beleza',
+          segmento: 'salao',
+          endereco: 'Av Central, 789',
+          telefone: '(11) 99999-0003',
+        },
+        hours: [],
+        services: [],
+        team: [],
+        progress: {
+          accountCreated: true,
+          businessDataComplete: true,
+          hoursConfigured: true,
+          servicesReviewed: true,
+          teamAdded: true,
+        },
+        completed: true,
+      },
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: 'seed-cliente-001',
+      email: 'ana.cliente@email.com',
+      name: 'Ana Costa',
+      hashedPassword: baseHash,
+      role: 'cliente',
+      credits: 0,
+      plan: 'free',
+      onboardingData: {
+        account: { email: 'ana.cliente@email.com', password: '123456', nome: 'Ana Costa' },
+        business: null,
+        hours: [],
+        services: [],
+        team: [],
+        progress: {
+          accountCreated: true,
+          businessDataComplete: false,
+          hoursConfigured: false,
+          servicesReviewed: false,
+          teamAdded: false,
+        },
+        completed: true,
+      },
+      createdAt: new Date().toISOString(),
+    },
+  ]
+
+  for (const u of users) usersTable.insert(u)
 }

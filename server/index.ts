@@ -22,13 +22,17 @@ import onboardingRoutes from './routes/onboarding'
 import configuracoesRoutes from './routes/configuracoes'
 import dashboardRoutes from './routes/dashboard'
 import relatoriosRoutes from './routes/relatorios'
+import clienteRoutes from './routes/cliente'
 
 const app = new Hono()
 
-app.use('/*', cors({
-  origin: process.env.CORS_ORIGIN?.split(',') ?? ['http://localhost:5173'],
-  credentials: true,
-}))
+app.use(
+  '/*',
+  cors({
+    origin: process.env.CORS_ORIGIN?.split(',') ?? ['http://localhost:5173'],
+    credentials: true,
+  }),
+)
 app.use('/*', secureHeaders())
 app.use('/*', requestId)
 app.use('/*', requestLogger)
@@ -58,17 +62,20 @@ v1.route('/onboarding', onboardingRoutes)
 v1.route('/configuracoes', configuracoesRoutes)
 v1.route('/dashboard', dashboardRoutes)
 v1.route('/relatorios', relatoriosRoutes)
+v1.route('/cliente', clienteRoutes)
 
 app.route('/v1', v1)
 
 const port = process.env.PORT ? Number(process.env.PORT) : 3001
 
 serve({ fetch: app.fetch, port }, (info) => {
-  console.log(JSON.stringify({
-    level: 'info',
-    message: 'Servidor iniciado',
-    timestamp: new Date().toISOString(),
-    port: info.port,
-    apiUrl: `http://localhost:${info.port}/v1`,
-  }))
+  console.log(
+    JSON.stringify({
+      level: 'info',
+      message: 'Servidor iniciado',
+      timestamp: new Date().toISOString(),
+      port: info.port,
+      apiUrl: `http://localhost:${info.port}/v1`,
+    }),
+  )
 })

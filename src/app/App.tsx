@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AppProviders } from '@/providers'
 import { AppLayout } from '@/layouts/app-layout'
 import { ProfessionalLayout } from '@/layouts/professional-layout'
+import { ClientLayout } from '@/layouts/client-layout'
 import { AuthGuard } from '@/features/auth/guard'
 import { PageLoader } from '@/components/ui/page-loader'
 import { ReminderScheduler } from '@/components/reminder-scheduler'
@@ -82,6 +83,19 @@ const ProfessionalAtendimentos = lazy(() =>
   })),
 )
 
+const ClientDashboard = lazy(() =>
+  import('@/features/cliente/pages/dashboard').then((m) => ({ default: m.ClientDashboard })),
+)
+const ClientAgendamentos = lazy(() =>
+  import('@/features/cliente/pages/agendamentos').then((m) => ({ default: m.ClientAgendamentos })),
+)
+const ClientFidelidade = lazy(() =>
+  import('@/features/cliente/pages/fidelidade').then((m) => ({ default: m.ClientFidelidade })),
+)
+const ClientPerfil = lazy(() =>
+  import('@/features/cliente/pages/perfil').then((m) => ({ default: m.ClientPerfil })),
+)
+
 export default function App() {
   return (
     <AppProviders>
@@ -125,6 +139,19 @@ export default function App() {
               <Route index element={<ProfessionalDashboard />} />
               <Route path="agenda" element={<ProfessionalAgenda />} />
               <Route path="atendimentos" element={<ProfessionalAtendimentos />} />
+            </Route>
+            <Route
+              path="/portal"
+              element={
+                <AuthGuard role="cliente">
+                  <ClientLayout />
+                </AuthGuard>
+              }
+            >
+              <Route index element={<ClientDashboard />} />
+              <Route path="agendamentos" element={<ClientAgendamentos />} />
+              <Route path="fidelidade" element={<ClientFidelidade />} />
+              <Route path="perfil" element={<ClientPerfil />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

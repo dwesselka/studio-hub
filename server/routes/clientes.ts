@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { validateBody, validateQuery, validateParams } from '../lib/validate'
 import { success, successPaginated, created, noContent } from '../lib/response'
-import { authGuard } from '../lib/middleware'
+import { authGuard, roleGuard } from '../lib/middleware'
 import * as clientesService from '../services/clientes'
 import { createClienteSchema, updateClienteSchema, clienteFiltersQuery } from '../schemas/clientes'
 import { uuidParam } from '../schemas/common'
@@ -10,7 +10,7 @@ import type { CreateClienteInput } from '../schemas/clientes'
 
 const router = new Hono()
 
-router.use('/*', authGuard)
+router.use('/*', authGuard, roleGuard('lojista', 'profissional'))
 
 router.get('/', validateQuery(clienteFiltersQuery), async (c) => {
   const userId = c.get('userId')

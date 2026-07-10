@@ -1,14 +1,23 @@
 import { Hono } from 'hono'
 import { validateBody } from '../lib/validate'
 import { success, created } from '../lib/response'
-import { authGuard } from '../lib/middleware'
+import { authGuard, roleGuard } from '../lib/middleware'
 import * as fidelizacaoService from '../services/fidelizacao'
-import { loyaltyProgramSchema, createPromotionSchema, updatePromotionSchema } from '../schemas/fidelizacao'
-import { toLoyaltyProgramResponse, toPromotionResponse, toClientPointsResponse, toPointsTransactionResponse } from '../dto/fidelizacao'
+import {
+  loyaltyProgramSchema,
+  createPromotionSchema,
+  updatePromotionSchema,
+} from '../schemas/fidelizacao'
+import {
+  toLoyaltyProgramResponse,
+  toPromotionResponse,
+  toClientPointsResponse,
+  toPointsTransactionResponse,
+} from '../dto/fidelizacao'
 
 const router = new Hono()
 
-router.use('/*', authGuard)
+router.use('/*', authGuard, roleGuard('lojista'))
 
 router.get('/program', async (c) => {
   const userId = c.get('userId')

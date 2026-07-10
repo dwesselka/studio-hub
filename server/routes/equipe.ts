@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { validateBody, validateParams } from '../lib/validate'
 import { success, created, noContent } from '../lib/response'
-import { authGuard } from '../lib/middleware'
+import { authGuard, roleGuard } from '../lib/middleware'
 import * as equipeService from '../services/equipe'
 import { createTeamMemberSchema, updateTeamMemberSchema } from '../schemas/equipe'
 import { uuidParam } from '../schemas/common'
@@ -10,7 +10,7 @@ import type { CreateTeamMemberInput } from '../schemas/equipe'
 
 const router = new Hono()
 
-router.use('/*', authGuard)
+router.use('/*', authGuard, roleGuard('lojista'))
 
 router.get('/', async (c) => {
   const userId = c.get('userId')

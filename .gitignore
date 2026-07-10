@@ -10,5 +10,9 @@ enterprise-excellence-review.md
 !.env.example
 .opencode/
 
+# Generated type declarations (emitDeclarationOnly)
+*.d.ts
+!src/vite-env.d.ts
+
 # Vitepress
 studiohub-project/guide/docs/.vitepress/cache/

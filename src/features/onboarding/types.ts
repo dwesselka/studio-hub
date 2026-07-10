@@ -57,6 +57,7 @@ export interface AuthUser {
   id: string
   email: string
   name: string
+  role: 'lojista' | 'profissional' | 'cliente'
   hashedPassword: string
   onboardingData: OnboardingData
   credits: number

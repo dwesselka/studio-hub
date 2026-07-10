@@ -1,25 +1,25 @@
 import { Hono } from 'hono'
 import { success } from '../lib/response'
-import { authGuard } from '../lib/middleware'
+import { authGuard, roleGuard } from '../lib/middleware'
 import * as dashboardService from '../services/dashboard'
 
 const router = new Hono()
 
 router.use('/*', authGuard)
 
-router.get('/metrics', async (c) => {
+router.get('/metrics', roleGuard('lojista'), async (c) => {
   const userId = c.get('userId')
   const data = await dashboardService.getDashboardMetrics(userId)
   return success(c, data)
 })
 
-router.get('/today', async (c) => {
+router.get('/today', roleGuard('lojista'), async (c) => {
   const userId = c.get('userId')
   const data = await dashboardService.getDashboardToday(userId)
   return success(c, data)
 })
 
-router.get('/analytics', async (c) => {
+router.get('/analytics', roleGuard('lojista'), async (c) => {
   const userId = c.get('userId')
   const data = await dashboardService.getDashboardAnalytics(userId)
   return success(c, data)

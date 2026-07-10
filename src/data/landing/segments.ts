@@ -21,4 +21,18 @@ export const segments: Segment[] = [
     services: ['Corte masculino', 'Barba', 'Sobrancelha', 'Plano mensal'],
     accent: 'barber',
   },
+  {
+    id: 'clinica',
+    label: 'Clínica Estética',
+    description: 'Procedimentos, pacotes e agendamento de consultas com horários organizados.',
+    services: ['Limpeza de pele', 'Design de sobrancelhas', 'Depilação', 'Pacotes'],
+    accent: 'purple',
+  },
+  {
+    id: 'autonomo',
+    label: 'Profissional Autônomo',
+    description: 'Gestão simples para quem trabalha sozinho em casa ou a domicílio.',
+    services: ['Agenda', 'Cartão de visitas', 'Controle financeiro', 'Divulgação'],
+    accent: 'sky',
+  },
 ]

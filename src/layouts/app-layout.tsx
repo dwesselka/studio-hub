@@ -1,37 +1,43 @@
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { AppHeader } from '@/components/layout/app-header'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import { useOnlineStatus } from '@/hooks/use-online-status'
 import { useMotionConfig } from '@/lib/motion'
+import { useAuth } from '@/features/auth/use-auth'
 import type { BreadcrumbItem } from '@/types'
 
 const routeBreadcrumbs: Record<string, BreadcrumbItem[]> = {
-  '/app': [{ label: 'Dashboard' }],
-  '/app/analytics': [{ label: 'Dashboard', href: '/app' }, { label: 'Analytics' }],
-  '/app/agendamentos': [{ label: 'Dashboard', href: '/app' }, { label: 'Agendamentos' }],
-  '/app/atendimento': [{ label: 'Dashboard', href: '/app' }, { label: 'Atendimento' }],
-  '/app/pos-atendimento': [{ label: 'Dashboard', href: '/app' }, { label: 'Pós-Atendimento' }],
-  '/app/relatorios': [{ label: 'Dashboard', href: '/app' }, { label: 'Relatórios' }],
-  '/app/fidelizacao': [{ label: 'Dashboard', href: '/app' }, { label: 'Fidelização' }],
-  '/app/pagamentos': [{ label: 'Dashboard', href: '/app' }, { label: 'Pagamentos' }],
-  '/app/clientes': [{ label: 'Dashboard', href: '/app' }, { label: 'Clientes' }],
-  '/app/servicos': [{ label: 'Dashboard', href: '/app' }, { label: 'Serviços' }],
-  '/app/equipe': [{ label: 'Dashboard', href: '/app' }, { label: 'Equipe' }],
-  '/app/configuracoes': [{ label: 'Dashboard', href: '/app' }, { label: 'Configurações' }],
+  '/app': [],
+  '/app/analytics': [{ label: 'Analytics' }],
+  '/app/agendamentos': [{ label: 'Agendamentos' }],
+  '/app/atendimento': [{ label: 'Atendimento' }],
+  '/app/pos-atendimento': [{ label: 'Pós-Atendimento' }],
+  '/app/relatorios': [{ label: 'Relatórios' }],
+  '/app/fidelizacao': [{ label: 'Fidelização' }],
+  '/app/pagamentos': [{ label: 'Pagamentos' }],
+  '/app/clientes': [{ label: 'Clientes' }],
+  '/app/servicos': [{ label: 'Serviços' }],
+  '/app/equipe': [{ label: 'Equipe' }],
+  '/app/configuracoes': [{ label: 'Configurações' }],
 }
 
-function getBreadcrumbs(pathname: string): BreadcrumbItem[] {
-  return routeBreadcrumbs[pathname] ?? [{ label: 'Dashboard', href: '/app' }, { label: 'Página' }]
+function getBreadcrumbs(pathname: string, businessName?: string): BreadcrumbItem[] {
+  const homeLabel = businessName || 'Dashboard'
+  const items = routeBreadcrumbs[pathname] ?? [{ label: 'Página' }]
+  return [{ label: homeLabel, href: '/app' }, ...items]
 }
 
 export const AppLayout = memo(function AppLayout() {
+  const { user } = useAuth()
   const location = useLocation()
   const online = useOnlineStatus()
   const { transition } = useMotionConfig()
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
+
+  const businessName = user?.onboardingData?.business?.nome
 
   const toggleSidebar = useCallback(() => {
     setSidebarCollapsed((prev) => !prev)
@@ -45,7 +51,10 @@ export const AppLayout = memo(function AppLayout() {
     setMobileSidebarOpen(false)
   }, [])
 
-  const breadcrumbs = getBreadcrumbs(location.pathname)
+  const breadcrumbs = useMemo(
+    () => getBreadcrumbs(location.pathname, businessName),
+    [location.pathname, businessName],
+  )
 
   return (
     <div className="flex min-h-svh bg-background">

@@ -9,6 +9,8 @@ interface RawUser {
   id: string
   email: string
   name: string
+  role: string
+  businessOwnerId?: string | null
   credits: number
   plan: string
   businessName?: string | null
@@ -36,6 +38,7 @@ function normalizeUser(raw: RawUser): AuthUser {
     id: raw.id,
     email: raw.email,
     name: raw.name,
+    role: raw.role as 'lojista' | 'profissional' | 'cliente',
     hashedPassword: '',
     credits: raw.credits ?? 0,
     plan: (['starter', 'pro', 'premium'] as const).includes(raw.plan as never)
@@ -117,7 +120,10 @@ async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> 
   const body = options.body ? JSON.parse(options.body as string) : undefined
 
   try {
-    const response = await apiClient.request<T>(method, path, { body, headers })
+    const response = await apiClient.request<Record<string, unknown>, T>(method, path, {
+      body,
+      headers,
+    })
     return response.data
   } catch (err) {
     throw err instanceof Error ? err : new Error(String(err))

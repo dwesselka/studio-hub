@@ -390,6 +390,93 @@ async function seedPoints(userId: string) {
   console.log(`    Pontos criados para ${clientTotals.size} clientes`)
 }
 
+async function seedProfessionalUsers(businessOwnerId: string) {
+  const existing = await prisma.user.count({ where: { role: 'profissional', businessOwnerId } })
+  if (existing > 0) {
+    console.log('  Profissionais já existem, pulando...')
+    return
+  }
+
+  const TEAM_FOR_PROFESSIONAL = [
+    { name: 'Carla Mendes', role: 'Cabeleireira', phone: '(11) 98888-0001', email: 'carla@exemplo.com', commission: 40, specialties: ['Corte', 'Coloração'] },
+    { name: 'Roberto Lima', role: 'Barbeiro', phone: '(11) 98888-0002', email: 'roberto@exemplo.com', commission: 35, specialties: ['Corte Masculino', 'Barba'] },
+  ]
+
+  for (const member of TEAM_FOR_PROFESSIONAL) {
+    const teamMember = await prisma.teamMember.create({
+      data: { ...member, active: true, userId: businessOwnerId },
+    })
+
+    await prisma.user.create({
+      data: {
+        email: `${member.name.toLowerCase().replace(/\s+/g, '.')}@profissional.com`,
+        name: member.name,
+        hashedPassword: hashPassword('123456'),
+        role: 'profissional',
+        businessOwnerId,
+        teamMemberId: teamMember.id,
+        credits: 5,
+        plan: 'pro',
+        onboardingCompleted: true,
+        businessName: 'Rede Infinity de Beleza',
+        businessSegment: 'salao',
+        businessAddress: 'Av Central, 789',
+        businessPhone: '(11) 99999-0003',
+      },
+    })
+    console.log(`  Profissional criado: ${member.name} (${member.role})`)
+  }
+}
+
+async function seedClientUsers(businessOwnerId: string) {
+  const existing = await prisma.user.count({ where: { role: 'cliente', businessOwnerId } })
+  if (existing > 0) {
+    console.log('  Clientes já existem, pulando...')
+    return
+  }
+
+  const CLIENTS_FOR_USER = [
+    { nome: 'Ana Costa', email: 'ana.cliente@email.com', telefone: '(11) 99999-0001' },
+    { nome: 'Juliana Mendes', email: 'juliana.cliente@email.com', telefone: '(11) 99999-0002' },
+    { nome: 'Mariana Lima', email: 'mariana.cliente@email.com', telefone: '(11) 99999-0004' },
+  ]
+
+  for (const c of CLIENTS_FOR_USER) {
+    const cliente = await prisma.cliente.create({
+      data: {
+        nome: c.nome,
+        email: c.email,
+        telefone: c.telefone,
+        segmento: 'salao',
+        ultimaVisita: today(-1),
+        totalVisitas: 5,
+        totalGasto: 8000,
+        status: 'ativo',
+        userId: businessOwnerId,
+      },
+    })
+
+    await prisma.user.create({
+      data: {
+        email: c.email,
+        name: c.nome,
+        hashedPassword: hashPassword('123456'),
+        role: 'cliente',
+        businessOwnerId,
+        clienteId: cliente.id,
+        credits: 0,
+        plan: 'free',
+        onboardingCompleted: true,
+        businessName: null,
+        businessSegment: null,
+        businessAddress: null,
+        businessPhone: c.telefone,
+      },
+    })
+    console.log(`  Cliente criado: ${c.nome} (${c.email})`)
+  }
+}
+
 async function main() {
   console.log('🌱 Iniciando seed...\n')
   const hashedPassword = hashPassword('123456')
@@ -430,6 +517,12 @@ async function main() {
     await seedPromotions(user.id)
     console.log()
   }
+
+  const businessOwner = await prisma.user.findUnique({ where: { email: 'lojista@teste.com' } })
+  if (!businessOwner) throw new Error('Business owner not found')
+
+  await seedProfessionalUsers(businessOwner.id)
+  await seedClientUsers(businessOwner.id)
 
   console.log('✅ Seed concluído com sucesso!')
 }

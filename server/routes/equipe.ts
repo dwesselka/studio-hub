@@ -8,6 +8,7 @@ import {
   updateTeamMemberSchema,
   conviteParamsSchema,
 } from '../schemas/equipe'
+import { uuidParam } from '../schemas/common'
 import { toTeamMemberResponse, toInviteResponse } from '../dto/equipe'
 import type { CreateTeamMemberInput } from '../schemas/equipe'
 

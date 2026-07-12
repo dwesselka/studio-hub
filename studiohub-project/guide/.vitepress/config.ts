@@ -4,7 +4,7 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: 'StudioHub Guide',
-  description: 'Guia completo de arquitetura, componentes e regras de negócio do StudioHub',
+  description: 'Construindo um SaaS. Evoluindo um Engenheiro.',
   ignoreDeadLinks: true,
 
   head: [
@@ -22,7 +22,7 @@ export default defineConfig({
       light: '/getstyllo-logo.png',
       dark: '/getstyllo-logo.png',
     },
-    siteTitle: 'StudioHub Guide',
+    siteTitle: 'StudioHub',
 
     search: {
       provider: 'local',
@@ -40,6 +40,24 @@ export default defineConfig({
 
     nav: [
       { text: 'Início', link: '/' },
+      {
+        text: '⚗️ Lab',
+        activeMatch: '/lab/',
+        items: [
+          { text: '🏠 Engineering Lab', link: '/lab/' },
+          { text: '🗺️ Roadmap', link: '/lab/roadmap' },
+          { text: '🏃 Sprints', link: '/lab/sprints/' },
+          { text: '🚨 Incidents', link: '/lab/incidents/' },
+          { text: '🔬 Post Mortems', link: '/lab/post-mortems/' },
+          { text: '🏗️ Arch Reviews', link: '/lab/arch-reviews/' },
+          { text: '📐 ADRs', link: '/lab/adrs/' },
+          { text: '🧪 Experiments', link: '/lab/experiments/' },
+          { text: '🏆 Challenges', link: '/lab/challenges/' },
+          { text: '📖 Learnings', link: '/lab/learnings/' },
+          { text: '📅 Timeline', link: '/lab/timeline' },
+          { text: '🎮 Score', link: '/lab/score' },
+        ],
+      },
       { text: 'Arquitetura', link: '/arquitetura/stack' },
       { text: 'Telas', link: '/telas/visao-geral' },
       { text: 'Componentes', link: '/components/button' },
@@ -49,6 +67,87 @@ export default defineConfig({
     ],
 
     sidebar: {
+      '/lab/': [
+        {
+          text: '⚗️ Engineering Lab',
+          link: '/lab/',
+          items: [
+            { text: '🏠 Visão Geral', link: '/lab/' },
+            { text: '🗺️ Roadmap', link: '/lab/roadmap' },
+            { text: '📅 Timeline', link: '/lab/timeline' },
+            { text: '🎮 Engineering Score', link: '/lab/score' },
+          ],
+        },
+        {
+          text: '🏃 Sprints',
+          link: '/lab/sprints/',
+          collapsed: false,
+          items: [
+            { text: 'Todas as Sprints', link: '/lab/sprints/' },
+            { text: 'Sprint 04 — Geo 🔄', link: '/lab/sprints/sprint-04' },
+          ],
+        },
+        {
+          text: '🚨 Incidents',
+          link: '/lab/incidents/',
+          collapsed: false,
+          items: [
+            { text: 'Todos os Incidentes', link: '/lab/incidents/' },
+            { text: 'Incident #014', link: '/lab/incidents/incident-014' },
+          ],
+        },
+        {
+          text: '🔬 Post Mortems',
+          link: '/lab/post-mortems/',
+          collapsed: false,
+          items: [
+            { text: 'Todos os Post Mortems', link: '/lab/post-mortems/' },
+            { text: 'PM-001 — Índice em Prod', link: '/lab/post-mortems/pm-001' },
+          ],
+        },
+        {
+          text: '🏗️ Architecture Reviews',
+          link: '/lab/arch-reviews/',
+          collapsed: false,
+          items: [
+            { text: 'Todas as Reviews', link: '/lab/arch-reviews/' },
+            { text: 'AR — Geolocalização', link: '/lab/arch-reviews/ar-geolocation' },
+          ],
+        },
+        {
+          text: '📐 ADRs',
+          link: '/lab/adrs/',
+          collapsed: true,
+          items: [
+            { text: 'Catálogo de ADRs', link: '/lab/adrs/' },
+          ],
+        },
+        {
+          text: '🧪 Experiments',
+          link: '/lab/experiments/',
+          collapsed: true,
+          items: [
+            { text: 'Log de Experimentos', link: '/lab/experiments/' },
+          ],
+        },
+        {
+          text: '🏆 Challenges',
+          link: '/lab/challenges/',
+          collapsed: true,
+          items: [
+            { text: 'Todos os Desafios', link: '/lab/challenges/' },
+          ],
+        },
+        {
+          text: '📖 Learnings',
+          link: '/lab/learnings/',
+          collapsed: true,
+          items: [
+            { text: 'Base de Conhecimento', link: '/lab/learnings/' },
+          ],
+        },
+      ],
+
       '/telas/': [
         {
           text: 'Telas do Sistema',
@@ -128,8 +227,8 @@ export default defineConfig({
     ],
 
     footer: {
-      message: 'StudioHub — Onde a beleza encontra a gestão',
-      copyright: `© ${new Date().getFullYear()} StudioHub. Todos os direitos reservados.`,
+      message: 'Construindo um SaaS. Evoluindo um Engenheiro.',
+      copyright: `© ${new Date().getFullYear()} StudioHub. Cada feature é uma hipótese. Cada incidente é uma lição.`,
     },
   },
 })

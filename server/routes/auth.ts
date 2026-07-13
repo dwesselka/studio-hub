@@ -5,6 +5,22 @@ import { authGuard } from '../lib/middleware'
 import * as authService from '../services/auth'
 import { loginSchema, signupSchema, refreshSchema, ativarConviteSchema } from '../schemas/auth'
 import { toAuthUserResponse } from '../dto/auth'
+import type { PrismaClient } from '@prisma/client'
+
+// Import Prisma for dev endpoints
+let prisma: PrismaClient | null = null
+if (typeof window === 'undefined') {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { PrismaClient } = require('@prisma/client')
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { PrismaPg } = require('@prisma/adapter-pg')
+    const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
+    prisma = new PrismaClient({ adapter })
+  } catch {
+    // Prisma not available
+  }
+}
 
 const router = new Hono()
 
@@ -70,6 +86,34 @@ router.get('/convite/:token', async (c) => {
   const token = c.req.param('token')
   const result = await authService.validarConvite(token)
   return success(c, result)
+})
+
+// Dev endpoint to list all users
+router.get('/dev/users', async (c) => {
+  if (process.env.NODE_ENV !== 'development' && process.env.NODE_ENV !== 'dev') {
+    return c.json({ error: 'Not found' }, 404)
+  }
+
+  try {
+    if (!prisma) {
+      return c.json({ error: 'Prisma not available' }, 500)
+    }
+
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    })
+
+    return success(c, users)
+  } catch (error) {
+    return c.json({ error: error instanceof Error ? error.message : 'Error fetching users' }, 500)
+  }
 })
 
 export default router

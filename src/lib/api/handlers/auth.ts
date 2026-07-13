@@ -82,6 +82,7 @@ function toUserProfile(user: AuthUser) {
     businessPhone: business?.telefone ?? null,
     businessLogo: business?.logo ?? null,
     onboardingCompleted: user.onboardingData?.completed ?? false,
+    onboardingData: user.onboardingData,
   }
 }
 
@@ -194,10 +195,7 @@ export function registerAuthHandlers(): void {
     const user = usersTable.getById(session.userId)
     if (!user) throw ApiRequestError.unauthorized('Usuário não encontrado')
 
-    return mockServer['jsonResponse']({
-      ...toUserProfile(user),
-      onboardingData: user.onboardingData,
-    })
+    return mockServer['jsonResponse'](toUserProfile(user))
   })
 
   mockServer.post('/auth/refresh', async (req: ApiRequest) => {

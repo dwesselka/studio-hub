@@ -9,6 +9,7 @@ import { PageLoader } from '@/components/ui/page-loader'
 import { ReminderScheduler } from '@/components/reminder-scheduler'
 
 const LandingPage = lazy(() => import('@/pages/LandingPage'))
+const CadastroPage = lazy(() => import('@/pages/CadastroPage'))
 const OnboardingPage = lazy(() => import('@/pages/OnboardingPage'))
 const LoginPage = lazy(() => import('@/pages/LoginPage'))
 const ConvitePage = lazy(() => import('@/pages/ConvitePage'))
@@ -104,7 +105,9 @@ export default function App() {
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route index element={<LandingPage />} />
+            <Route path="/signup" element={<CadastroPage />} />
             <Route path="/cadastro" element={<OnboardingPage />} />
+            <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/convite" element={<ConvitePage />} />
             <Route

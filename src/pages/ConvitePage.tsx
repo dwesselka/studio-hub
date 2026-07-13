@@ -39,7 +39,7 @@ export default function ConvitePage() {
     let cancelled = false
 
     apiClient
-      .get<ConviteInfo>(`/v1/auth/convite/${token}`)
+      .get<ConviteInfo>(`/auth/convite/${token}`)
       .then((res) => {
         if (!cancelled) setFetchState({ loading: false, info: res.data, error: null })
       })
@@ -64,7 +64,7 @@ export default function ConvitePage() {
       const response = await apiClient.post<
         { token: string; name: string; password: string },
         { user: { email: string }; accessToken: string; refreshToken: string }
-      >('/v1/auth/ativar-convite', { token, name, password })
+      >('/auth/ativar-convite', { token, name, password })
 
       const { user: raw, accessToken, refreshToken } = response.data
       localStorage.setItem('infinity_auth', JSON.stringify({ accessToken, refreshToken }))

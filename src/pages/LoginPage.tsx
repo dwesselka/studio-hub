@@ -278,7 +278,7 @@ export default function LoginPage() {
             <p className="text-center text-xs text-muted-foreground">
               Ainda não tem conta?{' '}
               <Link
-                to="/cadastro"
+                to="/signup"
                 className="font-semibold text-primary hover:text-primary/80 transition-colors"
               >
                 Criar conta grátis

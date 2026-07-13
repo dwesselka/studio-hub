@@ -129,12 +129,7 @@ async function seedAppointments(userId: string, teamMembers: { id: string; name:
     return
   }
 
-  const appointments: {
-    clientName: string; clientPhone: string; serviceId: string; serviceName: string;
-    serviceDuration: number; servicePrice: number; professionalId: string; professionalName: string;
-    date: string; startTime: string; endTime: string; status: string; userId: string;
-    notes?: string
-  }[] = []
+  const appointments: any[] = []
 
   const clientRotations = [
     { name: 'Ana Costa', phone: '(11) 99999-0001' },
@@ -197,7 +192,7 @@ async function seedAppointments(userId: string, teamMembers: { id: string; name:
   })
 }
 
-async function seedAtendimentos(userId: string, appointments: { id: string; clientName: string; clientPhone: string; professionalId: string; professionalName: string; date: string; startTime: string; endTime: string; serviceName: string; servicePrice: number; serviceDuration: number; status: string }[], services: { id: string; name: string; duration: number; price: number }[]) {
+async function seedAtendimentos(userId: string, appointments: any[], services: { id: string; name: string; duration: number; price: number }[]) {
   const existing = await prisma.atendimento.count({ where: { userId } })
   if (existing > 0) {
     console.log(`    Atendimentos já existem, pulando...`)
@@ -250,7 +245,7 @@ async function seedPayments(userId: string) {
         clientName: atd.clientName,
         clientPhone: atd.clientPhone,
         professionalName: atd.professionalName,
-        serviceNames: (atd.services as { serviceName: string }[]).map((s) => s.serviceName),
+        serviceNames: (atd.services as any[]).map((s) => s.serviceName),
         date: atd.date,
         totalValue: atd.totalValue,
         method,

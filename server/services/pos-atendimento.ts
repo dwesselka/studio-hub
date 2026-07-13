@@ -1,6 +1,10 @@
-import { prisma } from '../../src/lib/prisma'
+import { prisma } from '../lib/prisma'
 import { AppError } from '../lib/errors'
-import type { CreateFeedbackInput, CreateCampaignInput, UpdateCampaignInput } from '../schemas/pos-atendimento'
+import type {
+  CreateFeedbackInput,
+  CreateCampaignInput,
+  UpdateCampaignInput,
+} from '../schemas/pos-atendimento'
 
 export async function listFeedback(userId: string, filters: { page: number; perPage: number }) {
   const [items, total] = await Promise.all([

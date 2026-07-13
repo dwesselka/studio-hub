@@ -1,6 +1,6 @@
 import { Context, Next } from 'hono'
 import { verifyToken, type TokenPayload } from './token'
-import { prisma } from '../../src/lib/prisma'
+import { prisma } from '../lib/prisma'
 import { unauthorized } from './response'
 
 declare module 'hono' {

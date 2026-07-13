@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { createContext, useState, useCallback, useEffect, type ReactNode } from 'react'
-import type { AuthUser } from '@/features/onboarding/types'
+import type { AuthUser, OnboardingData } from '@/features/onboarding/types'
 import { safeLocalStorage } from '@/lib/storage'
 import { apiClient } from '@/lib/api'
 
@@ -20,6 +20,7 @@ interface RawUser {
   businessPhone?: string | null
   businessLogo?: string | null
   onboardingCompleted?: boolean
+  onboardingData?: Partial<OnboardingData>
   [key: string]: unknown
 }
 
@@ -34,6 +35,12 @@ interface AuthResponse {
   refreshToken: string
 }
 
+interface ApiResponse<T> {
+  success: boolean
+  data: T
+  meta: unknown
+}
+
 function normalizeUser(raw: RawUser): AuthUser {
   return {
     id: raw.id,
@@ -46,27 +53,29 @@ function normalizeUser(raw: RawUser): AuthUser {
       ? (raw.plan as AuthUser['plan'])
       : 'starter',
     onboardingData: {
-      account: null,
-      business: raw.businessName
-        ? {
-            nome: raw.businessName,
-            segmento: raw.businessSegment ?? '',
-            endereco: raw.businessAddress ?? '',
-            telefone: raw.businessPhone ?? '',
-            logo: raw.businessLogo ?? undefined,
-          }
-        : null,
-      hours: [],
-      services: [],
-      team: [],
-      progress: {
+      account: raw.onboardingData?.account ?? null,
+      business:
+        raw.onboardingData?.business ??
+        (raw.businessName
+          ? {
+              nome: raw.businessName,
+              segmento: raw.businessSegment ?? '',
+              endereco: raw.businessAddress ?? '',
+              telefone: raw.businessPhone ?? '',
+              logo: raw.businessLogo ?? undefined,
+            }
+          : null),
+      hours: raw.onboardingData?.hours ?? [],
+      services: raw.onboardingData?.services ?? [],
+      team: raw.onboardingData?.team ?? [],
+      progress: raw.onboardingData?.progress ?? {
         accountCreated: true,
         businessDataComplete: !!raw.businessName,
         hoursConfigured: !!raw.onboardingCompleted,
         servicesReviewed: !!raw.onboardingCompleted,
         teamAdded: !!raw.onboardingCompleted,
       },
-      completed: !!raw.onboardingCompleted,
+      completed: raw.onboardingData?.completed ?? !!raw.onboardingCompleted,
     },
   }
 }
@@ -96,10 +105,13 @@ async function refreshTokens(): Promise<boolean> {
   try {
     const { data } = await apiClient.post<
       { refreshToken: string },
-      { accessToken: string; refreshToken: string }
-    >('/v1/auth/refresh', { refreshToken: tokens.refreshToken })
-    saveTokens(data)
-    return true
+      ApiResponse<{ accessToken: string; refreshToken: string }>
+    >('/auth/refresh', { refreshToken: tokens.refreshToken })
+    if (data.success) {
+      saveTokens(data.data)
+      return true
+    }
+    return false
   } catch {
     return false
   }
@@ -154,13 +166,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return
     }
     try {
-      const raw = await apiFetch<RawUser>('/v1/auth/me')
+      const raw = await apiFetch<RawUser>('/auth/me')
       setUser(normalizeUser(raw))
     } catch {
       const refreshed = await refreshTokens()
       if (refreshed) {
         try {
-          const raw = await apiFetch<RawUser>('/v1/auth/me')
+          const raw = await apiFetch<RawUser>('/auth/me')
           setUser(normalizeUser(raw))
         } catch {
           clearTokens()
@@ -181,16 +193,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signup = useCallback(
     async (email: string, password: string, name: string): Promise<AuthUser> => {
-      const {
-        user: raw,
-        accessToken,
-        refreshToken,
-      } = await apiFetch<AuthResponse>('/v1/auth/signup', {
+      const raw = await apiFetch<AuthResponse>('/auth/signup', {
         method: 'POST',
         body: JSON.stringify({ email, password, name }),
       })
-      const newUser = normalizeUser(raw)
-      saveTokens({ accessToken, refreshToken })
+      const newUser = normalizeUser(raw.user)
+      saveTokens({ accessToken: raw.accessToken, refreshToken: raw.refreshToken })
       setUser(newUser)
       setIsLoading(false)
       return newUser
@@ -203,16 +211,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [fetchUser])
 
   const login = useCallback(async (email: string, password: string): Promise<AuthUser> => {
-    const {
-      user: raw,
-      accessToken,
-      refreshToken,
-    } = await apiFetch<AuthResponse>('/v1/auth/login', {
+    const raw = await apiFetch<AuthResponse>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     })
-    const authed = normalizeUser(raw)
-    saveTokens({ accessToken, refreshToken })
+    const authed = normalizeUser(raw.user)
+    saveTokens({ accessToken: raw.accessToken, refreshToken: raw.refreshToken })
     setUser(authed)
     setIsLoading(false)
     return authed
@@ -220,7 +224,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(async () => {
     try {
-      await apiFetch('/v1/auth/logout', { method: 'POST' })
+      await apiFetch('/auth/logout', { method: 'POST' })
     } catch {
       // Logout local mesmo se a API falhar
     }

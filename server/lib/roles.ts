@@ -1,5 +1,5 @@
 import { Context, Next } from 'hono'
-import { prisma } from '../../src/lib/prisma'
+import { prisma } from '../lib/prisma'
 import { forbidden, unauthorized } from './response'
 
 const PLAN_HIERARCHY: Record<string, number> = {

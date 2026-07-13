@@ -24,7 +24,7 @@ export const ENVIRONMENTS: Record<ApiEnvironment, ApiEnvironmentConfig> = {
   development: {
     name: 'development',
     label: 'Desenvolvimento',
-    mockEnabled: true,
+    mockEnabled: import.meta.env.VITE_USE_MOCK === 'true',
     devToolsEnabled: false,
     baseLatencyMs: 100,
     jitterMs: 50,

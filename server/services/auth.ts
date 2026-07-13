@@ -1,4 +1,5 @@
-import { prisma } from '../../src/lib/prisma'
+import { PrismaClient } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
 import { hashPassword, verifyPassword } from '../lib/crypto'
 import {
   createToken,
@@ -7,6 +8,9 @@ import {
   invalidateRefreshToken,
 } from '../lib/token'
 import { AppError } from '../lib/errors'
+
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! })
+const prisma = new PrismaClient({ adapter })
 
 const userSelect = {
   id: true,

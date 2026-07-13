@@ -1,6 +1,10 @@
-import { prisma } from '../../src/lib/prisma'
+import { prisma } from '../lib/prisma'
 import { AppError } from '../lib/errors'
-import type { LoyaltyProgramInput, CreatePromotionInput, UpdatePromotionInput } from '../schemas/fidelizacao'
+import type {
+  LoyaltyProgramInput,
+  CreatePromotionInput,
+  UpdatePromotionInput,
+} from '../schemas/fidelizacao'
 
 export async function getLoyaltyProgram(userId: string) {
   const program = await prisma.loyaltyProgram.findUnique({ where: { userId } })

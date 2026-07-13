@@ -1,12 +1,11 @@
 import { useEffect } from 'react'
 import Header from '@/components/landing/Header'
 import Hero from '@/components/landing/Hero'
-import Segments from '@/components/landing/Segments'
-import Benefits from '@/components/landing/Benefits'
-import Testimonials from '@/components/landing/Testimonials'
-import Plans from '@/components/landing/Plans'
-import FAQ from '@/components/landing/FAQ'
-import CTA from '@/components/landing/CTA'
+import Journey from '@/components/landing/Journey'
+import Principles from '@/components/landing/Principles'
+import Architecture from '@/components/landing/Architecture'
+import Stats from '@/components/landing/Stats'
+import Jornada from '@/components/landing/Jornada'
 import Footer from '@/components/landing/Footer'
 import { trackPageView } from '@/lib/analytics'
 
@@ -16,18 +15,17 @@ export default function LandingPage() {
   }, [])
 
   return (
-    <>
+    <div className="bg-[#0B0A0F] min-h-screen text-white selection:bg-violet-500/30 selection:text-white">
       <Header />
-      <main>
+      <main role="main">
         <Hero />
-        <Segments />
-        <Benefits />
-        <Testimonials />
-        <Plans />
-        <FAQ />
-        <CTA />
+        <Journey />
+        <Principles />
+        <Architecture />
+        <Stats />
+        <Jornada />
       </main>
       <Footer />
-    </>
+    </div>
   )
 }

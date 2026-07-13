@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 interface JourneyStep {
   title: string
@@ -35,7 +35,7 @@ const JOURNEY_STEPS: JourneyStep[] = [
     title: 'BFF & Cache Layer',
     sprint: 'Sprint 02 — Performance',
     description: 'Camada intermediária BFF e cache Redis para otimização de requisições pesadas.',
-    status: 'done',
+    status: 'active',
     techs: ['Redis', 'BFF Pattern', 'API Gateway'],
     details:
       'Estruturação do padrão Backend For Frontend para unificar dados e aplicação de cache in-memory agressivo com expiração em tempo real, reduzindo latência do painel principal em 3.2x.',
@@ -45,7 +45,7 @@ const JOURNEY_STEPS: JourneyStep[] = [
     title: 'Observabilidade & Logs',
     sprint: 'Sprint 03 — Operação',
     description: 'Monitoramento detalhado da integridade e latência das APIs em tempo real.',
-    status: 'done',
+    status: 'planned',
     techs: ['OpenTelemetry', 'Prometheus', 'Grafana', 'Jaeger'],
     details:
       'Coleta distribuída de métricas da aplicação com tracing estruturado para rastrear gargalos em consultas de banco de dados e controle preventivo de recursos de infraestrutura.',
@@ -55,7 +55,7 @@ const JOURNEY_STEPS: JourneyStep[] = [
     title: 'Geolocalização Espacial',
     sprint: 'Sprint 04 — Geolocalização',
     description: 'Busca por proximidade geográfica de estúdios e profissionais.',
-    status: 'active',
+    status: 'planned',
     techs: ['PostGIS', 'Google Maps API', 'Spatial Query'],
     details:
       'Fase ativa de modelagem. Substituição do cálculo Haversine puro por extensões nativas de geometria do PostgreSQL (PostGIS) visando melhor indexação de geolocalização e performance de escala.',

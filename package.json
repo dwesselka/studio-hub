@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"npm run dev:homolog\" \"npm run server:dev\"",
     "dev:homolog": "vite --mode homologation",
     "dev:prod": "vite --mode production",
     "build": "tsc -b && vite build",
@@ -28,7 +28,10 @@
     "reset": "pnpm store prune && rm -rf node_modules pnpm-lock.yaml && pnpm install",
     "db:generate": "prisma generate",
     "server": "node --env-file .env.development --import tsx server/index.ts",
-    "server:dev": "node --env-file .env.development --import tsx --watch server/index.ts"
+    "server:dev": "node --env-file .env.development --import tsx --watch server/index.ts",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^8.5.0",
@@ -66,16 +69,17 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
     "@eslint/js": "^10.0.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/node": "^26.1.0",
     "@types/pg": "^8.20.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
     "@vitest/coverage-v8": "4.1.9",
+    "concurrently": "^10.0.3",
     "eslint": "^10.6.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.1.1",

@@ -7,12 +7,16 @@
     "strict": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "rootDir": ".."
+    "rootDir": "..",
+    "paths": {
+      "@shared/*": ["../shared/*"]
+    }
   },
-  "include": ["./**/*.ts", "../src/lib/prisma.ts"],
+  "include": ["./**/*.ts", "../src/lib/prisma.ts", "../shared/**/*.ts"],
   "references": [
     {
       "path": "../tsconfig.json"
     }
   ]
 }
+

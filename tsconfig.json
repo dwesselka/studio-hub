@@ -19,10 +19,11 @@
     "noUncheckedSideEffectImports": true,
     "paths": {
       "@/*": ["./src/*"],
+      "@shared/*": ["./shared/*"],
       "@api": ["./src/lib/api/index.ts"],
       "@api/*": ["./src/lib/api/*"],
       "@test/*": ["./src/test/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "shared"]
 }

@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/features/auth/use-auth'
 
 interface JourneyStep {
   title: string
@@ -93,6 +95,86 @@ const JOURNEY_STEPS: JourneyStep[] = [
   },
 ]
 
+function JourneyDetailsCard({ step }: { step: JourneyStep }) {
+  const { user } = useAuth()
+  const navigate = useNavigate()
+
+  const handleDocClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    if (!user) {
+      navigate('/login', { state: { returnTo: step.docLink } })
+    } else {
+      window.open(step.docLink, '_blank', 'noopener,noreferrer')
+    }
+  }
+
+  return (
+    <div className="rounded-2xl border border-zinc-800/80 bg-[#0E0D13]/80 p-8 shadow-xl shadow-zinc-950/20 backdrop-blur-sm relative overflow-hidden text-left">
+      {/* Subtle background pattern */}
+      <div className="absolute -top-12 -right-12 w-48 h-48 bg-violet-600/5 rounded-full blur-[60px]" />
+
+      <span className="text-[10px] font-mono text-violet-400 font-semibold tracking-wider block mb-2 uppercase">
+        {step.sprint}
+      </span>
+
+      <h3 className="text-xl font-bold mb-4 text-white">{step.title}</h3>
+
+      <p className="text-xs text-zinc-400 leading-relaxed mb-6 font-mono">
+        {step.details}
+      </p>
+
+      {/* Technologies */}
+      <div className="mb-8">
+        <span className="text-[10px] font-mono text-zinc-500 block mb-2.5 uppercase font-semibold">
+          Módulos e Tecnologias
+        </span>
+        <div className="flex flex-wrap gap-2">
+          {step.techs.map((t) => (
+            <span
+              key={t}
+              className="text-[10px] font-mono px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Action buttons */}
+      <div className="flex items-center gap-4 pt-4 border-t border-zinc-900">
+        <button
+          onClick={handleDocClick}
+          className="inline-flex items-center gap-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-100 hover:text-white px-4 py-2 rounded-lg text-xs font-semibold transition-colors"
+        >
+          {user ? 'Abrir Documentação' : 'Login para Acessar Docs'}
+          <svg
+            className="w-3.5 h-3.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+            />
+          </svg>
+        </button>
+
+        <span className="text-[11px] font-mono text-zinc-500">
+          Status:{' '}
+          {step.status === 'done'
+            ? 'Auditado em produção'
+            : step.status === 'active'
+              ? 'Execução ativa'
+              : 'Planejado no Backlog'}
+        </span>
+      </div>
+    </div>
+  )
+}
+
 export default function Journey() {
   const [selectedIdx, setSelectedIdx] = useState<number>(4) // default to active task (Geolocalização)
 
@@ -128,123 +210,67 @@ export default function Journey() {
               const isActive = step.status === 'active'
 
               return (
-                <button
-                  key={step.title}
-                  onClick={() => setSelectedIdx(idx)}
-                  className={`w-full text-left p-4 rounded-xl border transition-all relative flex items-start justify-between gap-4 group ${
-                    isSelected
-                      ? 'bg-zinc-900/60 border-zinc-700/80 shadow-md shadow-violet-950/5'
-                      : 'bg-transparent border-transparent hover:bg-zinc-900/30'
-                  }`}
-                >
-                  {/* Indicator Dot */}
-                  <span
-                    className={`absolute left-[-29px] top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 transition-all ${
-                      isDone
-                        ? 'bg-emerald-500 border-emerald-400 shadow-lg shadow-emerald-500/20'
-                        : isActive
-                          ? 'bg-violet-500 border-violet-400 animate-pulse shadow-lg shadow-violet-500/20'
-                          : 'bg-zinc-800 border-zinc-700'
-                    }`}
-                  />
-
-                  <div>
-                    <span className="text-[10px] font-mono text-zinc-500 block mb-1">
-                      {step.sprint}
-                    </span>
-                    <strong
-                      className={`text-sm font-semibold transition-colors ${
-                        isSelected ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-200'
-                      }`}
-                    >
-                      {step.title}
-                    </strong>
-                    <p className="text-xs text-zinc-500 mt-1 line-clamp-1">{step.description}</p>
-                  </div>
-
-                  <span
-                    className={`text-[10px] px-2 py-0.5 rounded-full font-mono shrink-0 uppercase tracking-wider font-semibold border ${
-                      isDone
-                        ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
-                        : isActive
-                          ? 'bg-violet-500/10 border-violet-500/20 text-violet-400'
-                          : 'bg-zinc-900 border-zinc-800 text-zinc-500'
+                <div key={step.title} className="space-y-4">
+                  <button
+                    onClick={() => setSelectedIdx(idx)}
+                    className={`w-full text-left p-4 rounded-xl border transition-all relative flex items-start justify-between gap-4 group ${
+                      isSelected
+                        ? 'bg-zinc-900/60 border-zinc-700/80 shadow-md shadow-violet-950/5'
+                        : 'bg-transparent border-transparent hover:bg-zinc-900/30'
                     }`}
                   >
-                    {isDone ? '✔ OK' : isActive ? '🔄 Dev' : '🔒 lock'}
-                  </span>
-                </button>
+                    {/* Indicator Dot */}
+                    <span
+                      className={`absolute left-[-29px] top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 transition-all ${
+                        isDone
+                          ? 'bg-emerald-500 border-emerald-400 shadow-lg shadow-emerald-500/20'
+                          : isActive
+                            ? 'bg-violet-500 border-violet-400 animate-pulse shadow-lg shadow-violet-500/20'
+                            : 'bg-zinc-800 border-zinc-700'
+                      }`}
+                    />
+
+                    <div>
+                      <span className="text-[10px] font-mono text-zinc-500 block mb-1">
+                        {step.sprint}
+                      </span>
+                      <strong
+                        className={`text-sm font-semibold transition-colors ${
+                          isSelected ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-200'
+                        }`}
+                      >
+                        {step.title}
+                      </strong>
+                      <p className="text-xs text-zinc-500 mt-1 line-clamp-1">{step.description}</p>
+                    </div>
+
+                    <span
+                      className={`text-[10px] px-2 py-0.5 rounded-full font-mono shrink-0 uppercase tracking-wider font-semibold border ${
+                        isDone
+                          ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+                          : isActive
+                            ? 'bg-violet-500/10 border-violet-500/20 text-violet-400'
+                            : 'bg-zinc-900 border-zinc-800 text-zinc-500'
+                      }`}
+                    >
+                      {isDone ? '✔ OK' : isActive ? '🔄 Dev' : '🔒 lock'}
+                    </span>
+                  </button>
+
+                  {/* Details for mobile screens directly below the active item */}
+                  {isSelected && (
+                    <div className="lg:hidden mt-2 animate-fadeIn">
+                      <JourneyDetailsCard step={step} />
+                    </div>
+                  )}
+                </div>
               )
             })}
           </div>
 
-          {/* Details side (right) */}
-          <div className="lg:col-span-6 sticky top-24">
-            <div className="rounded-2xl border border-zinc-800/80 bg-[#0E0D13]/80 p-8 shadow-xl shadow-zinc-950/20 backdrop-blur-sm relative overflow-hidden text-left">
-              {/* Subtle background pattern */}
-              <div className="absolute -top-12 -right-12 w-48 h-48 bg-violet-600/5 rounded-full blur-[60px]" />
-
-              <span className="text-[10px] font-mono text-violet-400 font-semibold tracking-wider block mb-2 uppercase">
-                {activeStep.sprint}
-              </span>
-
-              <h3 className="text-xl font-bold mb-4 text-white">{activeStep.title}</h3>
-
-              <p className="text-xs text-zinc-400 leading-relaxed mb-6 font-mono">
-                {activeStep.details}
-              </p>
-
-              {/* Technologies */}
-              <div className="mb-8">
-                <span className="text-[10px] font-mono text-zinc-500 block mb-2.5 uppercase font-semibold">
-                  Módulos e Tecnologias
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {activeStep.techs.map((t) => (
-                    <span
-                      key={t}
-                      className="text-[10px] font-mono px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Action buttons */}
-              <div className="flex items-center gap-4 pt-4 border-t border-zinc-900">
-                <a
-                  href={activeStep.docLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-100 hover:text-white px-4 py-2 rounded-lg text-xs font-semibold transition-colors"
-                >
-                  Abrir Documentação
-                  <svg
-                    className="w-3.5 h-3.5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-                    />
-                  </svg>
-                </a>
-
-                <span className="text-[11px] font-mono text-zinc-500">
-                  Status:{' '}
-                  {activeStep.status === 'done'
-                    ? 'Auditado em produção'
-                    : activeStep.status === 'active'
-                      ? 'Execução ativa'
-                      : 'Planejado no Backlog'}
-                </span>
-              </div>
-            </div>
+          {/* Details side (right) for desktop */}
+          <div className="hidden lg:block lg:col-span-6 sticky top-24">
+            <JourneyDetailsCard step={activeStep} />
           </div>
         </div>
       </div>

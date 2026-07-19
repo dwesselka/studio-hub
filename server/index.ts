@@ -8,9 +8,12 @@ import { requestLogger } from './lib/logger'
 import { rateLimit } from './lib/rate-limit'
 import { errorHandler } from './lib/error-handler'
 import { openApiSpec } from './lib/api-spec'
+import { serverModuleRegistry } from './core/registry/module-registry.ts'
+
+// Auto-register modules
+import './modules/agenda/index.ts'
 
 import authRoutes from './routes/auth'
-import agendaRoutes from './routes/agenda'
 import clientesRoutes from './routes/clientes'
 import equipeRoutes from './routes/equipe'
 import servicosRoutes from './routes/servicos'
@@ -50,7 +53,6 @@ app.get('/docs', swaggerUI({ url: '/openapi.json' }))
 const v1 = new Hono()
 
 v1.route('/auth', authRoutes)
-v1.route('/agenda', agendaRoutes)
 v1.route('/clientes', clientesRoutes)
 v1.route('/equipe', equipeRoutes)
 v1.route('/servicos', servicosRoutes)
@@ -65,6 +67,9 @@ v1.route('/relatorios', relatoriosRoutes)
 v1.route('/cliente', clienteRoutes)
 
 app.route('/v1', v1)
+
+// Monta rotas auto-descobertas (por ex: /v1/agenda)
+serverModuleRegistry.mountRoutes(app)
 
 const port = process.env.PORT ? Number(process.env.PORT) : 3001
 

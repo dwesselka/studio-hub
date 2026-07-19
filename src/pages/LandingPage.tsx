@@ -8,8 +8,11 @@ import Stats from '@/components/landing/Stats'
 import Jornada from '@/components/landing/Jornada'
 import Footer from '@/components/landing/Footer'
 import { trackPageView } from '@/lib/analytics'
+import { useAuth } from '@/features/auth/use-auth'
 
 export default function LandingPage() {
+  const { user } = useAuth()
+
   useEffect(() => {
     trackPageView('/')
   }, [])
@@ -19,11 +22,16 @@ export default function LandingPage() {
       <Header />
       <main role="main">
         <Hero />
-        <Journey />
-        <Principles />
-        <Architecture />
-        <Stats />
-        <Jornada />
+        
+        {user && (
+          <>
+            <Journey />
+            <Principles />
+            <Architecture />
+            <Stats />
+            <Jornada />
+          </>
+        )}
       </main>
       <Footer />
     </div>

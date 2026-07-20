@@ -1,8 +1,11 @@
-import { prisma } from '../../src/lib/prisma'
+import { prisma } from '../lib/prisma'
 import { AppError } from '../lib/errors'
 import type { CreatePaymentInput, UpdatePaymentInput } from '../schemas/pagamento'
 
-export async function listPayments(userId: string, filters: { status?: string; page: number; perPage: number }) {
+export async function listPayments(
+  userId: string,
+  filters: { status?: string; page: number; perPage: number },
+) {
   const where: Record<string, unknown> = { userId }
   if (filters.status) where.status = filters.status
 

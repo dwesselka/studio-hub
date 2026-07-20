@@ -1,6 +1,9 @@
-import { prisma } from '../../src/lib/prisma'
+import { prisma } from '../lib/prisma'
 
-const SEGMENT_SERVICES: Record<string, { name: string; duration: number; price: number; category: string }[]> = {
+const SEGMENT_SERVICES: Record<
+  string,
+  { name: string; duration: number; price: number; category: string }[]
+> = {
   salao: [
     { name: 'Corte Feminino', duration: 60, price: 8000, category: 'Corte' },
     { name: 'Escova', duration: 45, price: 6000, category: 'Finalização' },
@@ -44,13 +47,16 @@ export async function getPrepopulatedServices(segmento: string) {
   }))
 }
 
-export async function saveBusinessData(userId: string, data: {
-  nome: string
-  segmento: string
-  endereco: string
-  telefone: string
-  logo?: string
-}) {
+export async function saveBusinessData(
+  userId: string,
+  data: {
+    nome: string
+    segmento: string
+    endereco: string
+    telefone: string
+    logo?: string
+  },
+) {
   return prisma.user.update({
     where: { id: userId },
     data: {
@@ -74,21 +80,30 @@ export async function saveBusinessData(userId: string, data: {
   })
 }
 
-export async function saveHours(userId: string, hours: { dayOfWeek: number; isOpen: boolean; openTime: string; closeTime: string }[]) {
+export async function saveHours(
+  userId: string,
+  hours: { dayOfWeek: number; isOpen: boolean; openTime: string; closeTime: string }[],
+) {
   await prisma.businessHour.deleteMany({ where: { userId } })
   await prisma.businessHour.createMany({
     data: hours.map((h) => ({ ...h, userId })),
   })
 }
 
-export async function saveServices(userId: string, services: { name: string; duration: number; price: number; category: string }[]) {
+export async function saveServices(
+  userId: string,
+  services: { name: string; duration: number; price: number; category: string }[],
+) {
   await prisma.service.deleteMany({ where: { userId } })
   await prisma.service.createMany({
     data: services.map((s) => ({ ...s, userId, active: true })),
   })
 }
 
-export async function saveTeam(userId: string, team: { name: string; role: string; phone: string; email: string }[]) {
+export async function saveTeam(
+  userId: string,
+  team: { name: string; role: string; phone: string; email: string }[],
+) {
   await prisma.teamMember.deleteMany({ where: { userId } })
   if (team.length > 0) {
     await prisma.teamMember.createMany({

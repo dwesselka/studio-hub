@@ -2,7 +2,7 @@
 
 ## Estrutura
 
-Cada documento `XX-nome.md` dentro de `studiohub-project/` representa uma **feature independente**.
+Cada documento `XX-nome.md` dentro de `studiohub-docs/` representa uma **feature independente**.
 
 ## Fluxo
 

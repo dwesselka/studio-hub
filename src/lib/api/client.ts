@@ -1,6 +1,6 @@
 import type { ApiRequest, ApiResponse } from './types'
 import { ApiRequestError } from './types'
-import { simulator } from './simulator'
+import { realApiHandler } from './real-client'
 
 type RequestInterceptor = (req: ApiRequest) => ApiRequest | Promise<ApiRequest>
 type ResponseInterceptor = (res: ApiResponse) => ApiResponse | Promise<ApiResponse>
@@ -20,7 +20,7 @@ class ApiClient {
   private requestInterceptors: RequestInterceptor[] = []
   private responseInterceptors: ResponseInterceptor[] = []
   private errorInterceptors: ErrorInterceptor[] = []
-  private handler: RequestHandler | null = null
+  private handler: RequestHandler | null = realApiHandler
   private pending: Map<string, PendingRequest> = new Map()
   private cache = new Map<string, { data: unknown; expiresAt: number }>()
 
@@ -62,27 +62,21 @@ class ApiClient {
 
   private async executeWithRetry(req: ApiRequest, attempt = 0): Promise<ApiResponse> {
     if (!this.handler) {
-      throw ApiRequestError.serverError('Mock server não configurado')
+      throw ApiRequestError.serverError('API handler não configurado')
     }
 
-    const config = simulator.getConfig()
-
     try {
-      const response = await simulator.simulate(req.method, req.path, async () => {
-        return await this.handler!(req)
-      })
-
+      const response = await this.handler(req)
       return response
     } catch (err) {
       const apiError =
         err instanceof ApiRequestError ? err : ApiRequestError.serverError((err as Error).message)
 
       const shouldRetry =
-        attempt < config.retryCount &&
-        (apiError.status >= 500 || apiError.status === 429 || apiError.status === 0)
+        attempt < 3 && (apiError.status >= 500 || apiError.status === 429 || apiError.status === 0)
 
       if (shouldRetry) {
-        await new Promise((r) => setTimeout(r, config.retryDelayMs * (attempt + 1)))
+        await new Promise((r) => setTimeout(r, 1000 * (attempt + 1)))
         return this.executeWithRetry(req, attempt + 1)
       }
       throw apiError

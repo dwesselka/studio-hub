@@ -22,7 +22,7 @@ export function ClientAgendamentos() {
 
   const fetch = () => {
     setLoading(true)
-    apiClient.get<Agendamento[]>('/v1/cliente/agendamentos').then((res) => {
+    apiClient.get<Agendamento[]>('/cliente/agendamentos').then((res) => {
       setAgendamentos(res.data)
       setLoading(false)
     })

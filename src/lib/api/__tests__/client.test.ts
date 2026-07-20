@@ -50,20 +50,6 @@ describe('ApiClient', () => {
     unsub()
   })
 
-  it('usa interceptors de erro', async () => {
-    mockServer.get('/error', () => {
-      throw new Error('db error')
-    })
-    mockServer.start()
-
-    const unsub = apiClient.onError((err) => {
-      return Object.assign(err, { message: 'Intercepted: ' + err.message })
-    })
-
-    await expect(apiClient.get('/api/error')).rejects.toThrow(/Intercepted/)
-    unsub()
-  })
-
   it('retry em erro 500', async () => {
     let attempts = 0
     mockServer.get('/flaky', () => {

@@ -13,9 +13,15 @@ import CadastroPage from '@/pages/CadastroPage'
 import App from '@/app/App'
 import { SITE } from '@/data/content'
 
+import { AppProviders } from '@/providers'
+
 function renderWithRouter(ui: React.ReactElement, { route = '/' } = {}) {
   window.history.pushState({}, '', route)
-  return render(<MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>)
+  return render(
+    <AppProviders>
+      <MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>
+    </AppProviders>,
+  )
 }
 
 describe('Critério: Landing page pública sem autenticação', () => {
@@ -23,7 +29,7 @@ describe('Critério: Landing page pública sem autenticação', () => {
     window.history.pushState({}, '', '/')
     render(<App />)
 
-    expect(await screen.findByRole('heading', { name: /Sua agenda cheia/i })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /Construa software/i })).toBeInTheDocument()
   })
 
   it('renderiza cadastro em /cadastro sem autenticação', async () => {
@@ -36,29 +42,23 @@ describe('Critério: Landing page pública sem autenticação', () => {
   it('LandingPage exibe seções principais', () => {
     renderWithRouter(<LandingPage />)
     expect(screen.getByRole('main')).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: /Sua agenda cheia/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /Construa software/i })).toBeInTheDocument()
     expect(screen.getByRole('region', { name: /StudioHub/i })).toBeInTheDocument()
   })
 })
 
 describe('Critério: CTA principal leva ao fluxo de cadastro', () => {
-  it('Hero CTA aponta para /cadastro com segmento', async () => {
-    const user = userEvent.setup()
+  it('Hero CTA aponta para /cadastro', async () => {
     renderWithRouter(<Hero />)
-    expect(screen.getByRole('link', { name: /Começar para Salão/i })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Começar Jornada/i })).toHaveAttribute(
       'href',
-      `${SITE.cadastroPath}?segmento=salao`,
-    )
-    await user.click(screen.getByRole('button', { name: /Ver opção Barbearia/i }))
-    expect(screen.getByRole('link', { name: /Começar para Barbearia/i })).toHaveAttribute(
-      'href',
-      `${SITE.cadastroPath}?segmento=barbearia`,
+      SITE.cadastroPath,
     )
   })
 
   it('Header CTA aponta para /cadastro', () => {
     renderWithRouter(<Header />)
-    const cta = screen.getByRole('link', { name: SITE.ctaLabel })
+    const cta = screen.getByRole('link', { name: /Começar Jornada/i })
     expect(cta).toHaveAttribute('href', SITE.cadastroPath)
   })
 
@@ -76,8 +76,7 @@ describe('Critério: CTA principal leva ao fluxo de cadastro', () => {
 
   it('CadastroPage exibe plano da query string', () => {
     renderWithRouter(<CadastroPage />, { route: '/cadastro?plano=premium' })
-    expect(screen.getByText(/Plano selecionado:/i)).toHaveTextContent('Premium')
-    expect(screen.getByText(/R\$ 197/)).toBeInTheDocument()
+    expect(screen.getByText('premium')).toBeInTheDocument()
   })
 
   it('formulário de cadastro é submetível', async () => {
@@ -86,9 +85,8 @@ describe('Critério: CTA principal leva ao fluxo de cadastro', () => {
 
     await user.type(screen.getByLabelText(/Seu nome/i), 'Maria Silva')
     await user.type(screen.getByLabelText(/E-mail/i), 'maria@test.com')
-    await user.type(screen.getByLabelText(/Telefone/i), '11999999999')
-    await user.type(screen.getByLabelText(/Nome do negócio/i), 'Studio Test')
-    await user.selectOptions(screen.getByLabelText(/Segmento/i), 'salao')
+    await user.type(screen.getByLabelText(/^Senha/i), '123456')
+    await user.type(screen.getByLabelText(/Confirmar senha/i), '123456')
 
     const submit = screen.getByRole('button', { name: /Criar conta/i })
     expect(submit).toBeEnabled()
@@ -104,11 +102,7 @@ describe('Critério: Validação de formulário no cadastro', () => {
 
     expect(await screen.findByText(/nome deve ter pelo menos 3 caracteres/i)).toBeInTheDocument()
     expect(screen.getByText(/formato de e-mail inválido/i)).toBeInTheDocument()
-    expect(screen.getByText(/telefone deve incluir DDD/i)).toBeInTheDocument()
-    expect(
-      screen.getByText(/nome do negócio deve ter pelo menos 2 caracteres/i),
-    ).toBeInTheDocument()
-    expect(screen.getByText(/selecione um segmento/i)).toBeInTheDocument()
+    expect(screen.getByText(/A senha deve ter pelo menos 6 caracteres/i)).toBeInTheDocument()
   })
 
   it('exibe erro para e-mail inválido', async () => {
@@ -117,28 +111,12 @@ describe('Critério: Validação de formulário no cadastro', () => {
 
     await user.type(screen.getByLabelText(/Seu nome/i), 'Maria Silva')
     await user.type(screen.getByLabelText(/E-mail/i), 'email-invalido')
-    await user.type(screen.getByLabelText(/Telefone/i), '11999999999')
-    await user.type(screen.getByLabelText(/Nome do negócio/i), 'Studio Test')
-    await user.selectOptions(screen.getByLabelText(/Segmento/i), 'salao')
+    await user.type(screen.getByLabelText(/^Senha/i), '123456')
+    await user.type(screen.getByLabelText(/Confirmar senha/i), '123456')
 
     await user.click(screen.getByRole('button', { name: /Criar conta/i }))
 
     expect(await screen.findByText(/formato de e-mail inválido/i)).toBeInTheDocument()
-  })
-
-  it('exibe erro para telefone com formato inválido', async () => {
-    const user = userEvent.setup()
-    renderWithRouter(<CadastroPage />)
-
-    await user.type(screen.getByLabelText(/Seu nome/i), 'Maria Silva')
-    await user.type(screen.getByLabelText(/E-mail/i), 'maria@test.com')
-    await user.type(screen.getByLabelText(/Telefone/i), '123')
-    await user.type(screen.getByLabelText(/Nome do negócio/i), 'Studio Test')
-    await user.selectOptions(screen.getByLabelText(/Segmento/i), 'salao')
-
-    await user.click(screen.getByRole('button', { name: /Criar conta/i }))
-
-    expect(await screen.findByText(/telefone deve incluir DDD/i)).toBeInTheDocument()
   })
 
   it('exibe erro para nome muito curto', async () => {
@@ -147,9 +125,8 @@ describe('Critério: Validação de formulário no cadastro', () => {
 
     await user.type(screen.getByLabelText(/Seu nome/i), 'AB')
     await user.type(screen.getByLabelText(/E-mail/i), 'maria@test.com')
-    await user.type(screen.getByLabelText(/Telefone/i), '11999999999')
-    await user.type(screen.getByLabelText(/Nome do negócio/i), 'Studio Test')
-    await user.selectOptions(screen.getByLabelText(/Segmento/i), 'salao')
+    await user.type(screen.getByLabelText(/^Senha/i), '123456')
+    await user.type(screen.getByLabelText(/Confirmar senha/i), '123456')
 
     await user.click(screen.getByRole('button', { name: /Criar conta/i }))
 
@@ -162,9 +139,8 @@ describe('Critério: Validação de formulário no cadastro', () => {
 
     await user.type(screen.getByLabelText(/Seu nome/i), 'Maria Silva')
     await user.type(screen.getByLabelText(/E-mail/i), 'maria@test.com')
-    await user.type(screen.getByLabelText(/Telefone/i), '11999999999')
-    await user.type(screen.getByLabelText(/Nome do negócio/i), 'Studio Test')
-    await user.selectOptions(screen.getByLabelText(/Segmento/i), 'salao')
+    await user.type(screen.getByLabelText(/^Senha/i), '123456')
+    await user.type(screen.getByLabelText(/Confirmar senha/i), '123456')
 
     const submitBtn = screen.getByRole('button', { name: /Criar conta/i })
     await user.click(submitBtn)
@@ -178,8 +154,6 @@ describe('Critério: Validação de formulário no cadastro', () => {
 
     expect(screen.getByLabelText(/Seu nome/i)).toHaveAttribute('aria-invalid', 'false')
     expect(screen.getByLabelText(/E-mail/i)).toHaveAttribute('type', 'email')
-    expect(screen.getByLabelText(/Telefone/i)).toHaveAttribute('type', 'tel')
-    expect(screen.getByLabelText(/Segmento/i)).toBeInstanceOf(HTMLSelectElement)
 
     const form = screen.getByRole('button', { name: /Criar conta/i }).closest('form')
     expect(form).toHaveAttribute('novalidate')

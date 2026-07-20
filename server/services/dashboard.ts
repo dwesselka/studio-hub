@@ -1,4 +1,4 @@
-import { prisma } from '../../src/lib/prisma'
+import { prisma } from '../lib/prisma'
 import { dashboardCache } from '../lib/cache'
 
 async function withCache<T>(key: string, fn: () => Promise<T>): Promise<T> {
@@ -122,9 +122,7 @@ export async function getDashboardToday(userId: string) {
     confirmedCount: confirmed.length,
     totalRevenue,
     occupancyRate:
-      appointments.length > 0
-        ? Math.round((confirmed.length / appointments.length) * 100)
-        : 0,
+      appointments.length > 0 ? Math.round((confirmed.length / appointments.length) * 100) : 0,
   }
 }
 

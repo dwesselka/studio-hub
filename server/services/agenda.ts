@@ -1,6 +1,10 @@
-import { prisma } from '../../src/lib/prisma'
+import { prisma } from '../lib/prisma'
 import { AppError } from '../lib/errors'
-import type { CreateAppointmentInput, UpdateAppointmentInput, RescheduleInput } from '../schemas/agenda'
+import type {
+  CreateAppointmentInput,
+  UpdateAppointmentInput,
+  RescheduleInput,
+} from '../schemas/agenda'
 
 export async function listAppointments(
   userId: string,
@@ -149,7 +153,13 @@ export async function rescheduleAppointment(userId: string, id: string, data: Re
 
 export async function checkConflicts(
   userId: string,
-  params: { professionalId: string; date: string; startTime: string; endTime: string; excludeId?: string },
+  params: {
+    professionalId: string
+    date: string
+    startTime: string
+    endTime: string
+    excludeId?: string
+  },
 ) {
   const where: Record<string, unknown> = {
     userId,
@@ -187,18 +197,22 @@ export async function getSuggestions(
 
   const professionalIds = params.professionalId
     ? [params.professionalId]
-    : (await prisma.teamMember.findMany({
-        where: { userId, active: true },
-        select: { id: true, name: true },
-      })).map((m) => m.id)
+    : (
+        await prisma.teamMember.findMany({
+          where: { userId, active: true },
+          select: { id: true, name: true },
+        })
+      ).map((m) => m.id)
 
   const memberNames = params.professionalId
     ? {}
     : Object.fromEntries(
-        (await prisma.teamMember.findMany({
-          where: { userId, active: true },
-          select: { id: true, name: true },
-        })).map((m) => [m.id, m.name]),
+        (
+          await prisma.teamMember.findMany({
+            where: { userId, active: true },
+            select: { id: true, name: true },
+          })
+        ).map((m) => [m.id, m.name]),
       )
 
   const existingApps = await prisma.appointment.findMany({
@@ -209,7 +223,13 @@ export async function getSuggestions(
     },
   })
 
-  const suggestions: { time: string; professionalId: string; professionalName?: string; score: number; reason: string }[] = []
+  const suggestions: {
+    time: string
+    professionalId: string
+    professionalName?: string
+    score: number
+    reason: string
+  }[] = []
 
   for (const proId of professionalIds) {
     for (let m = openMinutes; m + params.serviceDuration <= closeMinutes; m += 30) {
@@ -223,10 +243,7 @@ export async function getSuggestions(
       const endTime = `${String(endH).padStart(2, '0')}:${String(endMin).padStart(2, '0')}`
 
       const hasConflict = existingApps.some(
-        (a) =>
-          a.professionalId === proId &&
-          startTime < a.endTime &&
-          endTime > a.startTime,
+        (a) => a.professionalId === proId && startTime < a.endTime && endTime > a.startTime,
       )
 
       if (hasConflict) continue

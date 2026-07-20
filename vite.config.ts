@@ -8,6 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@shared': path.resolve(__dirname, './shared'),
       '@api': path.resolve(__dirname, './src/lib/api'),
     },
   },
@@ -17,6 +18,10 @@ export default defineConfig({
         target: 'http://localhost:3001',
         changeOrigin: true,
       },
+      // '/docs': {
+      //   target: 'http://localhost:3001',
+      //   changeOrigin: true,
+      // },
     },
   },
 })

@@ -1,4 +1,4 @@
-import { prisma } from '../../src/lib/prisma'
+import { prisma } from '../lib/prisma'
 
 export async function getConfig(userId: string) {
   const user = await prisma.user.findUnique({
@@ -48,9 +48,14 @@ export async function updateConfig(userId: string, data: Record<string, unknown>
   if (openingHours) {
     await prisma.businessHour.deleteMany({ where: { userId } })
     await prisma.businessHour.createMany({
-      data: (openingHours as { dayOfWeek: number; isOpen: boolean; openTime: string; closeTime: string }[]).map(
-        (h) => ({ ...h, userId }),
-      ),
+      data: (
+        openingHours as {
+          dayOfWeek: number
+          isOpen: boolean
+          openTime: string
+          closeTime: string
+        }[]
+      ).map((h) => ({ ...h, userId })),
     })
   }
 

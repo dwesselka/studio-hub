@@ -1,4 +1,4 @@
-import { prisma } from '../../src/lib/prisma'
+import { prisma } from '../lib/prisma'
 import { AppError } from '../lib/errors'
 import type { CreateServiceInput, UpdateServiceInput } from '../schemas/servicos'
 

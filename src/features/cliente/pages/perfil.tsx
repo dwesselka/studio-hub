@@ -18,7 +18,7 @@ export function ClientPerfil() {
     setSaving(true)
     setSaved(false)
     try {
-      await apiClient.patch('/v1/cliente/perfil', { name, telefone })
+      await apiClient.patch('/cliente/perfil', { name, telefone })
       refreshUser()
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)

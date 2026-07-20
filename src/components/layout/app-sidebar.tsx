@@ -20,7 +20,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
-import { navigationGroups } from '@/features/dashboard/data'
+import { useNavigation } from '@/core/navigation/NavigationProvider'
 import { useAuth } from '@/features/auth/use-auth'
 import { cn } from '@/lib/utils'
 import type { NavItem } from '@/types'
@@ -122,6 +122,7 @@ export const AppSidebar = memo(function AppSidebar({
 }: AppSidebarProps) {
   const { user } = useAuth()
   const location = useLocation()
+  const { navGroups } = useNavigation()
 
   const businessName = user?.onboardingData?.business?.nome
   const businessLogo = user?.onboardingData?.business?.logo
@@ -180,7 +181,7 @@ export const AppSidebar = memo(function AppSidebar({
 
       <ScrollArea className="flex-1 px-3 py-4">
         <nav className="flex flex-col gap-6">
-          {navigationGroups.map((group) => (
+          {navGroups.map((group) => (
             <div key={group.id}>
               {!collapsed && (
                 <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">

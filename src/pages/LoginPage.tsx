@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Sparkles, ArrowRight, Eye, EyeOff } from 'lucide-react'
@@ -6,29 +6,7 @@ import { useAuth } from '@/features/auth/use-auth'
 import { SITE } from '@/data/content'
 import { trackPageView } from '@/lib/analytics'
 
-interface Slide {
-  image: string
-  label: string
-}
-
-const slides: Slide[] = [
-  {
-    image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80',
-    label: 'Salão de Beleza',
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1585747861115-4de5c53e6fc7?w=800&q=80',
-    label: 'Barbearia',
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=80',
-    label: 'Clínica Estética',
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80',
-    label: 'Autônomo',
-  },
-]
+// Theme config removed
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -38,22 +16,9 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const [slideIndex, setSlideIndex] = useState(0)
-  const layersRef = useRef<(HTMLDivElement | null)[]>([])
-
   useEffect(() => {
     trackPageView('/login')
-    const interval = setInterval(() => setSlideIndex((i) => (i + 1) % slides.length), 3000)
-    return () => clearInterval(interval)
   }, [])
-
-  useLayoutEffect(() => {
-    layersRef.current.forEach((el, i) => {
-      if (!el) return
-      el.style.opacity = i === slideIndex ? '0.5' : '0'
-    })
-  }, [slideIndex])
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
@@ -78,47 +43,50 @@ export default function LoginPage() {
   return (
     <div className="min-h-svh flex">
       {/* Left side — visual branding */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
-        {slides.map((slide, i) => (
-          <div
-            key={i}
-            ref={(el) => {
-              if (el) {
-                layersRef.current[i] = el
-                el.style.opacity = '0'
-              }
-            }}
-            className="absolute inset-0 bg-cover bg-center transition-all duration-[2000ms] ease-in-out will-change-[opacity]"
-            style={{ backgroundImage: `url(${slide.image})` }}
-          />
-        ))}
-        <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/60 to-transparent" />
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-[#09090b]">
+        {/* Grid Background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-violet-500/10" />
 
-        <div className="relative z-10 flex flex-col justify-between p-12 w-full">
+        <div className="relative z-10 flex flex-col justify-between p-12 w-full h-full">
           <Link to="/" className="flex items-center gap-3 text-white">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm text-lg font-bold">
-              IP
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/20 border border-blue-500/30 text-blue-400 text-lg font-bold">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                />
+              </svg>
             </span>
-            <span className="text-lg font-semibold tracking-tight">{SITE.name}</span>
+            <span className="text-lg font-semibold tracking-tight">{SITE.name} Lab</span>
           </Link>
 
-          <div className="space-y-6">
+          <div className="space-y-8 mt-auto mb-20">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}
             >
-              <Sparkles className="h-8 w-8 text-amber-400 mb-4" />
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-semibold mb-6 uppercase tracking-widest">
+                <Sparkles className="w-3.5 h-3.5" /> Engineering RPG
+              </div>
               <h2 className="text-4xl font-bold text-white leading-tight">
-                Gestão inteligente
+                Evolua seu código.
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-rose-400">
-                  para o seu negócio
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400">
+                  Suba de nível.
                 </span>
               </h2>
               <p className="mt-4 text-base text-zinc-400 max-w-md leading-relaxed">
-                Agendamentos, finanças, equipe e fidelização em um só lugar. Tudo que você precisa
-                para crescer.
+                Bem-vindo ao Engineering Lab. Acompanhe sua evolução técnica, ganhe XP por deploys
+                bem-sucedidos e alcance o rank S+ em arquitetura.
               </p>
             </motion.div>
 
@@ -126,26 +94,23 @@ export default function LoginPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="flex flex-wrap gap-3"
+              className="grid grid-cols-2 gap-4 max-w-sm"
             >
-              {slides.map((slide, i) => (
-                <span
-                  key={i}
-                  className={`rounded-full border px-3 py-1 text-[11px] transition-all duration-700 ${
-                    i === slideIndex
-                      ? 'border-amber-400/40 bg-amber-400/10 text-amber-300'
-                      : 'border-white/10 bg-white/5 text-zinc-500'
-                  }`}
-                >
-                  {slide.label}
-                </span>
-              ))}
+              {/* Stats Cards */}
+              <div className="rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-4 backdrop-blur-sm">
+                <div className="text-xs text-zinc-500 font-medium mb-1">Rank Atual</div>
+                <div className="text-2xl font-bold text-amber-400">S+</div>
+              </div>
+              <div className="rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-4 backdrop-blur-sm">
+                <div className="text-xs text-zinc-500 font-medium mb-1">Engineering Score</div>
+                <div className="text-2xl font-bold text-white">
+                  9.850 <span className="text-xs text-blue-400 font-normal">XP</span>
+                </div>
+              </div>
             </motion.div>
           </div>
 
-          <div className="text-[11px] text-zinc-600">
-            &copy; 2026 StudioHub. Todos os direitos reservados.
-          </div>
+          <div className="text-[11px] text-zinc-600 font-mono">v2.0.0-alpha • BUILD 8452</div>
         </div>
       </div>
 
@@ -278,7 +243,7 @@ export default function LoginPage() {
             <p className="text-center text-xs text-muted-foreground">
               Ainda não tem conta?{' '}
               <Link
-                to="/cadastro"
+                to="/signup"
                 className="font-semibold text-primary hover:text-primary/80 transition-colors"
               >
                 Criar conta grátis

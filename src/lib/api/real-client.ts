@@ -1,7 +1,9 @@
 import type { ApiRequest, ApiResponse } from './types'
 import { ApiRequestError } from './types'
 
-const REAL_API_BASE = import.meta.env.VITE_API_URL || '/api'
+// Em desenvolvimento: VITE_API_URL não definido → base = '/v1' → usa proxy do Vite (sem CORS)
+// Em produção/homologação: VITE_API_URL aponta para a URL real da API
+const REAL_API_BASE = (import.meta.env.VITE_API_URL as string | undefined) || '/v1'
 
 interface ApiEnvelope<T = unknown> {
   data?: T

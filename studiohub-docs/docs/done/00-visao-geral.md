@@ -116,5 +116,5 @@ studiohub/
 │   ├── schema.prisma       # 18 modelos
 │   ├── seed.ts             # Dados de teste
 │   └── migrations/         # Migrations versionadas
-└── studiohub-project/      # Documentação arquitetural
+└── studiohub-docs/      # Documentação arquitetural
 ```

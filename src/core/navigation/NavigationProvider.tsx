@@ -26,27 +26,23 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
 
   const modules = useMemo(() => {
     if (!workspace) return []
-    return moduleRegistry.getForWorkspace(
-      workspace.modules,
-      workspace.plan,
-      permissions
-    )
+    return moduleRegistry.getForWorkspace(workspace.modules, workspace.plan, permissions)
   }, [workspace, permissions])
 
   const navGroups = useMemo(() => {
     const groups = new Map<string, NavGroup>()
-    
+
     for (const mod of modules) {
       for (const nav of mod.navigation) {
         // Checar feature flag - futuramente usar hook de feature flag
         // if (nav.featureFlag && !isEnabled(nav.featureFlag)) continue
-        
-        const group = groups.get(nav.group) ?? { 
-          id: nav.group, 
-          label: GROUP_LABELS[nav.group] ?? nav.group, 
-          items: [] 
+
+        const group = groups.get(nav.group) ?? {
+          id: nav.group,
+          label: GROUP_LABELS[nav.group] ?? nav.group,
+          items: [],
         }
-        
+
         group.items.push({
           id: nav.id,
           label: nav.label,
@@ -55,13 +51,13 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
           shortcut: nav.shortcut,
           badge: nav.badge ? nav.badge() : undefined,
         })
-        
+
         groups.set(nav.group, group)
       }
     }
-    
+
     return Array.from(groups.values())
-      // Aqui poderíamos ter uma ordem fixa para os grupos também
+    // Aqui poderíamos ter uma ordem fixa para os grupos também
   }, [modules])
 
   return (
@@ -71,6 +67,7 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useNavigation() {
   const ctx = useContext(NavigationContext)
   if (!ctx) {

@@ -12,9 +12,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
         <AuthProvider>
           <WorkspaceProvider>
             <RBACProvider>
-              <NavigationProvider>
-                {children}
-              </NavigationProvider>
+              <NavigationProvider>{children}</NavigationProvider>
             </RBACProvider>
           </WorkspaceProvider>
         </AuthProvider>

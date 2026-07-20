@@ -80,7 +80,7 @@ pnpm dev            # Frontend (terminal 2)
 ### Guide (VitePress)
 
 ```bash
-cd studiohub-project/guide
+cd studiohub-docus/guide
 pnpm docs:dev      # Desenvolvimento (localhost:5173)
 pnpm docs:build    # Build estático
 pnpm docs:preview  # Preview do build
@@ -146,7 +146,7 @@ infinity-style/
 ├── src/            → Frontend React
 ├── server/         → Backend Hono
 ├── prisma/         → Schema + migrations
-└── studiohub-project/guide/ → Esta documentação
+└── studiohub-prdocusoject/guide/ → Esta documentação
 ```
 
 ---

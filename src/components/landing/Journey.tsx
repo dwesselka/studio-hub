@@ -119,9 +119,7 @@ function JourneyDetailsCard({ step }: { step: JourneyStep }) {
 
       <h3 className="text-xl font-bold mb-4 text-white">{step.title}</h3>
 
-      <p className="text-xs text-zinc-400 leading-relaxed mb-6 font-mono">
-        {step.details}
-      </p>
+      <p className="text-xs text-zinc-400 leading-relaxed mb-6 font-mono">{step.details}</p>
 
       {/* Technologies */}
       <div className="mb-8">

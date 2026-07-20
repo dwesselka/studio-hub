@@ -30,7 +30,7 @@ export const ENVIRONMENTS: Record<ApiEnvironment, ApiEnvironmentConfig> = {
     jitterMs: 50,
     errorRate: 0,
     logLevel: 'debug',
-    apiUrl: 'http://localhost:3001/v1',
+    apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:3001/v1',
   },
   homologation: {
     name: 'homologation',

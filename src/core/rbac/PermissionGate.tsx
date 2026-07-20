@@ -8,11 +8,7 @@ interface PermissionGateProps {
   redirectTo?: string
 }
 
-export function PermissionGate({
-  permission,
-  children,
-  redirectTo = '/app',
-}: PermissionGateProps) {
+export function PermissionGate({ permission, children, redirectTo = '/app' }: PermissionGateProps) {
   const { hasPermission } = usePermission()
   const location = useLocation()
 
@@ -30,7 +26,7 @@ export function PermissionGate({
         </div>
       )
     }
-    
+
     return <Navigate to={redirectTo} replace />
   }
 

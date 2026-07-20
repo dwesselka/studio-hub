@@ -2,38 +2,52 @@ import { Link } from 'react-router-dom'
 import { SITE } from '@/data/content'
 import { trackCtaClick } from '@/lib/analytics'
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onLoginClick?: () => void
+}
+
+const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
+  const DOCS_URL = import.meta.env.VITE_DOCS_URL
+
+  if (!DOCS_URL) {
+    throw new Error('VITE_DOCS_URL não foi configurada.')
+  }
+
   const handleCta = () => {
     trackCtaClick('header')
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0B0A0F]/70 backdrop-blur-md border-b border-zinc-800/40">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0B0A0F]/90 backdrop-blur-md border-b border-zinc-800/40">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link
           to="/"
           className="flex items-center gap-3 text-white hover:opacity-90 transition-opacity"
         >
-          <span className="w-8 h-8 rounded-lg bg-gradient-to-tr from-violet-600 to-indigo-600 flex items-center justify-center font-bold text-white shadow-md shadow-indigo-500/10">
-            S
-          </span>
-          <span className="flex flex-col">
-            <span className="text-sm font-semibold tracking-tight leading-none text-white">
-              {SITE.name}
-            </span>
-            <span className="text-[10px] text-zinc-400 font-mono tracking-widest uppercase">
-              Lab
-            </span>
-          </span>
+          <div className="relative w-8 h-8 flex items-center justify-center">
+            <svg className="w-8 h-8 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+          <span className="text-xl font-bold tracking-tight text-white">{SITE.name}</span>
         </Link>
 
-        {/* Classes for testing compatibility while keeping modern design */}
-        <nav className="header__nav hidden md:flex items-center gap-8">
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-8">
           <a
-            href="#journey"
+            href={DOCS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors font-medium"
           >
-            Jornada
+            Documentação
           </a>
           <a
             href="#principles"
@@ -47,27 +61,21 @@ const Header: React.FC = () => {
           >
             Arquitetura
           </a>
-          <a
-            href="#stats"
-            className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors font-medium"
-          >
-            Métricas
-          </a>
         </nav>
 
         <div className="flex items-center gap-4">
-          <Link
-            to="/login"
-            className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors font-medium px-3 py-1.5"
+          <button
+            onClick={onLoginClick}
+            className="text-sm font-medium text-zinc-300 hover:text-white transition-colors"
           >
             Entrar
-          </Link>
+          </button>
           <Link
             to={SITE.cadastroPath}
-            className="bg-white hover:bg-zinc-200 text-zinc-950 px-4 py-1.5 rounded-md text-sm font-semibold transition-all hover:scale-[1.02] shadow-sm shadow-white/5"
+            className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-all hover:shadow-lg hover:shadow-blue-600/25"
             onClick={handleCta}
           >
-            Começar Jornada
+            Começar
           </Link>
         </div>
       </div>

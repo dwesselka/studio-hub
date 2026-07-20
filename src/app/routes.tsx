@@ -11,20 +11,19 @@ import { useWorkspace } from '@/core/workspace/WorkspaceProvider.tsx'
 const LandingPage = lazy(() => import('@/pages/LandingPage.tsx'))
 const CadastroPage = lazy(() => import('@/pages/CadastroPage.tsx'))
 const OnboardingPage = lazy(() => import('@/pages/OnboardingPage.tsx'))
-const LoginPage = lazy(() => import('@/pages/LoginPage.tsx'))
 const ConvitePage = lazy(() => import('@/pages/ConvitePage.tsx'))
 
 // Temporary fallback guard for workspace
 function WorkspaceGuard({ children }: { children: React.ReactNode }) {
   const { workspace, isLoading } = useWorkspace()
-  
+
   if (isLoading) return <PageLoader />
-  
+
   // Se não tem workspace mas está logado, deve ir pro onboarding criar um
   if (!workspace) {
     return <Navigate to="/onboarding" replace />
   }
-  
+
   return <>{children}</>
 }
 
@@ -38,7 +37,8 @@ export function AppRoutes() {
       <Route path="/signup" element={<CadastroPage />} />
       <Route path="/cadastro" element={<OnboardingPage />} />
       <Route path="/onboarding" element={<OnboardingPage />} />
-      <Route path="/login" element={<LoginPage />} />
+      {/* /login → opens login modal on LandingPage */}
+      <Route path="/login" element={<Navigate to="/?login=true" replace />} />
       <Route path="/convite" element={<ConvitePage />} />
 
       {/* Rotas Protegidas - App */}
@@ -53,10 +53,10 @@ export function AppRoutes() {
         }
       >
         <Route index element={<DashboardGrid />} />
-        
+
         {/* Rotas injetadas dinamicamente pelos módulos */}
-        {modules.flatMap(mod => 
-          mod.routes.map(route => {
+        {modules.flatMap((mod) =>
+          mod.routes.map((route) => {
             const Component = route.component
             // Tratamento de path: se for absoluto, retira o /, se for relativo mantem.
             const routePath = route.path.startsWith('/') ? route.path.slice(1) : route.path
@@ -73,7 +73,7 @@ export function AppRoutes() {
                 }
               />
             )
-          })
+          }),
         )}
       </Route>
 

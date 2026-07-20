@@ -3,7 +3,9 @@ import { useWorkspace } from './WorkspaceProvider.tsx'
 
 function hexToHSL(hex: string): { h: number; s: number; l: number } {
   // Conversão básica
-  let r = 0, g = 0, b = 0
+  let r = 0,
+    g = 0,
+    b = 0
   if (hex.length === 4) {
     r = parseInt(hex[1] + hex[1], 16)
     g = parseInt(hex[2] + hex[2], 16)
@@ -16,16 +18,25 @@ function hexToHSL(hex: string): { h: number; s: number; l: number } {
   r /= 255
   g /= 255
   b /= 255
-  const max = Math.max(r, g, b), min = Math.min(r, g, b)
-  let h = 0, s = 0, l = (max + min) / 2
+  const max = Math.max(r, g, b),
+    min = Math.min(r, g, b)
+  let h = 0,
+    s = 0
+  const l = (max + min) / 2
 
   if (max !== min) {
     const d = max - min
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
     switch (max) {
-      case r: h = (g - b) / d + (g < b ? 6 : 0); break
-      case g: h = (b - r) / d + 2; break
-      case b: h = (r - g) / d + 4; break
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0)
+        break
+      case g:
+        h = (b - r) / d + 2
+        break
+      case b:
+        h = (r - g) / d + 4
+        break
     }
     h /= 6
   }
@@ -41,7 +52,7 @@ export function useBranding() {
 
     const root = document.documentElement
     const { primaryColor, secondaryColor, accentColor, favicon, name } = workspace
-    
+
     // Injeta CSS variables do workspace se existirem
     if (primaryColor) {
       root.style.setProperty('--brand-primary', primaryColor)
@@ -50,10 +61,10 @@ export function useBranding() {
       root.style.setProperty('--brand-primary-s', `${hsl.s}%`)
       root.style.setProperty('--brand-primary-l', `${hsl.l}%`)
     }
-    
+
     if (secondaryColor) root.style.setProperty('--brand-secondary', secondaryColor)
     if (accentColor) root.style.setProperty('--brand-accent', accentColor)
-    
+
     // Favicon dinâmico
     if (favicon) {
       let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement
@@ -69,7 +80,7 @@ export function useBranding() {
     if (name) {
       document.title = `${name} | StudioHub`
     }
-    
+
     return () => {
       root.style.removeProperty('--brand-primary')
       root.style.removeProperty('--brand-secondary')

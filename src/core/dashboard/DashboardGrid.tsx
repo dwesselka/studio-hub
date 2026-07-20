@@ -5,12 +5,8 @@ import { useWorkspace } from '../workspace/WorkspaceProvider.tsx'
 import type { ClientWidgetManifest } from './types.ts'
 
 function WidgetSkeleton() {
-  return (
-    <div className="h-full w-full animate-pulse rounded-xl bg-muted/50" />
-  )
+  return <div className="h-full w-full animate-pulse rounded-xl bg-muted/50" />
 }
-
-
 
 export function DashboardGrid() {
   const { modules } = useNavigation()
@@ -31,17 +27,11 @@ export function DashboardGrid() {
         // Mapeia o tamanho grid para classes do Tailwind
         const colSpan = `col-span-${widget.defaultSize.w}`
         const rowSpan = `row-span-${widget.defaultSize.h}`
-        
+
         return (
-          <div 
-            key={widget.id} 
-            className={`${colSpan} ${rowSpan} min-h-[160px]`}
-          >
+          <div key={widget.id} className={`${colSpan} ${rowSpan} min-h-[160px]`}>
             <Suspense fallback={<WidgetSkeleton />}>
-              <widget.component 
-                workspaceId={workspace.id} 
-                size={widget.defaultSize} 
-              />
+              <widget.component workspaceId={workspace.id} size={widget.defaultSize} />
             </Suspense>
           </div>
         )

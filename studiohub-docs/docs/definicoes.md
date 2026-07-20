@@ -58,13 +58,13 @@ A implementação acontecerá somente depois que toda a arquitetura estiver apro
 
 Crie uma documentação completa dentro da pasta:
 
-studiohub-project/
+studiohub-docs/
 
 Organize em arquivos Markdown.
 
 Exemplo:
 
-studiohub-project/
+studiohub-docs/
 
     |
     14-decisoes-arquiteturais.md

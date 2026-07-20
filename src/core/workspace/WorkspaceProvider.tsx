@@ -12,6 +12,7 @@ interface WorkspaceContextValue {
   refreshWorkspace: () => Promise<void>
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const WorkspaceContext = createContext<WorkspaceContextValue | null>(null)
 
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
@@ -35,8 +36,12 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       setIsLoading(true)
       // Endpoint que retorna o workspace ativo do usuário (baseado no X-Workspace ou padrão)
       const res = await apiClient.get('/workspace/active')
-      const data = res.data as { workspace: Workspace, member: WorkspaceMember, role: WorkspaceRole }
-      
+      const data = res.data as {
+        workspace: Workspace
+        member: WorkspaceMember
+        role: WorkspaceRole
+      }
+
       setWorkspace(data.workspace)
       setMember(data.member)
       setRole(data.role)
@@ -50,7 +55,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchWorkspace()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
   return (
@@ -69,6 +76,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useWorkspace() {
   const ctx = useContext(WorkspaceContext)
   if (!ctx) {

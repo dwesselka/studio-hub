@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm run dev:homolog\" \"npm run server:dev\"",
+    "dev": "concurrently \"npm run dev:homolog\" \"npm run server:dev\" \"npm --prefix studiohub-docs/guide run docs:dev\"",
     "dev:homolog": "vite --mode homologation",
     "dev:prod": "vite --mode production",
     "build": "tsc -b && vite build",
@@ -29,9 +29,9 @@
     "db:generate": "prisma generate",
     "server": "node --env-file .env.development --import tsx server/index.ts",
     "server:dev": "node --env-file .env.development --import tsx --watch server/index.ts",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:dev": "npm --prefix studiohub-docs/guide run docs:dev",
+    "docs:build": "npm --prefix studiohub-docs/guide run docs:build",
+    "docs:preview": "npm --prefix studiohub-docs/guide run docs:preview"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^8.5.0",

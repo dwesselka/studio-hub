@@ -28,11 +28,7 @@ class ModuleRegistry {
    * 2. Plano do workspace atende ao requiredPlan do módulo
    * 3. Usuário tem permissão mínima (module:read)
    */
-  getForWorkspace(
-    enabledModules: string[],
-    plan: Plan,
-    permissions: string[]
-  ): ClientModule[] {
+  getForWorkspace(enabledModules: string[], plan: Plan, permissions: string[]): ClientModule[] {
     return this.getAll()
       .filter((m) => enabledModules.includes(m.id))
       .filter((m) => PLAN_HIERARCHY[plan] >= PLAN_HIERARCHY[m.requiredPlan])

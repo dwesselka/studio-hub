@@ -25,7 +25,7 @@ Implementar fluxo seguro de recuperação de senha através de código enviado a
 
 # Backend
 
-- [ ] Criar endpoint POST /auth/password-reset/request
+- [x] Criar endpoint POST /auth/password-reset/request
 - [ ] Criar geração de código
 - [ ] Criar persistência do token temporário
 - [ ] Criar endpoint POST /auth/password-reset/verify

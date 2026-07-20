@@ -21,7 +21,12 @@ export const ativarConviteSchema = z.object({
   password: z.string().min(6, 'Mínimo de 6 caracteres'),
 })
 
+export const passwordResetRequestSchema = z.object({
+  email: z.string().email('E-mail inválido').toLowerCase().trim(),
+})
+
 export type LoginInput = z.infer<typeof loginSchema>
 export type SignupInput = z.infer<typeof signupSchema>
 export type RefreshInput = z.infer<typeof refreshSchema>
 export type AtivarConviteInput = z.infer<typeof ativarConviteSchema>
+export type PasswordResetRequestInput = z.infer<typeof passwordResetRequestSchema>

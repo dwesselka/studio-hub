@@ -327,3 +327,7 @@ Cada perfil tem sua própria sidebar com navegação específica:
 1. Adicionar profissionais de exemplo com User vinculado
 2. Adicionar clientes com User vinculado
 3. Atualizar seed para criar dados de exemplo para todos os perfis
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

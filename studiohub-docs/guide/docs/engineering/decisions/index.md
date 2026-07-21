@@ -88,3 +88,7 @@ O que foi decidido?
 
 Qualquer contexto adicional.
 ```
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

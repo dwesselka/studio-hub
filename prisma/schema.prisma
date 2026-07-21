@@ -9,7 +9,7 @@ datasource db {
 enum Role {
   lojista
   profissional
-  cliente
+  cliente     
 }
 
 model User {

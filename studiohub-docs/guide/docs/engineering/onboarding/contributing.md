@@ -62,3 +62,7 @@ pnpm test:server       # Testes do backend (20+ testes)
 pnpm test:server:watch # Modo watch
 pnpm test:server:coverage # Cobertura
 ```
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

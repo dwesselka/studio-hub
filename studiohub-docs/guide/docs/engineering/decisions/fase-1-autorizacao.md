@@ -76,3 +76,7 @@ where: { userId: businessOwnerId, professionalId: userId }
 **Aprendizado:** Query agregada por profissional, separação de responsabilidade
 
 **Critério:** Lojista NÃO acessa esse endpoint, profissional SIM
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

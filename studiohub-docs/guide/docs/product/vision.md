@@ -118,3 +118,7 @@ studiohub/
 │   └── migrations/         # Migrations versionadas
 └── studiohub-docs/      # Documentação arquitetural
 ```
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

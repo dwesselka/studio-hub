@@ -83,3 +83,7 @@ app.use(
 - Multi-tenancy com isolamento por schema ou `tenantId`
 - RBAC completo (proprietário, admin, profissional, recepcionista)
 - Auditoria de ações (logs imutáveis)
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

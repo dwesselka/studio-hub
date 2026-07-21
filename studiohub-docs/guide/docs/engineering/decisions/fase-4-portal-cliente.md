@@ -84,3 +84,7 @@ Criar as páginas que o cliente acessa após logar no portal.
 | `PATCH /v1/cliente/perfil`                    | Atualizar nome, telefone     |
 
 **Aprendizado:** REST API do ponto de vista do cliente, permissões mínimas
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

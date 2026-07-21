@@ -124,3 +124,7 @@ export function roleGuard(...allowedRoles: string[]) {
 | 0.4  | `server/lib/middleware.ts`      | ⏳     |
 | 0.5  | `server/routes/auth.ts`         | ⏳     |
 | 0.6  | `src/features/auth/context.tsx` | ⏳     |
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

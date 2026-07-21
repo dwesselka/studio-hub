@@ -8,7 +8,7 @@ Proteger rotas no frontend por perfil e criar layouts específicos.
 
 ## Task 3.1 — Adicionar role ao AuthUser
 
-**Arquivo:** `src/features/onboarding/types.ts`
+**Arquivo:** `src/features/engineering/onboarding/types.ts`
 
 **O que fazer:** Adicionar `role: 'lojista' | 'profissional' | 'cliente'` na interface `AuthUser`
 
@@ -110,3 +110,7 @@ Meus Atendimentos
   <Route path="perfil" element={<ClientPerfil />} />
 </Route>
 ```
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

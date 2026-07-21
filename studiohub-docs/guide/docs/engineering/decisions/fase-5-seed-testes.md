@@ -77,3 +77,7 @@ curl -H "Authorization: Bearer $TOKEN" \
 6. Verifica acesso restrito
 
 **Aprendizado:** Fluxo completo end-to-end, validação de experiência do usuário
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

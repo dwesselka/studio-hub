@@ -34,3 +34,7 @@ Início → Seleciona cliente → Adiciona serviços prestados →
 - Pontos podem ser trocados por serviços ou descontos
 - Promoções automáticas: "indique um amigo", "aniversário", "frequência"
 - Regras configuráveis por estabelecimento
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

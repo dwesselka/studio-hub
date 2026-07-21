@@ -51,4 +51,8 @@ Copie `.env.example` para `.env`:
 
 ---
 
-> ⚡ **Precisa de uma referência rápida?** Veja o [Command Pocket](/command-pocket) com todos os comandos, portas e URLs em um só lugar.
+> ⚡ **Precisa de uma referência rápida?** Veja o [Command Pocket](/engineering/guidelines/command-pocket) com todos os comandos, portas e URLs em um só lugar.
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

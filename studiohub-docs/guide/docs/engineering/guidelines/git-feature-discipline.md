@@ -51,3 +51,7 @@ Cada documento `XX-nome.md` dentro de `studiohub-docs/` representa uma **feature
 - Cada merge conclui exatamente um documento/marco
 - Histórico linear e rastreável por número
 - Zero cerimônia — sem hooks, sem plugins, sem regras decoradas
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

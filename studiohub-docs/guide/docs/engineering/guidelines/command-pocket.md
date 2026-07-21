@@ -152,3 +152,7 @@ infinity-style/
 ---
 
 > 💡 **Dica:** Use `Ctrl+Shift+F` no VitePress Guide para buscar comandos específicos.
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

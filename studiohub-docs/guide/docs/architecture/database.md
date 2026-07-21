@@ -223,3 +223,7 @@ Cada um com: agenda de horários, equipe, serviços, clientes, agendamentos (~66
 ## Soft Delete
 
 O sistema utiliza **delete físico** (não soft delete) por simplicidade, já que o negócio não exige recuperação de dados deletados. Caso necessário no futuro, basta adicionar `deletedAt: DateTime?` nos modelos relevantes.
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

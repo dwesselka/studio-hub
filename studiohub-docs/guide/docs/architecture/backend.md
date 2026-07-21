@@ -77,21 +77,21 @@ server/
 
 ## Domínios
 
-| Domínio         | Rotas                   | Descrição                                         |
-| --------------- | ----------------------- | ------------------------------------------------- |
-| Auth            | `/v1/auth/*`            | Cadastro, login, refresh, logout, me              |
-| Agenda          | `/v1/agenda/*`          | CRUD agendamentos, confirmar, cancelar, reagendar |
-| Atendimentos    | `/v1/atendimentos/*`    | Sessões de serviço                                |
-| Clientes        | `/v1/clientes/*`        | CRUD clientes                                     |
-| Configurações   | `/v1/configuracoes/*`   | Preferências da empresa                           |
-| Dashboard       | `/v1/dashboard/*`       | Métricas, hoje, analytics, status                 |
-| Equipe          | `/v1/equipe/*`          | CRUD membros                                      |
-| Fidelização     | `/v1/fidelizacao/*`     | Pontos, promoções, transações                     |
-| Onboarding      | `/v1/onboarding/*`      | Setup inicial                                     |
-| Pagamentos      | `/v1/pagamentos/*`      | PIX, crédito, débito, dinheiro                    |
-| Pós-Atendimento | `/v1/pos-atendimento/*` | Feedback, campanhas                               |
-| Relatórios      | `/v1/relatorios/*`      | KPIs por período                                  |
-| Serviços        | `/v1/servicos/*`        | CRUD serviços                                     |
+| Domínio         | Rotas                          | Descrição                                         |
+| --------------- | ------------------------------ | ------------------------------------------------- |
+| Auth            | `/v1/auth/*`                   | Cadastro, login, refresh, logout, me              |
+| Agenda          | `/v1/agenda/*`                 | CRUD agendamentos, confirmar, cancelar, reagendar |
+| Atendimentos    | `/v1/atendimentos/*`           | Sessões de serviço                                |
+| Clientes        | `/v1/clientes/*`               | CRUD clientes                                     |
+| Configurações   | `/v1/configuracoes/*`          | Preferências da empresa                           |
+| Dashboard       | `/v1/dashboard/*`              | Métricas, hoje, analytics, status                 |
+| Equipe          | `/v1/equipe/*`                 | CRUD membros                                      |
+| Fidelização     | `/v1/fidelizacao/*`            | Pontos, promoções, transações                     |
+| Onboarding      | `/v1/engineering/onboarding/*` | Setup inicial                                     |
+| Pagamentos      | `/v1/pagamentos/*`             | PIX, crédito, débito, dinheiro                    |
+| Pós-Atendimento | `/v1/pos-atendimento/*`        | Feedback, campanhas                               |
+| Relatórios      | `/v1/relatorios/*`             | KPIs por período                                  |
+| Serviços        | `/v1/servicos/*`               | CRUD serviços                                     |
 
 ## Autenticação
 
@@ -163,3 +163,7 @@ app.post('/v1/auth/login', validate(loginSchema), (c) => {
   // ...
 })
 ```
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

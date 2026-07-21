@@ -148,3 +148,7 @@ interface AsyncState<T> {
 ```
 
 Os componentes usam `StatePanel` para exibir loading, erro ou vazio de forma consistente.
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

@@ -81,3 +81,7 @@ model InviteToken {
 **O que faz:** Botão "Convidar" ao lado de cada membro sem user vinculado. Copia link pro clipboard.
 
 **Aprendizado:** Estado condicional por registro, clipboard API
+
+---
+
+> **Última atualização:** 2026-07-21 | **Responsável:** Equipe StudioHub

@@ -205,3 +205,39 @@ export async function validarConvite(token: string) {
 
   return { email: invite.email, businessName: owner?.businessName ?? null }
 }
+
+export async function requestPasswordReset(email: string): Promise<{ message: string }> {
+  const user = await prisma.user.findUnique({ where: { email } })
+
+  // Resposta genérica para não revelar se o e-mail existe (segurança)
+  const genericMessage = 'Se este e-mail estiver cadastrado, você receberá um código em breve.'
+
+  if (!user) {
+    return { message: genericMessage }
+  }
+
+  // Gera código numérico de 6 dígitos
+  const { randomInt } = await import('node:crypto')
+  const code = String(randomInt(100000, 999999))
+
+  // Expira em 15 minutos
+  const expiresAt = new Date(Date.now() + 15 * 60 * 1000)
+
+  // Persiste o token (invalida tokens anteriores do mesmo usuário)
+  await prisma.passwordResetToken.create({
+    data: {
+      userId: user.id,
+      email: user.email,
+      code,
+      expiresAt,
+    },
+  })
+
+  // TODO: enviar o código por e-mail (integração de e-mail pendente)
+  // Por ora, apenas loga em desenvolvimento
+  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'dev') {
+    console.log(`[DEV] Password reset code for ${email}: ${code}`)
+  }
+
+  return { message: genericMessage }
+}

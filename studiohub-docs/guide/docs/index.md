@@ -8,39 +8,39 @@ hero:
   actions:
     - theme: brand
       text: ⚗️ Engineering Lab
-      link: /lab/
+      link: /engineering/lab/
     - theme: alt
       text: 📖 Onboarding
-      link: /onboarding/setup
+      link: /engineering/onboarding/setup
     - theme: alt
-      text: 🔧 Stack
-      link: /arquitetura/stack
+      text: 🔧 Arquitetura
+      link: /architecture/overview
 
 features:
   - title: ⚗️ Engineering Lab
     details: Área protagonista com sprints, incidentes, ADRs, post-mortems e architecture reviews.
-    link: /lab/
+    link: /engineering/lab/
   - title: 🚀 Onboarding
     details: Setup do ambiente, pré-requisitos, variáveis de ambiente e comandos essenciais.
-    link: /onboarding/setup
+    link: /engineering/onboarding/setup
   - title: 🖥️ Telas do Sistema
     details: Explore cada tela do StudioHub com layouts visuais, componentes envolvidos e APIs relacionadas.
-    link: /telas/visao-geral
+    link: /product/screens/visao-geral
   - title: ⚙️ Arquitetura
     details: Stack, API, fluxos e decisões técnicas que moldaram o sistema.
-    link: /arquitetura/stack
+    link: /architecture/overview
   - title: 🧩 Componentes
     details: Catálogo completo dos componentes UI (Button, Input, Card, Avatar...) com props e exemplos.
-    link: /components/button
+    link: /ui-components/button
   - title: 📋 Regras de Negócio
     details: Lógica por trás de agendamentos, fidelização, pagamentos e outros domínios.
-    link: /regras-de-negocio/agendamento
+    link: /product/business-rules/agendamento
   - title: 📅 Timeline
     details: Histórico cronológico de cada sprint, tecnologia dominada e marco de engenharia.
-    link: /lab/timeline
+    link: /engineering/lab/timeline
   - title: 🎮 Engineering Score
     details: RPG do engenheiro — Level, XP e evolução de skills por área técnica.
-    link: /lab/score
+    link: /engineering/lab/score
 ---
 
 <div style="max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 3rem;">

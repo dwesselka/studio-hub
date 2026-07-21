@@ -3,7 +3,14 @@ import { validateBody } from '../lib/validate'
 import { success, created } from '../lib/response'
 import { authGuard } from '../lib/middleware'
 import * as authService from '../services/auth'
-import { loginSchema, signupSchema, refreshSchema, ativarConviteSchema } from '../schemas/auth'
+import {
+  loginSchema,
+  signupSchema,
+  refreshSchema,
+  ativarConviteSchema,
+  passwordResetRequestSchema,
+} from '../schemas/auth'
+import { rateLimit } from '../lib/rate-limit'
 import { toAuthUserResponse } from '../dto/auth'
 import type { PrismaClient } from '@prisma/client'
 
@@ -115,5 +122,16 @@ router.get('/dev/users', async (c) => {
     return c.json({ error: error instanceof Error ? error.message : 'Error fetching users' }, 500)
   }
 })
+
+router.post(
+  '/password-reset/request',
+  rateLimit({ windowMs: 15 * 60 * 1000, maxRequests: 5 }),
+  validateBody(passwordResetRequestSchema),
+  async (c) => {
+    const { email } = c.get('validBody') as { email: string }
+    const result = await authService.requestPasswordReset(email)
+    return success(c, result)
+  },
+)
 
 export default router

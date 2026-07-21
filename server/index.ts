@@ -8,7 +8,6 @@ import { requestLogger } from './lib/logger'
 import { rateLimit } from './lib/rate-limit'
 import { errorHandler } from './lib/error-handler'
 import { openApiSpec } from './lib/api-spec'
-import { serverModuleRegistry } from './core/registry/module-registry.ts'
 
 // Auto-register modules
 import './modules/agenda/index.ts'
@@ -26,6 +25,7 @@ import configuracoesRoutes from './routes/configuracoes'
 import dashboardRoutes from './routes/dashboard'
 import relatoriosRoutes from './routes/relatorios'
 import clienteRoutes from './routes/cliente'
+import { serverModuleRegistry } from './core/registry/module-registry'
 
 const app = new Hono()
 

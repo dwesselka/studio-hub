@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm run dev:homolog\" \"npm run server:dev\" \"npm --prefix studiohub-docs/guide run docs:dev\"",
+    "dev": "concurrently \"npm run dev:local\" \"npm run server:dev\" \"npm --prefix studiohub-docs/guide run docs:dev\"",
+    "dev:local": "vite",
     "dev:homolog": "vite --mode homologation",
     "dev:prod": "vite --mode production",
     "build": "tsc -b && vite build",

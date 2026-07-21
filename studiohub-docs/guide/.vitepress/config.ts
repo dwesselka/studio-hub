@@ -1,9 +1,10 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  srcDir: './docs',
   title: 'StudioHub Guide',
   description: 'Construindo um SaaS. Evoluindo um Engenheiro.',
-  ignoreDeadLinks: true,
+  ignoreDeadLinks: false,
 
   head: [
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
@@ -40,181 +41,202 @@ export default defineConfig({
       { text: 'Início', link: '/' },
       {
         text: '⚗️ Lab',
-        activeMatch: '/lab/',
+        activeMatch: '/engineering/lab/',
         items: [
-          { text: '🏠 Engineering Lab', link: '/lab/' },
-          { text: '🗺️ Roadmap', link: '/lab/roadmap' },
-          { text: '🏃 Sprints', link: '/lab/sprints/' },
-          { text: '🚨 Incidents', link: '/lab/incidents/' },
-          { text: '🔬 Post Mortems', link: '/lab/post-mortems/' },
-          { text: '🏗️ Arch Reviews', link: '/lab/arch-reviews/' },
-          { text: '📐 ADRs', link: '/lab/adrs/' },
-          { text: '🧪 Experiments', link: '/lab/experiments/' },
-          { text: '🏆 Challenges', link: '/lab/challenges/' },
-          { text: '📖 Learnings', link: '/lab/learnings/' },
-          { text: '📅 Timeline', link: '/lab/timeline' },
-          { text: '🎮 Score', link: '/lab/score' },
+          { text: '🏠 Engineering Lab', link: '/engineering/lab/' },
+          { text: '🗺️ Roadmap', link: '/engineering/lab/roadmap' },
+          { text: '🏃 Sprints', link: '/engineering/lab/sprints/' },
+          { text: '🚨 Incidents', link: '/engineering/lab/incidents/' },
+          { text: '🔬 Post Mortems', link: '/engineering/lab/post-mortems/pm-001' },
+          { text: '🏗️ Arch Reviews', link: '/engineering/lab/arch-reviews/' },
+          { text: '📐 ADRs / Decisões', link: '/engineering/decisions/' },
+          { text: '🧪 Experimentos', link: '/engineering/lab/experiments/' },
+          { text: '📚 Módulos de Aprendizado', link: '/engineering/lab/learning-modules/' },
+          { text: '📅 Timeline', link: '/engineering/lab/timeline' },
+          { text: '🎮 Score', link: '/engineering/lab/score' },
         ],
       },
-      { text: 'Arquitetura', link: '/arquitetura/stack' },
-      { text: 'Telas', link: '/telas/visao-geral' },
-      { text: 'Componentes', link: '/components/button' },
-      { text: 'Regras de Negócio', link: '/regras-de-negocio/agendamento' },
-      { text: 'Onboarding', link: '/onboarding/setup' },
-      { text: '⚡ Pocket', link: '/command-pocket' },
+      { text: 'Arquitetura', link: '/architecture/overview' },
+      { text: 'Telas', link: '/product/screens/visao-geral' },
+      { text: 'Componentes', link: '/ui-components/button' },
+      { text: 'Regras de Negócio', link: '/product/business-rules/agendamento' },
+      { text: 'Onboarding', link: '/engineering/onboarding/setup' },
+      { text: '⚡ Pocket', link: '/engineering/guidelines/command-pocket' },
     ],
 
     sidebar: {
-      '/lab/': [
+      '/engineering/lab/': [
         {
           text: '⚗️ Engineering Lab',
-          link: '/lab/',
+          link: '/engineering/lab/',
           items: [
-            { text: '🏠 Visão Geral', link: '/lab/' },
-            { text: '🗺️ Roadmap', link: '/lab/roadmap' },
-            { text: '📅 Timeline', link: '/lab/timeline' },
-            { text: '🎮 Engineering Score', link: '/lab/score' },
+            { text: '🏠 Visão Geral', link: '/engineering/lab/' },
+            { text: '🗺️ Roadmap', link: '/engineering/lab/roadmap' },
+            { text: '📅 Timeline', link: '/engineering/lab/timeline' },
+            { text: '🎮 Engineering Score', link: '/engineering/lab/score' },
+          ],
+        },
+        {
+          text: '📚 Aprendizado & Exercícios',
+          link: '/engineering/lab/learning-modules/',
+          collapsed: false,
+          items: [
+            { text: 'Visão Geral', link: '/engineering/lab/learning-modules/' },
+            { text: '02 — Estado & UI', link: '/engineering/lab/learning-modules/02_estado' },
+            { text: '03 — Comunicação API', link: '/engineering/lab/learning-modules/03_comunicacao' },
+            { text: '04 — Backend & Prisma', link: '/engineering/lab/learning-modules/04_backend' },
           ],
         },
         {
           text: '🏃 Sprints',
-          link: '/lab/sprints/',
+          link: '/engineering/lab/sprints/',
           collapsed: false,
           items: [
-            { text: 'Todas as Sprints', link: '/lab/sprints/' },
-            { text: 'Sprint 04 — Geo 🔄', link: '/lab/sprints/sprint-04' },
+            { text: 'Todas as Sprints', link: '/engineering/lab/sprints/' },
+            { text: 'Sprint 04 — Geo 🔄', link: '/engineering/lab/sprints/sprint-04' },
           ],
         },
         {
           text: '🚨 Incidents',
-          link: '/lab/incidents/',
+          link: '/engineering/lab/incidents/',
           collapsed: false,
           items: [
-            { text: 'Todos os Incidentes', link: '/lab/incidents/' },
-            { text: 'Incident #014', link: '/lab/incidents/incident-014' },
+            { text: 'Todos os Incidentes', link: '/engineering/lab/incidents/' },
+            { text: 'Incident #014', link: '/engineering/lab/incidents/incident-014' },
           ],
         },
         {
           text: '🔬 Post Mortems',
-          link: '/lab/post-mortems/',
+          link: '/engineering/lab/post-mortems/pm-001',
           collapsed: false,
           items: [
-            { text: 'Todos os Post Mortems', link: '/lab/post-mortems/' },
-            { text: 'PM-001 — Índice em Prod', link: '/lab/post-mortems/pm-001' },
+            { text: 'PM-001 — Índice em Prod', link: '/engineering/lab/post-mortems/pm-001' },
           ],
         },
         {
           text: '🏗️ Architecture Reviews',
-          link: '/lab/arch-reviews/',
+          link: '/engineering/lab/arch-reviews/',
           collapsed: false,
           items: [
-            { text: 'Todas as Reviews', link: '/lab/arch-reviews/' },
-            { text: 'AR — Geolocalização', link: '/lab/arch-reviews/ar-geolocation' },
+            { text: 'Todas as Reviews', link: '/engineering/lab/arch-reviews/' },
+            { text: 'AR — Geolocalização', link: '/engineering/lab/arch-reviews/ar-geolocation' },
           ],
         },
         {
-          text: '📐 ADRs',
-          link: '/lab/adrs/',
+          text: '📐 ADRs & Decisões',
+          link: '/engineering/decisions/',
           collapsed: true,
           items: [
-            { text: 'Catálogo de ADRs', link: '/lab/adrs/' },
+            { text: 'Catálogo de ADRs', link: '/engineering/decisions/' },
+            { text: 'Fase 0 — Fundação', link: '/engineering/decisions/fase-0-fundacao' },
+            { text: 'Fase 1 — Autorização', link: '/engineering/decisions/fase-1-autorizacao' },
+            { text: 'Fase 2 — Convite', link: '/engineering/decisions/fase-2-convite' },
+            { text: 'Fase 3 — Frontend Guards', link: '/engineering/decisions/fase-3-frontend-guards' },
+            { text: 'Fase 4 — Portal Cliente', link: '/engineering/decisions/fase-4-portal-cliente' },
+            { text: 'Fase 5 — Seed Testes', link: '/engineering/decisions/fase-5-seed-testes' },
           ],
         },
         {
           text: '🧪 Experiments',
-          link: '/lab/experiments/',
+          link: '/engineering/lab/experiments/',
           collapsed: true,
           items: [
-            { text: 'Log de Experimentos', link: '/lab/experiments/' },
-          ],
-        },
-        {
-          text: '🏆 Challenges',
-          link: '/lab/challenges/',
-          collapsed: true,
-          items: [
-            { text: 'Todos os Desafios', link: '/lab/challenges/' },
-          ],
-        },
-        {
-          text: '📖 Learnings',
-          link: '/lab/learnings/',
-          collapsed: true,
-          items: [
-            { text: 'Base de Conhecimento', link: '/lab/learnings/' },
+            { text: 'Log de Experimentos', link: '/engineering/lab/experiments/' },
           ],
         },
       ],
 
-      '/telas/': [
+      '/product/screens/': [
         {
           text: 'Telas do Sistema',
           items: [
-            { text: 'Visão Geral', link: '/telas/visao-geral' },
-            { text: 'Landing Page', link: '/telas/landing' },
-            { text: 'Dashboard', link: '/telas/dashboard' },
-            { text: 'Agenda', link: '/telas/agenda' },
-            { text: 'Atendimento', link: '/telas/atendimento' },
-            { text: 'Clientes', link: '/telas/clientes' },
-            { text: 'Pagamentos', link: '/telas/pagamentos' },
+            { text: 'Visão Geral', link: '/product/screens/visao-geral' },
+            { text: 'Landing Page', link: '/product/screens/landing' },
+            { text: 'Dashboard', link: '/product/screens/dashboard' },
+            { text: 'Agenda', link: '/product/screens/agenda' },
+            { text: 'Atendimento', link: '/product/screens/atendimento' },
+            { text: 'Clientes', link: '/product/screens/clientes' },
+            { text: 'Pagamentos', link: '/product/screens/pagamentos' },
           ],
         },
       ],
-      '/arquitetura/': [
+
+      '/architecture/': [
         {
           text: 'Arquitetura',
           items: [
-            { text: 'Stack', link: '/arquitetura/stack' },
-            { text: 'API', link: '/arquitetura/api' },
-            { text: 'Fluxos', link: '/arquitetura/fluxos' },
+            { text: 'Visão Geral', link: '/architecture/overview' },
+            { text: 'Diagramas Mermaid', link: '/architecture/diagrams' },
+            { text: 'Backend API', link: '/architecture/backend' },
+            { text: 'Frontend SPA', link: '/architecture/frontend' },
+            { text: 'Banco de Dados', link: '/architecture/database' },
+            { text: 'Migração Neon', link: '/architecture/neon-migration' },
+            { text: 'Segurança & Auth', link: '/architecture/security' },
+            { text: 'Perfis de Acesso', link: '/architecture/perfis-acesso' },
+            { text: 'Fluxos do Sistema', link: '/architecture/flows' },
           ],
         },
       ],
-      '/components/': [
+
+      '/ui-components/': [
         {
           text: 'Componentes UI',
           collapsed: false,
           items: [
-            { text: 'Button', link: '/components/button' },
-            { text: 'Input', link: '/components/input' },
-            { text: 'Card', link: '/components/card' },
-            { text: 'Badge', link: '/components/badge' },
-            { text: 'Avatar', link: '/components/avatar' },
-            { text: 'Skeleton', link: '/components/skeleton' },
-            { text: 'Separator', link: '/components/separator' },
-            { text: 'ScrollArea', link: '/components/scroll-area' },
-            { text: 'Tooltip', link: '/components/tooltip' },
-            { text: 'DropdownMenu', link: '/components/dropdown-menu' },
-            { text: 'Loading', link: '/components/loading' },
-            { text: 'PageLoader', link: '/components/page-loader' },
-            { text: 'StatePanel', link: '/components/state-panel' },
+            { text: 'Visão Geral', link: '/ui-components/' },
+            { text: 'Button', link: '/ui-components/button' },
+            { text: 'Input', link: '/ui-components/input' },
+            { text: 'Card', link: '/ui-components/card' },
+            { text: 'Badge', link: '/ui-components/badge' },
+            { text: 'Avatar', link: '/ui-components/avatar' },
+            { text: 'Skeleton', link: '/ui-components/skeleton' },
+            { text: 'Separator', link: '/ui-components/separator' },
+            { text: 'ScrollArea', link: '/ui-components/scroll-area' },
+            { text: 'Tooltip', link: '/ui-components/tooltip' },
+            { text: 'DropdownMenu', link: '/ui-components/dropdown-menu' },
+            { text: 'Loading', link: '/ui-components/loading' },
+            { text: 'PageLoader', link: '/ui-components/page-loader' },
+            { text: 'StatePanel', link: '/ui-components/state-panel' },
           ],
         },
       ],
-      '/regras-de-negocio/': [
+
+      '/product/business-rules/': [
         {
           text: 'Regras de Negócio',
           items: [
-            { text: 'Agendamento', link: '/regras-de-negocio/agendamento' },
-            { text: 'Fidelização', link: '/regras-de-negocio/fidelizacao' },
-            { text: 'Pagamentos', link: '/regras-de-negocio/pagamentos' },
+            { text: 'Visão Geral', link: '/product/business-rules/' },
+            { text: 'Agendamento', link: '/product/business-rules/agendamento' },
+            { text: 'Fidelização', link: '/product/business-rules/fidelizacao' },
+            { text: 'Pagamentos', link: '/product/business-rules/pagamentos' },
+            { text: 'Branding & Personalização', link: '/product/business-rules/branding-personalizacao' },
           ],
         },
       ],
-      '/onboarding/': [
+
+      '/engineering/onboarding/': [
         {
-          text: 'Onboarding',
+          text: 'Onboarding & Engenharia',
           items: [
-            { text: 'Setup', link: '/onboarding/setup' },
-            { text: 'Contribuindo', link: '/onboarding/contributing' },
+            { text: 'Visão & Missão', link: '/engineering/onboarding/vision-and-mission' },
+            { text: 'Setup do Ambiente', link: '/engineering/onboarding/setup' },
+            { text: 'Guia de Contribuição', link: '/engineering/onboarding/contributing' },
+            { text: 'Git Workflow', link: '/engineering/guidelines/git-feature-discipline' },
+            { text: 'Definitions of Done', link: '/engineering/guidelines/definitions-of-done' },
+            { text: 'Princípios Orion AI', link: '/engineering/guidelines/orion-ai-guidelines' },
+            { text: '⚡ Command Pocket', link: '/engineering/guidelines/command-pocket' },
           ],
         },
       ],
-      '/command-pocket': [
+
+      '/engineering/guidelines/': [
         {
-          text: '⚡ Command Pocket',
+          text: 'Diretrizes de Engenharia',
           items: [
-            { text: 'Visão Geral', link: '/command-pocket' },
+            { text: '⚡ Command Pocket', link: '/engineering/guidelines/command-pocket' },
+            { text: 'Git Workflow', link: '/engineering/guidelines/git-feature-discipline' },
+            { text: 'Definitions of Done', link: '/engineering/guidelines/definitions-of-done' },
+            { text: 'Princípios Orion AI', link: '/engineering/guidelines/orion-ai-guidelines' },
           ],
         },
       ],

@@ -14,12 +14,12 @@ Implementar fluxo seguro de recuperação de senha através de código enviado a
 
 ## Frontend
 
-- [ ] Criar tela "Esqueci minha senha"
-- [ ] Criar componente Input OTP
-- [ ] Implementar contador de reenvio (60s)
-- [ ] Criar tela de validação do código
-- [ ] Criar tela de nova senha
-- [ ] Implementar validações UX
+- [x] Criar tela "Esqueci minha senha"
+- [x] Criar componente Input OTP
+- [x] Implementar contador de reenvio (60s)
+- [] Criar tela de validação do código
+- [x] Criar tela de nova senha
+- [] Implementar validações UX
 
 ---
 

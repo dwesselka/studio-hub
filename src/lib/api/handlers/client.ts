@@ -1,6 +1,6 @@
-import type { ApiRequest, ApiResponse } from './types'
-import { ApiRequestError } from './types'
-import { realApiHandler } from './real-client'
+import type { ApiRequest, ApiResponse } from '../types'
+import { ApiRequestError } from '../types'
+import { realApiHandler } from '../real-client'
 
 type RequestInterceptor = (req: ApiRequest) => ApiRequest | Promise<ApiRequest>
 type ResponseInterceptor = (res: ApiResponse) => ApiResponse | Promise<ApiResponse>

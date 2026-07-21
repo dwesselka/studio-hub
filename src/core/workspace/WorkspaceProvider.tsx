@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import type { Workspace, WorkspaceMember, WorkspaceRole } from '@shared/types/workspace.ts'
 import { useAuth } from '@/features/auth/use-auth'
-import { apiClient } from '@/lib/api'
+//import { apiClient } from '@/lib/api'
 
 interface WorkspaceContextValue {
   workspace: Workspace | null
@@ -21,7 +21,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [member, setMember] = useState<WorkspaceMember | null>(null)
   const [role, setRole] = useState<WorkspaceRole | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
+  const [error] = useState<Error | null>(null)
 
   const fetchWorkspace = async () => {
     if (!user) {
@@ -32,7 +32,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       return
     }
 
-    try {
+    /*try {
       setIsLoading(true)
       // Endpoint que retorna o workspace ativo do usuário (baseado no X-Workspace ou padrão)
       const res = await apiClient.get('/workspace/active')
@@ -40,7 +40,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         workspace: Workspace
         member: WorkspaceMember
         role: WorkspaceRole
-      }
+      
+      }  
 
       setWorkspace(data.workspace)
       setMember(data.member)
@@ -51,7 +52,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       setError(err instanceof Error ? err : new Error('Failed to load workspace'))
     } finally {
       setIsLoading(false)
-    }
+    }*/
   }
 
   useEffect(() => {

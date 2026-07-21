@@ -1,5 +1,6 @@
-export { apiClient } from './client'
+export { apiClient } from './handlers/client'
 export { ApiRequestError } from './types'
+
 export type {
   ApiRequest,
   ApiResponse,

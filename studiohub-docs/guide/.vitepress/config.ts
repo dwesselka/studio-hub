@@ -1,5 +1,3 @@
-import { createRequire } from 'module'
-const require = createRequire(import.meta.url)
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({

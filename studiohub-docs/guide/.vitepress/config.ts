@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  srcDir: './docs',
   title: 'StudioHub Guide',
   description: 'Construindo um SaaS. Evoluindo um Engenheiro.',
   ignoreDeadLinks: false,
